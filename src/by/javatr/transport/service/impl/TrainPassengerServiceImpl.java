@@ -9,7 +9,7 @@ import by.javatr.transport.service.TrainPassengerService;
 public class TrainPassengerServiceImpl implements TrainPassengerService {
 
     @Override
-    public void addTrainCarPassenger(int id, int passengerCountMax) {
+    public void addTrainCarPassenger(int id) {
         DAOFactory daoObjectFactory = DAOFactory.getInstance();
         TrainPassengerDAO trainPassengerDAO = daoObjectFactory.getTrainPassengerDAO();
         trainPassengerDAO.addTrainPassenger(id);
