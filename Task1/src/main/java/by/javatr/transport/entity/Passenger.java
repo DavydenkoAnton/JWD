@@ -1,30 +1,26 @@
 package by.javatr.transport.entity;
 
+import java.util.List;
+
 public class Passenger {
     private String name;
-    private int baggageCount;
+    private List<Baggage> baggage;
 
-    public Passenger(){}
-
-    public Passenger(String name, int baggageCount) {
+    public Passenger(String name, Baggage baggage) {
         this.name = name;
-        this.baggageCount = baggageCount;
+        this.baggage.add(baggage);
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public List getBaggage() {
+        return baggage;
     }
 
-    public int getBaggageCount() {
-        return baggageCount;
-    }
-
-    public void setBaggageCount(int baggageCount) {
-        this.baggageCount = baggageCount;
+    public void setBaggage(List baggage) {
+        this.baggage = baggage;
     }
 
     @Override
@@ -32,7 +28,11 @@ public class Passenger {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Passenger passenger = (Passenger) o;
-        if (baggageCount != passenger.baggageCount) ;
+        if (this.baggage == null) {
+            if (passenger.baggage != null) return false;
+        } else if (!this.baggage.equals(passenger.baggage)) {
+            return false;
+        }
         if (this.name == null) {
             if (passenger.name != null) return false;
         } else if (!this.name.equals(passenger.name)) {
@@ -44,7 +44,7 @@ public class Passenger {
     @Override
     public int hashCode() {
         int prime = 17;
-        return prime * name.hashCode() + prime * baggageCount;
+        return prime * (name==null?0:name.hashCode()) + prime * (baggage==null?0:baggage.hashCode());
     }
 
 }

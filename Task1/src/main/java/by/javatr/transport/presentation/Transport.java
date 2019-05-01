@@ -7,7 +7,7 @@ public class Transport {
 
         Controller controller=new Controller();
         controller.executeTask("add_train_passenger 1");
-
+        System.out.println("maven is started");
 
     }
 }

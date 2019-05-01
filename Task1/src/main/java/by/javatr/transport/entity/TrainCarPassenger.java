@@ -2,33 +2,20 @@ package by.javatr.transport.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class TrainCarPassenger {
     private int passengerCountMax;
-    private int id;
-    private int passengerCount;
+    private UUID id = UUID.randomUUID();
 
     private List<Passenger> passengers = new ArrayList/*<>*/();
 
-    public TrainCarPassenger(int id, int passengerCountMax) {
-        this.id = id;
+    public TrainCarPassenger(int passengerCountMax) {
         this.passengerCountMax = passengerCountMax;
     }
 
-    public int getNumber() {
+    public UUID getID() {
         return id;
-    }
-
-    public void setNumber(int number) {
-        this.id = number;
-    }
-
-    public int getPassengerCount() {
-        return passengerCount;
-    }
-
-    public void setPassengerCount(int passengerCount) {
-        this.passengerCount = passengerCount;
     }
 
     public int getPassengerCountMax() {
@@ -61,9 +48,6 @@ public class TrainCarPassenger {
         if (id != that.id) {
             return false;
         }
-        if (passengerCount != that.passengerCount) {
-            return false;
-        }
         if (this.passengers == null) {
             if (that.passengers != null) return false;
         } else if (!this.passengers.equals(that.passengers)) {
@@ -75,6 +59,6 @@ public class TrainCarPassenger {
     @Override
     public int hashCode() {
         int prime = 17;
-        return prime * passengerCountMax + prime * id + prime * passengerCount;
+        return prime * passengerCountMax + prime * id.hashCode() + prime * (passengers == null ? 0 : passengers.hashCode());
     }
 }
