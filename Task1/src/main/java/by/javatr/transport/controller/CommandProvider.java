@@ -10,7 +10,7 @@ import java.util.Map;
 
 final class CommandProvider {
 
-    private final Map<CommandName, Command> repository = new HashMap/*<>*/();
+    private final Map<CommandName, Command> repository = new HashMap<>();
 
     CommandProvider() {
         repository.put(CommandName.ADD_PASSENGER, new AddPassenger());
@@ -23,9 +23,7 @@ final class CommandProvider {
         try {
             commandName = CommandName.valueOf(name.toUpperCase());
             command = repository.get(commandName);
-        } catch ( NullPointerException e) {
-            command = repository.get(CommandName.WRONG_REQUEST);
-        }catch (IllegalArgumentException e) {
+        } catch ( NullPointerException | IllegalArgumentException e) {
             command = repository.get(CommandName.WRONG_REQUEST);
         }
         return command;

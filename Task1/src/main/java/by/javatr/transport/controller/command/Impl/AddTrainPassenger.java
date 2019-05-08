@@ -1,24 +1,28 @@
 package by.javatr.transport.controller.command.Impl;
 
 import by.javatr.transport.controller.command.Command;
+import by.javatr.transport.exception.DaoException;
+import by.javatr.transport.exception.TrainPassengerException;
 import by.javatr.transport.service.TrainPassengerService;
-import by.javatr.transport.service.factory.ServiceFactory;
+import by.javatr.transport.service.factory.FactoryService;
+
+import java.io.IOException;
 
 public class AddTrainPassenger implements Command {
 
-    public String execute(String request) {
-        int id = 0;
+    public String execute(String request) throws  TrainPassengerException {
+
         String response = null;
 // get parameters from request and initialize the variables login and password
-        ServiceFactory serviceFactory = ServiceFactory.getInstance();
-        TrainPassengerService trainPassengerService = serviceFactory.getTrainPassengerService();
+        FactoryService factoryService =  FactoryService.getInstance();
+        TrainPassengerService trainPassengerService = factoryService.getTrainPassengerService();
 
-        //try {
-            trainPassengerService.addTrainCarPassenger(id);
+        try {
+            trainPassengerService.addTrainPassenger(request);
             response = "passenger train added";
-        ///} catch (ServiceException e) {
-           // response = "Error duiring login procedure";
-        //}
+        } catch (DaoException | IOException e) {
+            response = "Error duiring login procedure";
+        }
         return response;
     }
 

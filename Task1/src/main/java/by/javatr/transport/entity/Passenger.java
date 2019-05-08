@@ -1,10 +1,13 @@
 package by.javatr.transport.entity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Passenger {
     private String name;
-    private List<Baggage> baggage;
+    private UUID id = UUID.randomUUID();
+    private List<Baggage> baggage = new ArrayList<>();
 
     public Passenger(String name, Baggage baggage) {
         this.name = name;
@@ -15,12 +18,16 @@ public class Passenger {
         return name;
     }
 
-    public List getBaggage() {
-        return baggage;
+    public UUID getId() {
+        return id;
     }
 
-    public void setBaggage(List baggage) {
-        this.baggage = baggage;
+    public List getBaggage() {
+        return  baggage;
+    }
+
+    public void addBaggage(Baggage baggage) {
+        this.baggage.add(baggage);
     }
 
     @Override
@@ -44,7 +51,16 @@ public class Passenger {
     @Override
     public int hashCode() {
         int prime = 17;
-        return prime * (name==null?0:name.hashCode()) + prime * (baggage==null?0:baggage.hashCode());
+        return prime * (name == null ? 0 : name.hashCode()) + prime * (baggage == null ? 0 : baggage.hashCode());
     }
 
+    @Override
+    public String toString(){
+        StringBuilder passenger=new StringBuilder();
+        passenger.append(name).append(" ");
+        for(Baggage b:baggage){
+            passenger.append(b.getWeigth()).append(" ");
+        }
+        return passenger.toString();
+    }
 }

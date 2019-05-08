@@ -2,19 +2,19 @@ package by.javatr.transport.service.factory;
 
 import by.javatr.transport.service.PassengerService;
 import by.javatr.transport.service.TrainPassengerService;
-import by.javatr.transport.service.impl.ServicePassengerImpl;
+import by.javatr.transport.service.impl.PassengerServiceImpl;
 import by.javatr.transport.service.impl.TrainPassengerServiceImpl;
 
-public class ServiceFactory {
-    private static final ServiceFactory instance = new ServiceFactory();
+public class FactoryService {
+    private static final FactoryService instance = new FactoryService();
 
     private final TrainPassengerService trainPassengerService = new TrainPassengerServiceImpl();
-    private final PassengerService passengerService = new ServicePassengerImpl();
+    private final PassengerService passengerService = new PassengerServiceImpl();
 
-    private ServiceFactory() {
+    private FactoryService() {
     }
 
-    public static ServiceFactory getInstance() {
+    public static FactoryService getInstance() {
         return instance;
     }
 

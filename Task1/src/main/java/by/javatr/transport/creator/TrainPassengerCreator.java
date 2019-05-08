@@ -1,4 +1,9 @@
 package by.javatr.transport.creator;
 
-public interface Creator {
+import by.javatr.transport.entity.TrainPassenger;
+
+import java.util.List;
+
+public interface TrainPassengerCreator {
+    List<TrainPassenger> create(List<String> trainsPassenger);
 }

@@ -1,13 +1,12 @@
 package by.javatr.transport.controller.command.Impl;
 
 import by.javatr.transport.controller.command.Command;
-import by.javatr.transport.service.factory.ServiceFactory;
-import by.javatr.transport.service.impl.ServicePassengerImpl;
+import by.javatr.transport.service.factory.FactoryService;
 
 public class AddPassenger implements Command {
 
     public String execute(String request) {
-        ServiceFactory serviceFactory=ServiceFactory.getInstance();
+        FactoryService factoryService = FactoryService.getInstance();
         return "passenger is added";
     }
 }

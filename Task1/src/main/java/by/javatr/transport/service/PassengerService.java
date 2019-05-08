@@ -1,6 +1,8 @@
 package by.javatr.transport.service;
 
+import by.javatr.transport.entity.Baggage;
+import by.javatr.transport.entity.Passenger;
+
 public interface PassengerService {
-    void setName(String name);
-    void setBaggageCount(int baggageCount);
+    void setPassenger(Passenger passenger);
 }

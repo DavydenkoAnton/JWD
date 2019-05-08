@@ -1,4 +1,8 @@
 package by.javatr.transport.repository;
 
-public interface Repository {
+import java.util.List;
+
+public interface Repository<T> {
+
+    List<T> find(Specification<T> spec);
 }

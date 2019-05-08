@@ -1,4 +1,7 @@
 package by.javatr.transport.service.impl;
 
-public class TrainCarPassengerServiceImpl {
+import by.javatr.transport.service.TrainCarPassengerService;
+
+public class TrainCarPassengerServiceImpl implements TrainCarPassengerService {
+
 }

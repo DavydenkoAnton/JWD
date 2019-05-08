@@ -5,14 +5,8 @@ import by.javatr.transport.entity.Passenger;
 import by.javatr.transport.entity.TrainCarPassenger;
 
 public class TxtTrainCarPassengerDAO implements TrainCarPassengerDAO {
-
-
-    public void addPassenger(Passenger passenger) {
-
-    }
-
-
+    @Override
     public TrainCarPassenger getTrainCarPassenger() {
-return new TrainCarPassenger(1,40);
+        return new TrainCarPassenger(40);
     }
 }

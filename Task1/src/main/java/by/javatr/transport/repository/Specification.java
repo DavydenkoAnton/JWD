@@ -1,4 +1,5 @@
 package by.javatr.transport.repository;
 
-public interface Specification {
+public interface Specification<T> {
+    boolean match(T bean);
 }

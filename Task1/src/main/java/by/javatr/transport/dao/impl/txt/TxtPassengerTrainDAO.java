@@ -1,16 +1,13 @@
 package by.javatr.transport.dao.impl.txt;
 
-import by.javatr.transport.dao.PassengerDAO;
+import by.javatr.transport.dao.PassengerTrainDAO;
 
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
 
-public class TxtPassengerDAO implements PassengerDAO {
+public class TxtPassengerTrainDAO implements PassengerTrainDAO {
 
 
     public void addPassenger(String name, int baggageCount, int trainID, int trainCarID, int seat) {

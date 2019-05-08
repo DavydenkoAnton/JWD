@@ -8,7 +8,7 @@ public class TrainCarPassenger {
     private int passengerCountMax;
     private UUID id = UUID.randomUUID();
 
-    private List<Passenger> passengers = new ArrayList/*<>*/();
+    private List<Passenger> passengers = new ArrayList<>();
 
     public TrainCarPassenger(int passengerCountMax) {
         this.passengerCountMax = passengerCountMax;
@@ -31,7 +31,7 @@ public class TrainCarPassenger {
     }
 
     public void setPassengers(List<Passenger> passengers) {
-        if (passengers.size() < passengerCountMax) {
+        if (passengers.size() <= passengerCountMax) {
             this.passengers = passengers;
         }
     }
@@ -60,5 +60,14 @@ public class TrainCarPassenger {
     public int hashCode() {
         int prime = 17;
         return prime * passengerCountMax + prime * id.hashCode() + prime * (passengers == null ? 0 : passengers.hashCode());
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder trainCarPassenger=new StringBuilder();
+        for(Passenger passenger:passengers){
+            trainCarPassenger.append(passenger.toString());
+        }
+        return trainCarPassenger.toString();
     }
 }
