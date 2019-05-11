@@ -1,0 +1,8 @@
+01:17:36.819 ERROR by.javatr.transport.controller.Controller 25 executeTask - null request java.lang.NullPointerException: null
+	at by.javatr.transport.controller.Controller.executeTask(Controller.java:21) [classes/:?]
+	at by.javatr.transport.presentation.Transport.main(Transport.java:17) [classes/:?]
+
+01:19:10.131 ERROR by.javatr.transport.controller.Controller 25 executeTask - null request java.lang.NullPointerException: null
+	at by.javatr.transport.controller.Controller.executeTask(Controller.java:21) [classes/:?]
+	at by.javatr.transport.presentation.Transport.main(Transport.java:17) [classes/:?]
+

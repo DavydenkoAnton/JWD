@@ -1,6 +1,6 @@
 package by.javatr.transport.service.impl;
 
-import by.javatr.transport.creator.FactoryCreator;
+import by.javatr.transport.creator.factory.FactoryCreator;
 import by.javatr.transport.creator.TrainPassengerCreator;
 import by.javatr.transport.dao.TrainCarPassengerDAO;
 import by.javatr.transport.dao.TrainPassengerTrainDAO;
@@ -12,15 +12,11 @@ import by.javatr.transport.exception.TrainPassengerException;
 import by.javatr.transport.parser.TrainPassengerParser;
 import by.javatr.transport.parser.factory.FactoryParser;
 import by.javatr.transport.repository.impl.AllTrainPassengerSpecification;
-import by.javatr.transport.repository.impl.ByTrainPassengerIDSpecification;
 import by.javatr.transport.repository.impl.TrainPassengerRepository;
 import by.javatr.transport.service.TrainPassengerService;
 import by.javatr.transport.validator.FactoryValidator;
 import by.javatr.transport.validator.TrainPassengerValidator;
-import com.sun.javafx.fxml.expression.KeyPath;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TrainPassengerServiceImpl implements TrainPassengerService {

@@ -10,7 +10,7 @@ import java.util.List;
 public class TrainPassengerRepository implements Repository<TrainPassenger> {
 
 
-    List<TrainPassenger> trainPassengers = new ArrayList<>();
+    private List<TrainPassenger> trainPassengers = new ArrayList<>();
 
     public void addTrainPassenger(List<TrainPassenger> trainPassenger) {
         for (TrainPassenger trainPass : trainPassenger) {
@@ -27,7 +27,6 @@ public class TrainPassengerRepository implements Repository<TrainPassenger> {
                 result.add(trainPassenger);
             }
         }
-
         return result;
     }
 }
