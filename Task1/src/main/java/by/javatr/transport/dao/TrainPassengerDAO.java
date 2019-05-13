@@ -6,7 +6,6 @@ import by.javatr.transport.exception.DaoException;
 import java.util.List;
 
 public interface TrainPassengerDAO {
-    void addTrainPassenger(String request) throws DaoException;
 
     String getTrainPassenger(String id) throws DaoException;
 

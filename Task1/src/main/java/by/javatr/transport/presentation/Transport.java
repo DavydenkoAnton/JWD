@@ -26,5 +26,12 @@ public class Transport {
         } catch (TrainPassengerException e) {
             log.error(e.getMessage());
         }
+
+        try {
+            response = controller.executeTask("get_all_trains_passenger ");
+        } catch (TrainPassengerException e) {
+            log.error(e.getMessage());
+        }
+        System.out.println(response);
     }
 }

@@ -7,6 +7,7 @@ import by.javatr.transport.parser.TrainPassengerParser;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class TrainPassengerParserImpl implements TrainPassengerParser {
 
@@ -20,5 +21,10 @@ public class TrainPassengerParserImpl implements TrainPassengerParser {
         String train = trainPassengerDAO.getTrainPassenger(request);
         trainPassenger = Arrays.asList(request.split(" "));
         return trainPassenger;
+    }
+
+    @Override
+    public UUID parseID(String request) {
+        return null;
     }
 }

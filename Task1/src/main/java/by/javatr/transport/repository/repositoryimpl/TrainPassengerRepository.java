@@ -30,8 +30,20 @@ public class TrainPassengerRepository implements Repository<TrainPassenger> {
     }
 
 
-    public void addTrainPassenger(String request) throws DaoException {
-        trainPassengerDAO.addTrainPassenger(request);
+    public void addTrainPassenger(Specification<TrainPassenger> spec, TrainPassenger trainPassenger) throws DaoException {
+        boolean notContain = true;
+
+        for (TrainPassenger trainPassengerIter : trainsPassenger) {
+            if (spec.match(trainPassengerIter)) {
+                notContain = false;
+            }
+        }
+
+        if(notContain){
+            trainsPassenger.add(trainPassenger);
+            trainPassengerDAO.update(trainsPassenger);
+        }
+
     }
 
 

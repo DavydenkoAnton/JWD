@@ -2,13 +2,18 @@ package by.javatr.transport.controller.command.Impl;
 
 import by.javatr.transport.controller.command.Command;
 import by.javatr.transport.exception.DaoException;
+import by.javatr.transport.exception.ParseException;
 import by.javatr.transport.exception.TrainPassengerException;
 import by.javatr.transport.service.TrainPassengerService;
 import by.javatr.transport.service.factory.FactoryService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 public class AddTrainPassenger implements Command {
+
+    static final Logger log = LogManager.getLogger();
 
     public String execute(String request) throws  TrainPassengerException {
 
@@ -20,8 +25,8 @@ public class AddTrainPassenger implements Command {
         try {
             trainPassengerService.addTrainPassenger(request);
             response = "passenger train added";
-        } catch (DaoException | IOException e) {
-            response = "Error duiring login procedure";
+        } catch (DaoException | IOException | ParseException e) {
+            log.error(e);
         }
         return response;
     }

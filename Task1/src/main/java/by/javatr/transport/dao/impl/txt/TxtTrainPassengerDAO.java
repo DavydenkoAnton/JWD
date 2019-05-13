@@ -35,10 +35,6 @@ public class TxtTrainPassengerDAO implements TrainPassengerDAO {
         return trainPassenger;
     }
 
-    public void addTrainPassenger(String request) {
-        TrainPassenger trainPassenger = trainPassengerCreator.create(request);
-        update();
-    }
 
     @Override
     public List<TrainPassenger> read() {
