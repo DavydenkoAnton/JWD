@@ -4,13 +4,16 @@ import java.util.UUID;
 
 public class Baggage {
     private UUID id = UUID.randomUUID();
-    private double weigth;
+    private int weigth;
 
-    public Baggage(double weigth) {
-        this.weigth = weigth;
+    public Baggage() {
+
     }
 
 
+    public void setWeigth(int weigth) {
+        this.weigth = weigth;
+    }
 
     public double getWeigth() {
         return weigth;
@@ -38,6 +41,11 @@ public class Baggage {
 
     public int hashCode() {
         int prime = 17;
-        return prime * (id == null ? 0 : id.hashCode()) + prime * Double.valueOf(weigth).hashCode();
+        return prime * (id == null ? 0 : id.hashCode()) + prime * weigth;
+    }
+
+    @Override
+    public String toString() {
+        return Integer.toString(weigth);
     }
 }

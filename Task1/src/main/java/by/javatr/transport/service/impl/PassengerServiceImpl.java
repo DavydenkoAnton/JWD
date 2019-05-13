@@ -6,8 +6,8 @@ import by.javatr.transport.service.PassengerService;
 
 public class PassengerServiceImpl implements PassengerService {
 
-    Baggage baggage=new Baggage(4.3);
-    Passenger passenger = new Passenger("Bob",baggage);
+    Baggage baggage=new Baggage();
+    Passenger passenger = new Passenger();
 
     public void setPassenger(Passenger p) {
         passenger=p;

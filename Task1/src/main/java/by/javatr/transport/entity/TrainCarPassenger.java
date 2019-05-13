@@ -5,46 +5,38 @@ import java.util.List;
 import java.util.UUID;
 
 public class TrainCarPassenger {
-    private int passengerCountMax;
-    private UUID id = UUID.randomUUID();
+    private int id;
 
     private List<Passenger> passengers = new ArrayList<>();
 
-    public TrainCarPassenger(int passengerCountMax) {
-        this.passengerCountMax = passengerCountMax;
+
+    public TrainCarPassenger() {
+
     }
 
-    public UUID getID() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getID() {
         return id;
-    }
-
-    public int getPassengerCountMax() {
-        return passengerCountMax;
-    }
-
-    public void setPassengerCountMax(int passengerCountMax) {
-        this.passengerCountMax = passengerCountMax;
     }
 
     public List<Passenger> getPassengers() {
         return passengers;
     }
 
-    public void setPassengers(List<Passenger> passengers) {
-        if (passengers.size() <= passengerCountMax) {
-            this.passengers = passengers;
-        }
+    public void addPassenger(Passenger passenger) {
+        passengers.add(passenger);
     }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         TrainCarPassenger that = (TrainCarPassenger) o;
-        if (passengerCountMax != that.passengerCountMax) {
-            return false;
-        }
+
         if (id != that.id) {
             return false;
         }
@@ -59,15 +51,17 @@ public class TrainCarPassenger {
     @Override
     public int hashCode() {
         int prime = 17;
-        return prime * passengerCountMax + prime * id.hashCode() + prime * (passengers == null ? 0 : passengers.hashCode());
+        return prime * id + prime * (passengers == null ? 0 : passengers.hashCode());
     }
 
     @Override
-    public String toString(){
-        StringBuilder trainCarPassenger=new StringBuilder();
-        for(Passenger passenger:passengers){
+    public String toString() {
+        StringBuilder trainCarPassenger = new StringBuilder();
+        for (Passenger passenger : passengers) {
             trainCarPassenger.append(passenger.toString());
         }
         return trainCarPassenger.toString();
     }
+
+
 }

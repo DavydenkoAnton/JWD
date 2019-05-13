@@ -1,11 +1,10 @@
 package by.javatr.transport.controller;
 
 import by.javatr.transport.controller.command.Command;
+import by.javatr.transport.exception.ParseException;
 import by.javatr.transport.exception.TrainPassengerException;
-import by.javatr.transport.logger.LoggerClass;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.Marker;
 
 public class Controller {
 
@@ -21,8 +20,8 @@ public class Controller {
             commandName = request.substring(0, request.indexOf(paramDelimeter));
             executionCommand = provider.getCommand(commandName);
             response = executionCommand.execute(request);
-        } catch (NullPointerException e) {
-            log.error("null request", e);
+        } catch (NullPointerException | ParseException e) {
+            log.error(e.getMessage());
         }
 
         return response;

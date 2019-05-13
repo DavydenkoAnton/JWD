@@ -9,9 +9,12 @@ public class Passenger {
     private UUID id = UUID.randomUUID();
     private List<Baggage> baggage = new ArrayList<>();
 
-    public Passenger(String name, Baggage baggage) {
+    public Passenger() {
+
+    }
+
+    public void setName(String name) {
         this.name = name;
-        this.baggage.add(baggage);
     }
 
     public String getName() {
@@ -58,8 +61,8 @@ public class Passenger {
     public String toString(){
         StringBuilder passenger=new StringBuilder();
         passenger.append(name).append(" ");
-        for(Baggage b:baggage){
-            passenger.append(b.getWeigth()).append(" ");
+        for (Baggage bag : baggage) {
+            passenger.append(bag.toString()).append(" ");
         }
         return passenger.toString();
     }

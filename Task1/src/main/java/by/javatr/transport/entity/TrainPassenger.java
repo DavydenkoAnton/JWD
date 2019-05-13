@@ -9,10 +9,17 @@ public class TrainPassenger {
     private List<TrainCarPassenger> trainCarsPassengers = new ArrayList<>();
 
     public TrainPassenger() {
+
     }
+
+
 
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     @Override
@@ -45,7 +52,7 @@ public class TrainPassenger {
     @Override
     public int hashCode() {
         int prime = 17;
-        return prime * (id == null ? 00 : id.hashCode()) + prime * (trainCarsPassengers == null ? 0 : trainCarsPassengers.hashCode());
+        return prime * (id == null ? 0 : id.hashCode()) + prime * (trainCarsPassengers == null ? 0 : trainCarsPassengers.hashCode());
     }
 
     @Override
@@ -56,5 +63,9 @@ public class TrainPassenger {
             train.append(trainCarPassenger.toString());
         }
         return train.toString();
+    }
+
+    public void add(TrainCarPassenger trainCarPassenger) {
+        trainCarsPassengers.add(trainCarPassenger);
     }
 }

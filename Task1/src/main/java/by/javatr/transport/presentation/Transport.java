@@ -9,15 +9,22 @@ import java.io.IOException;
 
 public class Transport {
     public static final Logger log = LogManager.getLogger();
+
     public static void main(String[] args) {
 
         Controller controller = new Controller();
-String t=null;
+        String response = "null";
         try {
-            controller.executeTask(t);
+            response = controller.executeTask("get_all_trains_passenger ");
         } catch (TrainPassengerException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
+        System.out.println(response);
 
+        try {
+            response=controller.executeTask("add_train_passenger dima 16 vova 12");
+        } catch (TrainPassengerException e) {
+            log.error(e.getMessage());
+        }
     }
 }

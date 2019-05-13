@@ -1,15 +1,15 @@
 package by.javatr.transport.dao.factory;
 
 import by.javatr.transport.dao.TrainCarPassengerDAO;
-import by.javatr.transport.dao.TrainPassengerTrainDAO;
+import by.javatr.transport.dao.TrainPassengerDAO;
 import by.javatr.transport.dao.impl.txt.TxtTrainCarPassengerDAO;
-import by.javatr.transport.dao.impl.txt.TxtTrainPassengerTrainDAO;
+import by.javatr.transport.dao.impl.txt.TxtTrainPassengerDAO;
 
 public class DAOFactory {
 
     private static final DAOFactory instance = new DAOFactory();
     private final TrainCarPassengerDAO txtTrainCarPassengerDAO = new TxtTrainCarPassengerDAO();
-    private final TrainPassengerTrainDAO txtTrainPassengerDAO = new TxtTrainPassengerTrainDAO();
+    private final TrainPassengerDAO txtTrainPassengerDAO = new TxtTrainPassengerDAO();
 
     private DAOFactory() {
     }
@@ -21,7 +21,7 @@ public class DAOFactory {
     public TrainCarPassengerDAO getTrainCarPassengerDAO() {
         return txtTrainCarPassengerDAO;
     }
-    public TrainPassengerTrainDAO getTrainPassengerDAO() {
+    public TrainPassengerDAO getTrainPassengerDAO() {
         return txtTrainPassengerDAO;
     }
 

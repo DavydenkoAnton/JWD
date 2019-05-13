@@ -1,13 +1,12 @@
 package by.javatr.transport.parser.factory;
 
 import by.javatr.transport.parser.TrainPassengerParser;
-import by.javatr.transport.parser.impl.TrainPassengerParserTxtImpl;
-import by.javatr.transport.service.TrainPassengerService;
+import by.javatr.transport.parser.impl.TrainPassengerParserImpl;
 
 public class FactoryParser {
     private static final FactoryParser instance = new FactoryParser();
 
-    private final TrainPassengerParser trainPassengerParser = new TrainPassengerParserTxtImpl();
+    private final TrainPassengerParser trainPassengerParser = new TrainPassengerParserImpl();
 
 
     private FactoryParser() {
