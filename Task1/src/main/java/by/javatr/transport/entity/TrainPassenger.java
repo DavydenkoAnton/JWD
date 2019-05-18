@@ -1,6 +1,7 @@
 package by.javatr.transport.entity;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +23,14 @@ public class TrainPassenger {
         this.id = id;
     }
 
+    public static final Comparator<TrainPassenger> COMPARE_BY_ID = new Comparator<TrainPassenger>() {
+        @Override
+        public int compare(TrainPassenger lhs, TrainPassenger rhs) {
+            return lhs.getId().hashCode() - rhs.getId().hashCode();
+        }
+    };
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -29,7 +38,7 @@ public class TrainPassenger {
         TrainPassenger that = (TrainPassenger) o;
         if (id == null) {
             if (that.id != null) {
-                return id.equals(that.id);
+                return false;
             } else {
                 if (!id.equals(that.id)) {
                     return false;
@@ -38,7 +47,7 @@ public class TrainPassenger {
         }
         if (trainCarsPassengers == null) {
             if (that.trainCarsPassengers != null) {
-                return trainCarsPassengers.equals(that.trainCarsPassengers);
+                return false;
             } else {
                 if (!trainCarsPassengers.equals(that.trainCarsPassengers)) {
                     return false;

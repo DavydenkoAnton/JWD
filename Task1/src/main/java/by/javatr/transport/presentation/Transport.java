@@ -5,8 +5,6 @@ import by.javatr.transport.exception.TrainPassengerException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-
 public class Transport {
     public static final Logger log = LogManager.getLogger();
 
@@ -29,6 +27,13 @@ public class Transport {
 
         try {
             response = controller.executeTask("get_all_trains_passenger ");
+        } catch (TrainPassengerException e) {
+            log.error(e.getMessage());
+        }
+        System.out.println(response);
+
+        try {
+            response=controller.executeTask("SORT_TRAINPASSENGER_ID ");
         } catch (TrainPassengerException e) {
             log.error(e.getMessage());
         }

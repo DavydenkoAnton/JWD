@@ -1,10 +1,13 @@
 package by.javatr.transport.repository.repositoryimpl;
 
+import by.javatr.transport.Sorter.FactorySorter;
+import by.javatr.transport.Sorter.TrainPassengerSorter;
 import by.javatr.transport.dao.TrainPassengerDAO;
-import by.javatr.transport.dao.factory.DAOFactory;
+import by.javatr.transport.dao.DAOFactory;
 import by.javatr.transport.entity.TrainPassenger;
 import by.javatr.transport.exception.DaoException;
 import by.javatr.transport.exception.RepositoryException;
+import by.javatr.transport.exception.TxtTrainPassengerDAOExeption;
 import by.javatr.transport.repository.Repository;
 import by.javatr.transport.repository.Specification;
 
@@ -18,8 +21,9 @@ public class TrainPassengerRepository implements Repository<TrainPassenger> {
     private DAOFactory daoFactory = DAOFactory.getInstance();
     private TrainPassengerDAO trainPassengerDAO = daoFactory.getTrainPassengerDAO();
 
+
     private TrainPassengerRepository() {
-        trainsPassenger = trainPassengerDAO.read();
+
     }
 
     public static TrainPassengerRepository getInstance() {
@@ -39,15 +43,23 @@ public class TrainPassengerRepository implements Repository<TrainPassenger> {
             }
         }
 
-        if(notContain){
+        if (notContain) {
             trainsPassenger.add(trainPassenger);
             trainPassengerDAO.update(trainsPassenger);
         }
 
     }
 
+    public List<TrainPassenger> sort(Specification<TrainPassenger> spec) {
 
-    public String getAll() throws RepositoryException {
+        List<TrainPassenger> result = trainsPassenger;
+        result.sort(TrainPassenger.COMPARE_BY_ID);
+        return result;
+    }
+
+
+    public String getAll() throws RepositoryException, TxtTrainPassengerDAOExeption {
+        trainsPassenger = trainPassengerDAO.read();
         if (trainsPassenger.size() == 0) throw new RepositoryException("no trains passenger in data base");
         String trainPassenger = "";
         for (TrainPassenger train : this.trainsPassenger) {

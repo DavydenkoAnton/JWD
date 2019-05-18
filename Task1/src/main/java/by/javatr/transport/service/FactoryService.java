@@ -1,7 +1,5 @@
-package by.javatr.transport.service.factory;
+package by.javatr.transport.service;
 
-import by.javatr.transport.service.PassengerService;
-import by.javatr.transport.service.TrainPassengerService;
 import by.javatr.transport.service.impl.PassengerServiceImpl;
 import by.javatr.transport.service.impl.TrainPassengerServiceImpl;
 

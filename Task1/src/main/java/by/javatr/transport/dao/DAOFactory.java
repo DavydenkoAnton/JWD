@@ -1,7 +1,5 @@
-package by.javatr.transport.dao.factory;
+package by.javatr.transport.dao;
 
-import by.javatr.transport.dao.TrainCarPassengerDAO;
-import by.javatr.transport.dao.TrainPassengerDAO;
 import by.javatr.transport.dao.impl.txt.TxtTrainCarPassengerDAO;
 import by.javatr.transport.dao.impl.txt.TxtTrainPassengerDAO;
 

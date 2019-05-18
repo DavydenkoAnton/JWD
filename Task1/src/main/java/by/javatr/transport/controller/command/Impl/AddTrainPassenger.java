@@ -5,7 +5,7 @@ import by.javatr.transport.exception.DaoException;
 import by.javatr.transport.exception.ParseException;
 import by.javatr.transport.exception.TrainPassengerException;
 import by.javatr.transport.service.TrainPassengerService;
-import by.javatr.transport.service.factory.FactoryService;
+import by.javatr.transport.service.FactoryService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

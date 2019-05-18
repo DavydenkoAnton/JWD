@@ -6,3 +6,8 @@
 	at by.javatr.transport.controller.Controller.executeTask(Controller.java:21) [classes/:?]
 	at by.javatr.transport.presentation.Transport.main(Transport.java:17) [classes/:?]
 
+01:31:13.197 ERROR by.javatr.transport.controller.Controller 24 executeTask - null
+01:32:33.187 ERROR by.javatr.transport.controller.Controller 24 executeTask - null
+01:39:49.457 ERROR by.javatr.transport.controller.Controller 24 executeTask - null
+01:44:44.714 ERROR by.javatr.transport.controller.Controller 24 executeTask - null
+01:46:22.509 ERROR by.javatr.transport.controller.Controller 24 executeTask - null

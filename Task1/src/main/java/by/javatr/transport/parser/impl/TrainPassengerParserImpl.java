@@ -1,7 +1,7 @@
 package by.javatr.transport.parser.impl;
 
 import by.javatr.transport.dao.TrainPassengerDAO;
-import by.javatr.transport.dao.factory.DAOFactory;
+import by.javatr.transport.dao.DAOFactory;
 import by.javatr.transport.exception.DaoException;
 import by.javatr.transport.parser.TrainPassengerParser;
 

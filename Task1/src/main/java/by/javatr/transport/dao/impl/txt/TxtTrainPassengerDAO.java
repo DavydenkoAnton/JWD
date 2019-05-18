@@ -1,14 +1,14 @@
 package by.javatr.transport.dao.impl.txt;
 
 import by.javatr.transport.creator.TrainPassengerCreator;
-import by.javatr.transport.creator.factory.FactoryCreator;
+import by.javatr.transport.creator.FactoryCreator;
 import by.javatr.transport.dao.TrainPassengerDAO;
 import by.javatr.transport.entity.TrainPassenger;
 import by.javatr.transport.exception.DaoException;
+import by.javatr.transport.exception.TxtTrainPassengerDAOExeption;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.*;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class TxtTrainPassengerDAO implements TrainPassengerDAO {
+public class TxtTrainPassengerDAO  implements TrainPassengerDAO {
     private static final Logger log = LogManager.getLogger();
     FactoryCreator factoryCreator = FactoryCreator.getInstance();
     TrainPassengerCreator trainPassengerCreator = factoryCreator.getTrainPassengerCreator();
@@ -37,7 +37,7 @@ public class TxtTrainPassengerDAO implements TrainPassengerDAO {
 
 
     @Override
-    public List<TrainPassenger> read() {
+    public List<TrainPassenger> read() throws TxtTrainPassengerDAOExeption {
         List<TrainPassenger> trainsPassenger = new ArrayList<>();
         TrainPassenger trainPassenger;
         List<String> trainsPassengerList = new ArrayList<>();
@@ -47,6 +47,7 @@ public class TxtTrainPassengerDAO implements TrainPassengerDAO {
             trainsPassengerList = Files.readAllLines(path, charset);
         } catch (IOException e) {
             log.error(e);
+            throw new TxtTrainPassengerDAOExeption();
         }
 
 

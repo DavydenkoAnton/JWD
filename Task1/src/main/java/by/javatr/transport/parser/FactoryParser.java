@@ -1,6 +1,5 @@
-package by.javatr.transport.parser.factory;
+package by.javatr.transport.parser;
 
-import by.javatr.transport.parser.TrainPassengerParser;
 import by.javatr.transport.parser.impl.TrainPassengerParserImpl;
 
 public class FactoryParser {

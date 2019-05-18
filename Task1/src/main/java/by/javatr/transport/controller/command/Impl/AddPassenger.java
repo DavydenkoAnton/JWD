@@ -1,7 +1,7 @@
 package by.javatr.transport.controller.command.Impl;
 
 import by.javatr.transport.controller.command.Command;
-import by.javatr.transport.service.factory.FactoryService;
+import by.javatr.transport.service.FactoryService;
 
 public class AddPassenger implements Command {
 
