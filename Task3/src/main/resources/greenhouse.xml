@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flowers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="flowers.xsd">
+    <Flower>
+        <Name>rose</Name>
+        <Soil>ground</Soil>
+        <Origin>ru</Origin>
+        <Parametres>
+            <VisualParametres>
+                <LeafColor>red</LeafColor>
+                <Stem>green</Stem>
+                <Height>1000</Height>
+            </VisualParametres>
+            <InsideParametres>
+                <Weight>1000</Weight>
+            </InsideParametres>
+        </Parametres>
+        <Temperature >15</Temperature>
+        <Photophilous>true</Photophilous>
+        <Watering >1000</Watering>
+        <Multiplying>bySeed</Multiplying>
+    </Flower>
+</Flowers>

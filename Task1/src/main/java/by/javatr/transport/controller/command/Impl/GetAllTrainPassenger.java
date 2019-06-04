@@ -14,7 +14,7 @@ public class GetAllTrainPassenger implements Command {
     public String execute(String request) {
 
         String response = null;
-// get parameters from request and initialize the variables login and password
+
         FactoryService factoryService = FactoryService.getInstance();
         TrainPassengerService trainPassengerService = factoryService.getTrainPassengerService();
 

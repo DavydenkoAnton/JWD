@@ -1,7 +1,5 @@
 package by.javatr.transport.repository.repositoryimpl;
 
-import by.javatr.transport.Sorter.FactorySorter;
-import by.javatr.transport.Sorter.TrainPassengerSorter;
 import by.javatr.transport.dao.TrainPassengerDAO;
 import by.javatr.transport.dao.DAOFactory;
 import by.javatr.transport.entity.TrainPassenger;
@@ -51,7 +49,6 @@ public class TrainPassengerRepository implements Repository<TrainPassenger> {
     }
 
     public List<TrainPassenger> sort(Specification<TrainPassenger> spec) {
-
         List<TrainPassenger> result = trainsPassenger;
         result.sort(TrainPassenger.COMPARE_BY_ID);
         return result;

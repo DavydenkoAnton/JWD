@@ -14,11 +14,8 @@ public class TrainPassengerParserImpl implements TrainPassengerParser {
     String path = "src/main/java/files/txt/trainsDB.txt";
 
     @Override
-    public List<String> parse(String request) throws DaoException {
+    public List<String> parse(String request) {
         List<String> trainPassenger = null;
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        TrainPassengerDAO trainPassengerDAO = daoFactory.getTrainPassengerDAO();
-        String train = trainPassengerDAO.getTrainPassenger(request);
         trainPassenger = Arrays.asList(request.split(" "));
         return trainPassenger;
     }

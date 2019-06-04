@@ -26,10 +26,6 @@ public class TrainCarPassenger {
         return passengers;
     }
 
-    public void addPassenger(Passenger passenger) {
-        passengers.add(passenger);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

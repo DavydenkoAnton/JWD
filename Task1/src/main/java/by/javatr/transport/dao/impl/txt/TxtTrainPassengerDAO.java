@@ -18,13 +18,14 @@ import java.util.stream.Stream;
 
 public class TxtTrainPassengerDAO  implements TrainPassengerDAO {
     private static final Logger log = LogManager.getLogger();
+    private static final String PATH_TO_TXT_DB = "src/main/java/files/txt/trainsDB.txt";
     FactoryCreator factoryCreator = FactoryCreator.getInstance();
     TrainPassengerCreator trainPassengerCreator = factoryCreator.getTrainPassengerCreator();
 
     @Override
     public String getTrainPassenger(String id) throws DaoException {
         String trainPassenger = "";
-        String fileName = "src/main/java/files/txt/trainsDB.txt";
+        String fileName = PATH_TO_TXT_DB;
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
             stream.forEach(System.out::println);
         } catch (IOException e) {

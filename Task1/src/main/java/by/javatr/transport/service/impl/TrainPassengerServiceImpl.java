@@ -1,14 +1,11 @@
 package by.javatr.transport.service.impl;
 
-import by.javatr.transport.Sorter.FactorySorter;
-import by.javatr.transport.Sorter.TrainPassengerSorter;
 import by.javatr.transport.creator.TrainPassengerCreator;
 import by.javatr.transport.creator.FactoryCreator;
 import by.javatr.transport.dao.TrainCarPassengerDAO;
 import by.javatr.transport.dao.DAOFactory;
 import by.javatr.transport.entity.TrainPassenger;
 import by.javatr.transport.exception.*;
-import by.javatr.transport.repository.Specification;
 import by.javatr.transport.repository.repositoryimpl.TrainPassengerRepository;
 import by.javatr.transport.repository.specificationimpl.ByTrainIDSpecification;
 import by.javatr.transport.service.TrainPassengerService;
@@ -19,8 +16,6 @@ public class TrainPassengerServiceImpl implements TrainPassengerService {
 
     private TrainPassengerRepository trainPassengerRepository = TrainPassengerRepository.getInstance();
     private FactoryCreator factoryCreator = FactoryCreator.getInstance();
-
-
     private TrainPassengerCreator trainPassengerCreator = factoryCreator.getTrainPassengerCreator();
     private ByTrainIDSpecification byTrainIDSpecification;
 
