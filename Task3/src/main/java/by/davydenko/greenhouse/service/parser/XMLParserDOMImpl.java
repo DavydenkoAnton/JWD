@@ -34,6 +34,7 @@ public final class XMLParserDOMImpl implements XMLParser {
                 if (flowerNode.getNodeType() == Node.ELEMENT_NODE) {
                     String buff = flowerNode.getTextContent();
                     if (buff.length() != 0) {
+                        System.out.println(buff);
                         content.add(buff);
                     }
                 }
