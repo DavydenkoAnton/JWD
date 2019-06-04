@@ -17,6 +17,12 @@ public final class XMLParserDOMImpl implements XMLParser {
     @Override
     public List<Flower> parse(String path) {
 
+
+ int t=5;
+
+
+
+
         List<String> content = new ArrayList<>();
         List<Flower> flowerList = new ArrayList<>();
 
