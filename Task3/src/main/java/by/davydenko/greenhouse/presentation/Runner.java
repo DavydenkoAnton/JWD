@@ -6,7 +6,7 @@ import by.davydenko.greenhouse.service.parser.ParserFactory;
 
 
 
- class Task3 {
+ class Runner {
     public static void main(String[] args) {
 
 

@@ -17,7 +17,7 @@ public final class XMLParserDOMImpl implements XMLParser {
     @Override
     public List<Flower> parse(String path) {
 
-        List<String> nodes = new ArrayList<>();
+        List<String> content = new ArrayList<>();
         List<Flower> flowerList = new ArrayList<>();
 
         try {
@@ -27,19 +27,19 @@ public final class XMLParserDOMImpl implements XMLParser {
             Document document = documentBuilder.parse(path);
             document.getDocumentElement().normalize();
 
-            System.out.println("Root: " + document.getDocumentElement().getNodeName());
-            NodeList nodeList = document.getElementsByTagName(document.getDocumentElement().getChildNodes().item(1).getNodeName());
-            System.out.println("--------------------");
-            for (int tmp = 0; tmp < nodeList.getLength(); tmp++) {
-                Node node = nodeList.item(tmp);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) node;
+            NodeList flowerNodeList = document.getElementsByTagName(document.getDocumentElement().getChildNodes().item(1).getNodeName());
 
-                    nodes.add(element.getElementsByTagName("Name").item(0).getChildNodes().item(0).getNodeValue());
-                    nodes.add(element.getElementsByTagName("Soil").item(0).getChildNodes().item(0).getNodeValue());
-                
+            for (int iter = 0; iter < flowerNodeList.getLength(); iter++) {
+                Node flowerNode = flowerNodeList.item(iter);
+                if (flowerNode.getNodeType() == Node.ELEMENT_NODE) {
+                    String buff = flowerNode.getTextContent();
+                    if (buff.length() != 0) {
+                        content.add(buff);
+                    }
                 }
             }
+            Flower flower = new Flower.Builder().setName(content.get(0)).build();
+            flowerList.add(flower);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
