@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="54ce01e8-a271-461c-9333-a4cde8598d1b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/by/davydenko/greenhouse/presentation/Task3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/davydenko/greenhouse/presentation/Runner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/by/davydenko/greenhouse/service/parser/XMLParserDOMImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/by/davydenko/greenhouse/service/parser/XMLParserDOMImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/by/davydenko/greenhouse/service/parser/XMLParserDOMImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/by/davydenko/greenhouse/service/parser/XMLParserDOMImpl.class" afterDir="false" />
-    </list>
+    <list default="true" id="54ce01e8-a271-461c-9333-a4cde8598d1b" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,8 +27,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/by/davydenko/greenhouse/service/parser/ParserFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="20" selection-start-line="20" selection-end-line="20" />
+            <state relative-caret-position="135">
+              <caret line="19" column="9" lean-forward="true" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -345,10 +340,10 @@
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="task3" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559678599512" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559678786178" />
+    <property name="project.structure.last.edited" value="Facets" />
     <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="Debugger_Data_Views_Java" />
   </component>
   <component name="RunDashboard">
@@ -690,8 +685,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/by/davydenko/greenhouse/service/parser/ParserFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        <state relative-caret-position="135">
+          <caret line="19" column="9" lean-forward="true" selection-start-line="19" selection-start-column="9" selection-end-line="19" selection-end-column="9" />
         </state>
       </provider>
     </entry>

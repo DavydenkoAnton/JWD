@@ -1,3 +1,4 @@
-Task1.iml
-Task3.iml
-Task3.iml
+# IntellijIdea files
+*.iml
+.idea
+out
