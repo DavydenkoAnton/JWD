@@ -3,6 +3,7 @@ package by.davydenko.greenhouse.service;
 public class ServiceFactory<T> {
 
     private XMLService service;
+	private XMLService servicexddddddddddddddddddddddddddddddddddddddddddddddd;
     private static ServiceFactory instance;
 
     public enum SERVICE_TYPE {
