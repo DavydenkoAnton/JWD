@@ -2,6 +2,7 @@
 <Flowers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="flowers.xsd">
     <Flower>
+        <ID>1</ID>
         <Name>rose</Name>
         <Soil>ground</Soil>
         <Origin>ru</Origin>
@@ -15,9 +16,29 @@
                 <Weight>1000</Weight>
             </InsideParametres>
         </Parametres>
-        <Temperature >15</Temperature>
+        <Temperature>15</Temperature>
         <Photophilous>true</Photophilous>
-        <Watering >1000</Watering>
+        <Watering>1000</Watering>
+        <Multiplying>bySeed</Multiplying>
+    </Flower>
+    <Flower>
+        <ID>2</ID>
+        <Name>melon</Name>
+        <Soil>ground</Soil>
+        <Origin>ru</Origin>
+        <Parametres>
+            <VisualParametres>
+                <LeafColor>red</LeafColor>
+                <Stem>green</Stem>
+                <Height>1000</Height>
+            </VisualParametres>
+            <InsideParametres>
+                <Weight>1000</Weight>
+            </InsideParametres>
+        </Parametres>
+        <Temperature>15</Temperature>
+        <Photophilous>true</Photophilous>
+        <Watering>1000</Watering>
         <Multiplying>bySeed</Multiplying>
     </Flower>
 </Flowers>

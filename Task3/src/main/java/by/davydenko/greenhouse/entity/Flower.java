@@ -90,6 +90,17 @@ public class Flower {
 
         public Builder() {
             flower = new Flower();
+            flower.name="defalt";
+            flower.soil=Soil.GROUND;
+            flower.originCountry=Country.BY;
+            flower.leafColor=Color.WHITE;
+            flower.stemColor=Color.RED;
+            flower.height=10;
+            flower.weight=10;
+            flower.temperature=0;
+            flower.photophilous=true;
+            flower.watering=100;
+            flower.multiplying=PlantMultiplaying.BY_SEED;
         }
 
         public Builder setName(String name) {
