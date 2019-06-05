@@ -17,7 +17,7 @@ public final class XMLParserDOMImpl implements XMLParser {
     public List<Flower> parse(String path) {
 
         List<Flower> flowers = new ArrayList<>();
-
+        Flower flower;
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -39,6 +39,9 @@ public final class XMLParserDOMImpl implements XMLParser {
                             Element childElement = (Element) childNodeList.item(j);
 
                             switch (childElement.getNodeName()) {
+                                case "ID":
+                                    System.out.println(childElement.getTextContent());
+                                    break;
                                 case "Name":
                                     System.out.println(childElement.getTextContent());
                                     break;
@@ -54,11 +57,11 @@ public final class XMLParserDOMImpl implements XMLParser {
                                         if (childParams.item(k).getNodeType() == Node.ELEMENT_NODE) {
                                             switch (childParams.item(k).getNodeName()) {
                                                 case "VisualParametres":
-                                                    NodeList childVisualParams=childParams.item(k).getChildNodes();
-                                                    for (int l = 0; l <childVisualParams.getLength() ; l++) {
-                                                        if (childVisualParams.item(l).getNodeType() == Node.ELEMENT_NODE){
-                                                            Element childVisualParamsElement=(Element)childVisualParams.item(l);
-                                                            switch (childVisualParamsElement.getNodeName()){
+                                                    NodeList childVisualParams = childParams.item(k).getChildNodes();
+                                                    for (int l = 0; l < childVisualParams.getLength(); l++) {
+                                                        if (childVisualParams.item(l).getNodeType() == Node.ELEMENT_NODE) {
+                                                            Element childVisualParamsElement = (Element) childVisualParams.item(l);
+                                                            switch (childVisualParamsElement.getNodeName()) {
                                                                 case "LeafColor":
                                                                     System.out.println(childVisualParamsElement.getTextContent());
                                                                     break;
@@ -73,11 +76,11 @@ public final class XMLParserDOMImpl implements XMLParser {
                                                     }
                                                     break;
                                                 case "InsideParametres":
-                                                    NodeList childInsideParams=childParams.item(k).getChildNodes();
-                                                    for (int l = 0; l <childInsideParams.getLength() ; l++) {
-                                                        if (childInsideParams.item(l).getNodeType() == Node.ELEMENT_NODE){
-                                                            Element childInsideParamsElement=(Element)childInsideParams.item(l);
-                                                            switch (childInsideParamsElement.getNodeName()){
+                                                    NodeList childInsideParams = childParams.item(k).getChildNodes();
+                                                    for (int l = 0; l < childInsideParams.getLength(); l++) {
+                                                        if (childInsideParams.item(l).getNodeType() == Node.ELEMENT_NODE) {
+                                                            Element childInsideParamsElement = (Element) childInsideParams.item(l);
+                                                            switch (childInsideParamsElement.getNodeName()) {
                                                                 case "Weight":
                                                                     System.out.println(childInsideParamsElement.getTextContent());
                                                                     break;

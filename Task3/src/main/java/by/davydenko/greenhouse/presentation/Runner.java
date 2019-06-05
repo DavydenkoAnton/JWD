@@ -5,14 +5,13 @@ import by.davydenko.greenhouse.service.XMLService;
 import by.davydenko.greenhouse.service.parser.ParserFactory;
 
 
-
- class Runner {
+class Runner {
     public static void main(String[] args) {
 
-
+        String flowersXMLPath = "src/main/resources/greenhouse.xml";
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
-        XMLService xmlService = serviceFactory.getService(ServiceFactory.SERVICE_TYPE.XML);
-        xmlService.parse("src/main/resources/greenhouse.xml", ParserFactory.ParserType.DOM);
+        XMLService xmlService = serviceFactory.getService(ServiceFactory.ServiceType.XML);
+        xmlService.parse(flowersXMLPath, ParserFactory.XMLParserType.DOM);
 
 
     }

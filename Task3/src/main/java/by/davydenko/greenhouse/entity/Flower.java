@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Flower {
-
+    private String ID;
     private String name;
     private Soil soil;
     private Country originCountry;
@@ -18,6 +18,10 @@ public class Flower {
     private PlantMultiplaying multiplying;
 
     private Flower() {
+    }
+
+    public String getID() {
+        return ID;
     }
 
     public enum Country {
@@ -84,7 +88,7 @@ public class Flower {
      * class Builder with setters for class Flower
      *
      * */
-
+/*
     public static class Builder {
         private Flower flower;
 
@@ -163,4 +167,6 @@ public class Flower {
             return flower;
         }
     }
+*/
+
 }

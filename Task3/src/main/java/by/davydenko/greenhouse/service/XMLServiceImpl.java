@@ -10,16 +10,16 @@ public class XMLServiceImpl implements XMLService {
 
 
     @Override
-    public void parse(String pathFile, ParserFactory.ParserType parserType) {
-        switch (parserType) {
+    public void parse(String pathFile, ParserFactory.XMLParserType XMLParserType) {
+        switch (XMLParserType) {
             case DOM:
-                xmlParser = parserFactory.getXMLParser(ParserFactory.ParserType.DOM);
+                xmlParser = parserFactory.getXMLParser(ParserFactory.XMLParserType.DOM);
                 break;
             case SAX:
-                xmlParser = parserFactory.getXMLParser(ParserFactory.ParserType.SAX);
+                xmlParser = parserFactory.getXMLParser(ParserFactory.XMLParserType.SAX);
                 break;
             case STAX:
-                xmlParser = parserFactory.getXMLParser(ParserFactory.ParserType.STAX);
+                xmlParser = parserFactory.getXMLParser(ParserFactory.XMLParserType.STAX);
                 break;
         }
         xmlParser.parse(pathFile);

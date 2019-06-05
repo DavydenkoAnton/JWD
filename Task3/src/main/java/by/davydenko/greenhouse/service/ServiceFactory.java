@@ -3,11 +3,10 @@ package by.davydenko.greenhouse.service;
 public class ServiceFactory<T> {
 
     private XMLService service;
-	private XMLService servicexddddddddddddddddddddddddddddddddddddddddddddddd;
     private static ServiceFactory instance;
 
-    public enum SERVICE_TYPE {
-        XML
+    public enum ServiceType {
+        XML,JSON
     }
 
     private ServiceFactory() {
@@ -21,7 +20,7 @@ public class ServiceFactory<T> {
     }
 
 
-    public XMLService getService(SERVICE_TYPE serviceType) {
+    public XMLService getService(ServiceType serviceType) {
         switch (serviceType) {
             case XML:
                 service = new XMLServiceImpl();

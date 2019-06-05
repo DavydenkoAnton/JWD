@@ -5,7 +5,7 @@ public final class ParserFactory {
     private static ParserFactory instance;
     private XMLParser xmlParser;
 
-    public enum ParserType {
+    public enum XMLParserType {
         DOM,
         SAX,
         STAX
@@ -21,8 +21,8 @@ public final class ParserFactory {
         return instance;
     }
 
-    public XMLParser getXMLParser(ParserType parserType) {
-        switch (parserType) {
+    public XMLParser getXMLParser(XMLParserType XMLParserType) {
+        switch (XMLParserType) {
             case DOM:
                 xmlParser = new XMLParserDOMImpl();
                 break;
