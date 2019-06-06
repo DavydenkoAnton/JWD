@@ -1,5 +1,7 @@
 package by.davydenko.greenhouse.service.parser;
 
+import by.davydenko.greenhouse.entity.FlowerBuilder;
+import by.davydenko.greenhouse.entity.BuilderFactory;
 import by.davydenko.greenhouse.entity.Flower;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -17,13 +19,13 @@ public final class XMLParserDOMImpl implements XMLParser {
     public List<Flower> parse(String path) {
 
         List<Flower> flowers = new ArrayList<>();
-        Flower flower;
+        BuilderFactory builderFactory = BuilderFactory.getInstance();
+        FlowerBuilder flowerBuilder = builderFactory.getFlowerBuilder();
+
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(path);
-
-            Element flowersElement = (Element) doc.getElementsByTagName("Flowers").item(0);
 
             NodeList flowersNodeList = doc.getElementsByTagName("Flower");
 
@@ -31,7 +33,7 @@ public final class XMLParserDOMImpl implements XMLParser {
                 if (flowersNodeList.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     Element flowerElement = (Element) flowersNodeList.item(i);
                     //here we can take attributes
-                    // TODO for get attributes
+                    // some code for get attributes
 
                     NodeList childNodeList = flowerElement.getChildNodes();
                     for (int j = 0; j < childNodeList.getLength(); j++) {
@@ -40,16 +42,16 @@ public final class XMLParserDOMImpl implements XMLParser {
 
                             switch (childElement.getNodeName()) {
                                 case "ID":
-                                    System.out.println(childElement.getTextContent());
+                                    flowerBuilder.setID(childElement.getTextContent());
                                     break;
                                 case "Name":
-                                    System.out.println(childElement.getTextContent());
+                                    flowerBuilder.setName(childElement.getTextContent());
                                     break;
                                 case "Soil":
-                                    System.out.println(childElement.getTextContent());
+                                    flowerBuilder.setSoil(childElement.getTextContent());
                                     break;
                                 case "Origin":
-                                    System.out.println(childElement.getTextContent());
+                                    flowerBuilder.setOriginCountry(childElement.getTextContent());
                                     break;
                                 case "Parametres":
                                     NodeList childParams = childElement.getChildNodes();
@@ -61,17 +63,7 @@ public final class XMLParserDOMImpl implements XMLParser {
                                                     for (int l = 0; l < childVisualParams.getLength(); l++) {
                                                         if (childVisualParams.item(l).getNodeType() == Node.ELEMENT_NODE) {
                                                             Element childVisualParamsElement = (Element) childVisualParams.item(l);
-                                                            switch (childVisualParamsElement.getNodeName()) {
-                                                                case "LeafColor":
-                                                                    System.out.println(childVisualParamsElement.getTextContent());
-                                                                    break;
-                                                                case "Stem":
-                                                                    System.out.println(childVisualParamsElement.getTextContent());
-                                                                    break;
-                                                                case "Height":
-                                                                    System.out.println(childVisualParamsElement.getTextContent());
-                                                                    break;
-                                                            }
+                                                            flowerBuilder.setLeafColor(childVisualParamsElement.getTextContent());
                                                         }
                                                     }
                                                     break;
@@ -80,11 +72,7 @@ public final class XMLParserDOMImpl implements XMLParser {
                                                     for (int l = 0; l < childInsideParams.getLength(); l++) {
                                                         if (childInsideParams.item(l).getNodeType() == Node.ELEMENT_NODE) {
                                                             Element childInsideParamsElement = (Element) childInsideParams.item(l);
-                                                            switch (childInsideParamsElement.getNodeName()) {
-                                                                case "Weight":
-                                                                    System.out.println(childInsideParamsElement.getTextContent());
-                                                                    break;
-                                                            }
+                                                            flowerBuilder.setWeight(childInsideParamsElement.getTextContent());
                                                         }
                                                     }
                                                     break;
@@ -93,54 +81,29 @@ public final class XMLParserDOMImpl implements XMLParser {
                                     }
                                     break;
                                 case "Temperature":
-                                    System.out.println(childElement.getTextContent());
+                                    flowerBuilder.setTemperature(childElement.getTextContent());
                                     break;
                                 case "Photophilous":
-                                    System.out.println(childElement.getTextContent());
+                                    flowerBuilder.setPhotophilous(childElement.getTextContent());
                                     break;
                                 case "Watering":
-                                    System.out.println(childElement.getTextContent());
+                                    flowerBuilder.setWatering(childElement.getTextContent());
                                     break;
                                 case "Multiplying":
-                                    System.out.println(childElement.getTextContent());
+                                    flowerBuilder.setMultiplying(childElement.getTextContent());
                                     break;
                             }
+
                         }
                     }
                 }
+                flowers.add(flowerBuilder.getFlower());
+                flowerBuilder = builderFactory.getFlowerBuilder();
             }
-
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             System.out.println(ex.getMessage());
         }
         return flowers;
-    }
-
-
-    private static void printNodes(NodeList nodeList) {
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            Node node = nodeList.item(i);
-            if (Node.ELEMENT_NODE == node.getNodeType()) {
-                // Пeчaтaem иmя нoды и знaчeниe          
-                System.out.println();
-                System.out.println("Иmя нoды: " + node.getNodeName());
-                System.out.println("Знaчeниe нoды: " + node.getTextContent());
-                if (node.hasAttributes()) {
-                    // Ecть aтpибyты: пeчaтaem и их                    
-
-                    NamedNodeMap attributes = node.getAttributes();
-                    for (int j = 0; j < attributes.getLength(); j++) {
-                        Node attribute = attributes.item(j);
-                        System.out.println("Иmя aтpибyтa: " + attribute.getNodeName());
-                        System.out.println("Знaчeниe aтpибyтa: " + attribute.getNodeValue());
-                    }
-                }
-                if (node.hasChildNodes()) {
-                    // Ecть дoчepниe нoды: пeчaтaem их
-                    printNodes(node.getChildNodes());
-                }
-            }
-        }
     }
 
 
