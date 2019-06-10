@@ -3,7 +3,6 @@ package by.davydenko.greenhouse.service.parser;
 import by.davydenko.greenhouse.entity.BuilderFactory;
 import by.davydenko.greenhouse.entity.Flower;
 import by.davydenko.greenhouse.entity.FlowerBuilder;
-import by.davydenko.greenhouse.entity.FlowerBuilderException;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

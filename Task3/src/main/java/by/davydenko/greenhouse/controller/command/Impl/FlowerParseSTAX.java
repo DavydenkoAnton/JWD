@@ -16,7 +16,7 @@ import java.util.List;
 public class FlowerParseSTAX implements Command {
     public String execute(String request) throws FileNotFoundException, FlowerXMLParserDOMException, FlowerXMLParserSAXException, FlowerXMLParserSTAXException {
 
-        String response = "STAX PARSER:\n---------------------\n";
+        StringBuilder response = new StringBuilder("STAX PARSER:\n---------------------\n");
         String flowersXMLPath = "src/main/resources/greenhouse.xml";
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         XMLService xmlService = serviceFactory.getService(ServiceFactory.ServiceType.XML);
@@ -24,9 +24,9 @@ public class FlowerParseSTAX implements Command {
 
         flowerList = xmlService.parseFlowers(flowersXMLPath, ParserFactory.XMLParserType.STAX);
         for (Flower f : flowerList) {
-            response += f.toString();
+            response.append(f.toString());
         }
 
-        return response;
+        return response.toString();
     }
 }
