@@ -4,7 +4,7 @@ import by.davydenko.greenhouse.entity.Flower;
 
 import java.util.List;
 
-public class XMLParserSAXImpl implements XMLParser {
+public final class XMLParserSTAXImpl implements XMLParser {
     private List<Flower> nodes = null;
 
     @Override

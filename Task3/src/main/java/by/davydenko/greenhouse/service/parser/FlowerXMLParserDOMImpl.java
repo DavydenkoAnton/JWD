@@ -1,9 +1,13 @@
 package by.davydenko.greenhouse.service.parser;
 
-import by.davydenko.greenhouse.entity.FlowerBuilder;
 import by.davydenko.greenhouse.entity.BuilderFactory;
 import by.davydenko.greenhouse.entity.Flower;
-import org.w3c.dom.*;
+import by.davydenko.greenhouse.entity.FlowerBuilder;
+import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -13,11 +17,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class XMLParserDOMImpl implements XMLParser {
+
+public final class FlowerFlowerXMLParserDOMImpl implements FlowerXMLParser {
+
+    private final static Logger logger = Logger.getLogger(FlowerFlowerXMLParserDOMImpl.class);
 
     @Override
-    public List<Flower> parse(String path) {
-
+    public List<Flower> parse(String path) throws FlowerXMLParserDOMException {
         List<Flower> flowers = new ArrayList<>();
         BuilderFactory builderFactory = BuilderFactory.getInstance();
         FlowerBuilder flowerBuilder = builderFactory.getFlowerBuilder();
@@ -93,7 +99,6 @@ public final class XMLParserDOMImpl implements XMLParser {
                                     flowerBuilder.setMultiplying(childElement.getTextContent());
                                     break;
                             }
-
                         }
                     }
                 }
@@ -101,7 +106,8 @@ public final class XMLParserDOMImpl implements XMLParser {
                 flowerBuilder = builderFactory.getFlowerBuilder();
             }
         } catch (ParserConfigurationException | SAXException | IOException ex) {
-            System.out.println(ex.getMessage());
+            logger.error(ex);
+            throw new FlowerXMLParserDOMException(ex.getMessage());
         }
         return flowers;
     }

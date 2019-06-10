@@ -5,5 +5,5 @@ import by.davydenko.greenhouse.entity.Flower;
 import java.util.List;
 
 public interface XMLParser {
-    public List<Flower> parse(String pathFile);
+    public List<Flower> parse(String pathFile) throws XMLParserDOMException;
 }
