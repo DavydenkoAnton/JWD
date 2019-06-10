@@ -26,7 +26,7 @@ public class Controller {
             executionCommand = provider.getCommand(commandName);
             response = executionCommand.execute(request);
         } catch (NullPointerException | FileNotFoundException | FlowerXMLParserDOMException | FlowerXMLParserSAXException | FlowerXMLParserSTAXException e) {
-            log.error(e.getMessage());
+            log.error(e.toString());
         }
 
         return response;

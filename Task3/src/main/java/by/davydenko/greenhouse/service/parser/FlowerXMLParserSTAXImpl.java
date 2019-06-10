@@ -3,6 +3,7 @@ package by.davydenko.greenhouse.service.parser;
 import by.davydenko.greenhouse.entity.BuilderFactory;
 import by.davydenko.greenhouse.entity.Flower;
 import by.davydenko.greenhouse.entity.FlowerBuilder;
+import by.davydenko.greenhouse.entity.FlowerBuilderException;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;

@@ -3,6 +3,7 @@ package by.davydenko.greenhouse.service.parser;
 import by.davydenko.greenhouse.entity.BuilderFactory;
 import by.davydenko.greenhouse.entity.Flower;
 import by.davydenko.greenhouse.entity.FlowerBuilder;
+import by.davydenko.greenhouse.entity.FlowerBuilderException;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -100,7 +101,7 @@ public class FlowerSAXHandler extends DefaultHandler {
     }
 
     @Override
-    public void endElement(String uri, String localName, String qName) throws SAXException {
+    public void endElement(String uri, String localName, String qName) {
         if (foundID) {
             flowerBuilder.setID(data.toString());
             foundID = false;

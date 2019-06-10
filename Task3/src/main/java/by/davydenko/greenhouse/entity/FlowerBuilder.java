@@ -2,7 +2,7 @@ package by.davydenko.greenhouse.entity;
 
 public interface FlowerBuilder {
 
-    public void setID(String ID);
+    public void setID(String ID) ;
 
     public void setName(String name);
 
