@@ -4,32 +4,32 @@
     <Flower>
         <ID>1</ID>
         <Name>rose</Name>
-        <Soil>ground</Soil>
-        <Origin>ru</Origin>
+        <Soil>water</Soil>
+        <Origin>by</Origin>
         <Parametres>
             <VisualParametres>
-                <LeafColor>red</LeafColor>
+                <LeafColor>blue</LeafColor>
                 <Stem>green</Stem>
-                <Height>1000</Height>
+                <Height>200</Height>
             </VisualParametres>
             <InsideParametres>
-                <Weight>1000</Weight>
+                <Weight>60</Weight>
             </InsideParametres>
         </Parametres>
-        <Temperature>15</Temperature>
+        <Temperature>18</Temperature>
         <Photophilous>true</Photophilous>
-        <Watering>1000</Watering>
+        <Watering>700</Watering>
         <Multiplying>bySeed</Multiplying>
     </Flower>
     <Flower>
         <ID>2</ID>
-        <Name>melon</Name>
+        <Name>tulip</Name>
         <Soil>ground</Soil>
         <Origin>ru</Origin>
         <Parametres>
             <VisualParametres>
                 <LeafColor>red</LeafColor>
-                <Stem>green</Stem>
+                <StemColor>green</StemColor>
                 <Height>1000</Height>
             </VisualParametres>
             <InsideParametres>

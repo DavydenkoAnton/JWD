@@ -1,8 +1,8 @@
 package by.davydenko.greenhouse.entity;
 
 public final class BuilderFactory {
+
     private static BuilderFactory instance;
-    private FlowerBuilder flowerBuilder;
 
     private BuilderFactory() {
     }
@@ -15,6 +15,6 @@ public final class BuilderFactory {
     }
 
     public FlowerBuilder getFlowerBuilder() {
-        return flowerBuilder = new FlowerFlowerBuilderImpl();
+        return new FlowerBuilderImpl();
     }
 }

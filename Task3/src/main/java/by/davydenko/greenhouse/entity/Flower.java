@@ -1,8 +1,5 @@
 package by.davydenko.greenhouse.entity;
 
-import java.util.Optional;
-import java.util.stream.Stream;
-
 public class Flower {
     private String ID;
     private String name;
@@ -17,7 +14,18 @@ public class Flower {
     private int watering;
     private PlantMultiplaying multiplying;
 
-    private Flower() {
+    public Flower() {
+        this.name = "Chamomile";
+        this.soil = Soil.GROUND;
+        this.originCountry = Country.BY;
+        this.leafColor = Color.WHITE;
+        this.stemColor = Color.RED;
+        this.height = 1;
+        this.weight = 1;
+        this.temperature = 0;
+        this.photophilous = true;
+        this.watering = 100;
+        this.multiplying = PlantMultiplaying.BY_SEED;
     }
 
     public String getID() {
@@ -40,6 +48,10 @@ public class Flower {
         BY_LEAF, BY_STEM, BY_SEED
     }
 
+    /*
+     * Getters
+     * */
+
     public String getSoil() {
         return soil.name();
     }
@@ -48,16 +60,16 @@ public class Flower {
         return name;
     }
 
-    public Country getOriginCountry() {
-        return originCountry;
+    public String getOriginCountry() {
+        return originCountry.name();
     }
 
-    public Color getLeafColor() {
-        return leafColor;
+    public String getLeafColor() {
+        return leafColor.name();
     }
 
-    public Color getStemColor() {
-        return stemColor;
+    public String getStemColor() {
+        return stemColor.name();
     }
 
     public int getHeight() {
@@ -80,93 +92,78 @@ public class Flower {
         return watering;
     }
 
-    public PlantMultiplaying getMultiplying() {
-        return multiplying;
+    public String getMultiplying() {
+        return multiplying.name();
     }
 
     /*
-     * class Builder with setters for class Flower
-     *
+     * Setters
      * */
-/*
-    public static class Builder {
-        private Flower flower;
 
-        public Builder() {
-            flower = new Flower();
-            flower.name="defalt";
-            flower.soil=Soil.GROUND;
-            flower.originCountry=Country.BY;
-            flower.leafColor=Color.WHITE;
-            flower.stemColor=Color.RED;
-            flower.height=10;
-            flower.weight=10;
-            flower.temperature=0;
-            flower.photophilous=true;
-            flower.watering=100;
-            flower.multiplying=PlantMultiplaying.BY_SEED;
-        }
-
-        public Builder setName(String name) {
-            flower.name = name;
-            return this;
-        }
-
-        public Builder setSoil(Soil soil) {
-            flower.soil = soil;
-            return this;
-        }
-
-
-        public Builder setOriginCountry(Country country) {
-            flower.originCountry = country;
-            return this;
-        }
-
-        public Builder setLeafColor(Color color) {
-            flower.leafColor = color;
-            return this;
-        }
-
-        public Builder setStemColor(Color color) {
-            flower.stemColor = color;
-            return this;
-        }
-
-        public Builder setHeight(int height) {
-            flower.height = height;
-            return this;
-        }
-
-        public Builder setWeight(int weight) {
-            flower.weight = weight;
-            return this;
-        }
-
-        public Builder setTemperature(int temperature) {
-            flower.temperature = temperature;
-            return this;
-        }
-
-        public Builder setPhotophilous(boolean photophilous) {
-            flower.photophilous = photophilous;
-            return this;
-        }
-
-        public Builder setWatering(int watering) {
-            flower.watering = watering;
-            return this;
-        }
-
-        public Builder setMultiplying(PlantMultiplaying type) {
-            flower.multiplying = type;
-            return this;
-        }
-
-        public Flower build() {
-            return flower;
-        }
+    public void setID(String ID) {
+        this.ID = ID;
     }
-*/
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSoil(Soil soil) {
+        this.soil = soil;
+    }
+
+    public void setOriginCountry(Country originCountry) {
+        this.originCountry = originCountry;
+    }
+
+    public void setLeafColor(Color leafColor) {
+        this.leafColor = leafColor;
+    }
+
+    public void setStemColor(Color stemColor) {
+        this.stemColor = stemColor;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public void setTemperature(int temperature) {
+        this.temperature = temperature;
+    }
+
+    public void setPhotophilous(boolean photophilous) {
+        this.photophilous = photophilous;
+    }
+
+    public void setWatering(int watering) {
+        this.watering = watering;
+    }
+
+    public void setMultiplying(PlantMultiplaying multiplying) {
+        this.multiplying = multiplying;
+    }
+
+
+    @Override
+    public String toString() {
+        String flower = "[Flower]:\n" +
+                "id:              " + this.ID +
+                "\nname:            " + this.name +
+                "\nsoil:            " + this.soil +
+                "\norigin country:  " + this.originCountry +
+                "\nleafColor:       " + this.leafColor.name() +
+                "\nstemColor:       " + this.stemColor.name() +
+                "\ntemperature:     " + this.temperature +
+                "\nphotophilous:    " + this.photophilous +
+                "\nwatering:        " + this.watering +
+                "\nmultiplying:     " + this.multiplying +
+                "\n";
+
+        return flower;
+    }
 }

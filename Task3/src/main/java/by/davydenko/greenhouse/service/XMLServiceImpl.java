@@ -1,28 +1,37 @@
 package by.davydenko.greenhouse.service;
 
+import by.davydenko.greenhouse.entity.Flower;
 import by.davydenko.greenhouse.service.parser.ParserFactory;
-import by.davydenko.greenhouse.service.parser.XMLParser;
+import by.davydenko.greenhouse.service.parser.FlowerXMLParser;
+import by.davydenko.greenhouse.service.parser.FlowerXMLParserDOMException;
 
-public class XMLServiceImpl implements XMLService {
+import java.util.List;
+
+public final class XMLServiceImpl implements XMLService {
 
     private ParserFactory parserFactory = ParserFactory.getInstance();
-    private XMLParser xmlParser;
-
+    private FlowerXMLParser flowerXmlParser;
+    private List<Flower> flowersList;
 
     @Override
-    public void parse(String pathFile, ParserFactory.XMLParserType XMLParserType) {
+    public List<Flower> parseFlowers(String pathFile, ParserFactory.XMLParserType XMLParserType) throws FlowerXMLParserDOMException {
         switch (XMLParserType) {
             case DOM:
-                xmlParser = parserFactory.getXMLParser(ParserFactory.XMLParserType.DOM);
+                flowerXmlParser = parserFactory.getXMLParser(ParserFactory.XMLParserType.DOM);
+                flowersList = flowerXmlParser.parse(pathFile);
                 break;
             case SAX:
-                xmlParser = parserFactory.getXMLParser(ParserFactory.XMLParserType.SAX);
+                flowerXmlParser = parserFactory.getXMLParser(ParserFactory.XMLParserType.SAX);
+                flowerXmlParser.parse(pathFile);
                 break;
             case STAX:
-                xmlParser = parserFactory.getXMLParser(ParserFactory.XMLParserType.STAX);
+                flowerXmlParser = parserFactory.getXMLParser(ParserFactory.XMLParserType.STAX);
                 break;
         }
-        xmlParser.parse(pathFile);
+
+        //flowersList.forEach(flower -> System.out.println(flower));
+        return flowersList;
     }
+
 
 }

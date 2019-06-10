@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public final class FlowerFlowerXMLParserDOMImpl implements FlowerXMLParser {
+public final class FlowerXMLParserDOMImpl implements FlowerXMLParser {
 
-    private final static Logger logger = Logger.getLogger(FlowerFlowerXMLParserDOMImpl.class);
+    private final static Logger logger = Logger.getLogger(FlowerXMLParserDOMImpl.class);
 
     @Override
     public List<Flower> parse(String path) throws FlowerXMLParserDOMException {

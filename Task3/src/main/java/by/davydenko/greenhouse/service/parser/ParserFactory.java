@@ -3,7 +3,7 @@ package by.davydenko.greenhouse.service.parser;
 public final class ParserFactory {
 
     private static ParserFactory instance;
-    private XMLParser xmlParser;
+    private FlowerXMLParser flowerXmlParser;
 
     public enum XMLParserType {
         DOM,
@@ -21,18 +21,18 @@ public final class ParserFactory {
         return instance;
     }
 
-    public XMLParser getXMLParser(XMLParserType XMLParserType) {
+    public FlowerXMLParser getXMLParser(XMLParserType XMLParserType) {
         switch (XMLParserType) {
             case DOM:
-                xmlParser = new XMLParserDOMImpl();
+                flowerXmlParser = new FlowerXMLParserDOMImpl();
                 break;
             case SAX:
-                xmlParser = new XMLParserSAXImpl();
+                flowerXmlParser = new FlowerXMLParserSAXImpl();
                 break;
             case STAX:
-                xmlParser = new XMLParserSTAXImpl();
+                flowerXmlParser = new FlowerXMLParserSTAXImpl();
                 break;
         }
-        return xmlParser;
+        return flowerXmlParser;
     }
 }
