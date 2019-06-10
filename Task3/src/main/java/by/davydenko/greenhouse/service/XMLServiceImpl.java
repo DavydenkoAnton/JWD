@@ -1,10 +1,9 @@
 package by.davydenko.greenhouse.service;
 
 import by.davydenko.greenhouse.entity.Flower;
-import by.davydenko.greenhouse.service.parser.ParserFactory;
-import by.davydenko.greenhouse.service.parser.FlowerXMLParser;
-import by.davydenko.greenhouse.service.parser.FlowerXMLParserDOMException;
+import by.davydenko.greenhouse.service.parser.*;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public final class XMLServiceImpl implements XMLService {
@@ -14,7 +13,7 @@ public final class XMLServiceImpl implements XMLService {
     private List<Flower> flowersList;
 
     @Override
-    public List<Flower> parseFlowers(String pathFile, ParserFactory.XMLParserType XMLParserType) throws FlowerXMLParserDOMException {
+    public List<Flower> parseFlowers(String pathFile, ParserFactory.XMLParserType XMLParserType) throws FlowerXMLParserDOMException, FlowerXMLParserSAXException, FileNotFoundException, FlowerXMLParserSTAXException {
         switch (XMLParserType) {
             case DOM:
                 flowerXmlParser = parserFactory.getXMLParser(ParserFactory.XMLParserType.DOM);
@@ -22,14 +21,14 @@ public final class XMLServiceImpl implements XMLService {
                 break;
             case SAX:
                 flowerXmlParser = parserFactory.getXMLParser(ParserFactory.XMLParserType.SAX);
-                flowerXmlParser.parse(pathFile);
+                flowersList = flowerXmlParser.parse(pathFile);
                 break;
             case STAX:
                 flowerXmlParser = parserFactory.getXMLParser(ParserFactory.XMLParserType.STAX);
+                flowersList = flowerXmlParser.parse(pathFile);
                 break;
         }
 
-        //flowersList.forEach(flower -> System.out.println(flower));
         return flowersList;
     }
 
