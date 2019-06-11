@@ -17,7 +17,5 @@ class Runner {
         response = controller.executeTask("flower_parse_stax ");
         System.out.println(response);
 
-        response = controller.executeTask("wrong request");
-        System.out.println(response);
     }
 }

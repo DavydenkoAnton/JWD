@@ -39,7 +39,7 @@ public final class FlowerXMLParserDOMImpl implements FlowerXMLParser {
                 if (flowersNodeList.item(i).getNodeType() == Node.ELEMENT_NODE) {
                     Element flowerElement = (Element) flowersNodeList.item(i);
                     //here we can take attributes
-                    // some code for get attributes
+                    //some code for get attributes
 
                     NodeList childNodeList = flowerElement.getChildNodes();
                     for (int j = 0; j < childNodeList.getLength(); j++) {
@@ -63,13 +63,25 @@ public final class FlowerXMLParserDOMImpl implements FlowerXMLParser {
                                     NodeList childParams = childElement.getChildNodes();
                                     for (int k = 0; k < childParams.getLength(); k++) {
                                         if (childParams.item(k).getNodeType() == Node.ELEMENT_NODE) {
+
                                             switch (childParams.item(k).getNodeName()) {
                                                 case "VisualParametres":
                                                     NodeList childVisualParams = childParams.item(k).getChildNodes();
                                                     for (int l = 0; l < childVisualParams.getLength(); l++) {
                                                         if (childVisualParams.item(l).getNodeType() == Node.ELEMENT_NODE) {
                                                             Element childVisualParamsElement = (Element) childVisualParams.item(l);
-                                                            flowerBuilder.setLeafColor(childVisualParamsElement.getTextContent());
+                                                            String visParams = childVisualParamsElement.getNodeName();
+                                                            switch (visParams) {
+                                                                case "LeafColor":
+                                                                    flowerBuilder.setLeafColor(childVisualParamsElement.getTextContent());
+                                                                    break;
+                                                                case "StemColor":
+                                                                    flowerBuilder.setStemColor(childVisualParamsElement.getTextContent());
+                                                                    break;
+                                                                case "Height":
+                                                                    flowerBuilder.setHeight(childVisualParamsElement.getTextContent());
+                                                                    break;
+                                                            }
                                                         }
                                                     }
                                                     break;
@@ -78,7 +90,11 @@ public final class FlowerXMLParserDOMImpl implements FlowerXMLParser {
                                                     for (int l = 0; l < childInsideParams.getLength(); l++) {
                                                         if (childInsideParams.item(l).getNodeType() == Node.ELEMENT_NODE) {
                                                             Element childInsideParamsElement = (Element) childInsideParams.item(l);
-                                                            flowerBuilder.setWeight(childInsideParamsElement.getTextContent());
+                                                            switch (childInsideParamsElement.getNodeName()) {
+                                                                case "Weight":
+                                                                    flowerBuilder.setWeight(childInsideParamsElement.getTextContent());
+                                                                    break;
+                                                            }
                                                         }
                                                     }
                                                     break;

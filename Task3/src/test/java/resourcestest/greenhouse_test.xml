@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flowers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="flowers_test.xsd">
+    <Flower>
+        <ID>50</ID>
+        <Name>test</Name>
+        <Soil>send</Soil>
+        <Origin>by</Origin>
+        <Parametres>
+            <VisualParametres>
+                <LeafColor>red</LeafColor>
+                <StemColor>red</StemColor>
+                <Height>50</Height>
+            </VisualParametres>
+            <InsideParametres>
+                <Weight>50</Weight>
+            </InsideParametres>
+        </Parametres>
+        <Temperature>50</Temperature>
+        <Photophilous>true</Photophilous>
+        <Watering>50</Watering>
+        <Multiplying>bySeed</Multiplying>
+    </Flower>
+</Flowers>
