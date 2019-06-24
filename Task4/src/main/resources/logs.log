@@ -1,12 +1,1 @@
-13:56:01.198 DEBUG by.javatr.threads.presentation.Runner 11 main - This Will Be Printed On Debug
-13:56:01.198 DEBUG by.javatr.threads.presentation.Runner 11 main - This Will Be Printed On Debug
-13:56:01.216 INFO  by.javatr.threads.presentation.Runner 12 main - This Will Be Printed On Info
-13:56:01.216 INFO  by.javatr.threads.presentation.Runner 12 main - This Will Be Printed On Info
-13:56:01.217 WARN  by.javatr.threads.presentation.Runner 13 main - This Will Be Printed On Warn
-13:56:01.217 WARN  by.javatr.threads.presentation.Runner 13 main - This Will Be Printed On Warn
-13:56:01.217 ERROR by.javatr.threads.presentation.Runner 14 main - This Will Be Printed On Error
-13:56:01.217 ERROR by.javatr.threads.presentation.Runner 14 main - This Will Be Printed On Error
-13:56:01.219 FATAL by.javatr.threads.presentation.Runner 15 main - This Will Be Printed On Fatal
-13:56:01.219 FATAL by.javatr.threads.presentation.Runner 15 main - This Will Be Printed On Fatal
-13:56:01.222 INFO  by.javatr.threads.presentation.Runner 17 main - Appending string: Hello, World.
-13:56:01.222 INFO  by.javatr.threads.presentation.Runner 17 main - Appending string: Hello, World.
+
