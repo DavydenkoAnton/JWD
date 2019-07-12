@@ -17,7 +17,7 @@ public class UserDaoMySqlImpl implements UserDao {
     @Override
     public List<User> readUsers() throws DaoMySqlException {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT `id`, `login`, `password` FROM users ORDER BY `login`";
+        String sql = "SELECT `id`, `login`, `password` FROM `users` ORDER BY `login`";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet=null;

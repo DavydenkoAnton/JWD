@@ -15,7 +15,10 @@
 
     <c:forEach items="${users}" var="user">
         <tr>
-            <td>${user.id} ${user.name} ${user.email}</td><br/>
+            <td>${user.id}</td>
+            <td>${user.login}</td>
+            <td>${user.password}</td>
+            <br/>
         </tr>
     </c:forEach>
 
