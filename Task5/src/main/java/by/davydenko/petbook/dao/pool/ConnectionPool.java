@@ -10,34 +10,38 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.ReentrantLock;
 
-public class ConnectionPool {
+final public class ConnectionPool {
 
     private static Logger logger = LogManager.getLogger(ConnectionPool.class);
     private static ConnectionPool instance = new ConnectionPool();
-    private BlockingQueue<PetBookConnection> freeConnections = new LinkedBlockingQueue<>();
-    private Set<PetBookConnection> usedConnections = new ConcurrentSkipListSet<>();
+    private BlockingQueue<PetBookConnection> avaliableConnections = new LinkedBlockingQueue<>();
+    private BlockingQueue<PetBookConnection> usedConnections = new LinkedBlockingQueue<>();
     private String url;
     private String user;
     private String password;
     private int maxSize;
     private int checkConnectionTimeout;
-
+    private ReentrantLock locker = new ReentrantLock();
+    Connection connection;
 
     private ConnectionPool() {
+
     }
 
     public static ConnectionPool getInstance() {
         return instance;
     }
 
-    public Connection getConnection() throws ConnectionPoolException {
+    public synchronized Connection getConnection() throws ConnectionPoolException {
+        System.out.println("get connection");
         PetBookConnection petBookconnection = null;
 
         while (petBookconnection == null) {
             try {
-                if (!freeConnections.isEmpty()) {
-                    petBookconnection = freeConnections.take();
+                if (!avaliableConnections.isEmpty()) {
+                    petBookconnection = avaliableConnections.take();
                     if (!petBookconnection.isValid(checkConnectionTimeout)) {
                         try {
                             petBookconnection.getConnection().close();
@@ -46,6 +50,7 @@ public class ConnectionPool {
                         petBookconnection = null;
                     }
                 } else if (usedConnections.size() < maxSize) {
+                    System.out.println("create connection in");
                     petBookconnection = createConnection();
                 } else {
                     logger.error("Limit of connections");
@@ -57,17 +62,18 @@ public class ConnectionPool {
             }
         }
         usedConnections.add(petBookconnection);
-        logger.debug(String.format("Connection was received from pool. Current pool size: %d used connections; %d free connection", usedConnections.size(), freeConnections.size()));
+
         return petBookconnection;
     }
 
     private PetBookConnection createConnection() throws SQLException {
+        System.out.println("create connection");
         return new PetBookConnection(DriverManager.getConnection(url, user, password));
     }
 
-    public void destroy() throws ConnectionPoolException {
-        usedConnections.addAll(freeConnections);
-        freeConnections.clear();
+    public synchronized void destroy() throws ConnectionPoolException {
+        usedConnections.addAll(avaliableConnections);
+        avaliableConnections.clear();
         for (PetBookConnection connection : usedConnections) {
             try {
                 connection.getConnection().close();
@@ -83,14 +89,16 @@ public class ConnectionPool {
         destroy();
     }
 
-    void freeConnection(PetBookConnection connection) {
+    synchronized void freeConnection(PetBookConnection connection) {
+
+
         try {
             if (connection.isValid(checkConnectionTimeout)) {
                 connection.clearWarnings();
                 connection.setAutoCommit(true);
                 usedConnections.remove(connection);
-                freeConnections.put(connection);
-                logger.debug(String.format("Connection was returned into pool. Current pool size: %d used connections; %d free connection", usedConnections.size(), freeConnections.size()));
+                avaliableConnections.put(connection);
+                logger.debug(String.format("Connection was returned into pool. Current pool size: %d used connections; %d free connection", usedConnections.size(), avaliableConnections.size()));
             }
         } catch (SQLException | InterruptedException e) {
             logger.error(e);
@@ -99,9 +107,11 @@ public class ConnectionPool {
             } catch (SQLException e2) {
             }
         }
+
     }
 
-    public void init(String driverClass, String url, String user, String password, int startSize, int maxSize, int checkConnectionTimeout) throws ConnectionPoolException {
+    public synchronized void init(String driverClass, String url, String user, String password, int startSize, int maxSize, int checkConnectionTimeout) throws ConnectionPoolException {
+
         try {
             destroy();
             Class.forName(driverClass);
@@ -111,12 +121,13 @@ public class ConnectionPool {
             this.maxSize = maxSize;
             this.checkConnectionTimeout = checkConnectionTimeout;
             for (int counter = 0; counter < startSize; counter++) {
-                freeConnections.put(createConnection());
+                avaliableConnections.put(createConnection());
             }
         } catch (ClassNotFoundException | SQLException | InterruptedException e) {
             logger.fatal("It is impossible to initialize connection pool", e);
             throw new ConnectionPoolException(e);
         }
+
     }
 
 

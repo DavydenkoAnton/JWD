@@ -5,7 +5,7 @@ import by.davydenko.petbook.entity.Entity;
 public interface Dao<T extends Entity> {
     Integer create(T entity);
 
-    T read(Integer identity);
+    T read(Integer identity) throws DaoMySqlException;
 
     void update(T entity);
 

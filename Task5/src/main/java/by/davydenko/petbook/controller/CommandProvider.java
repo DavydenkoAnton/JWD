@@ -2,7 +2,7 @@ package by.davydenko.petbook.controller;
 
 import by.davydenko.petbook.controller.command.Command;
 import by.davydenko.petbook.controller.command.CommandName;
-import by.davydenko.petbook.service.UserServiceImpl;
+import by.davydenko.petbook.controller.command.UserCommandImpl;
 
 
 import java.util.HashMap;
@@ -13,8 +13,8 @@ final class CommandProvider {
     private final Map<CommandName, Command> repository = new HashMap<>();
 
     CommandProvider() {
-        repository.put(CommandName.GET_USERS, new UserServiceImpl());
-        repository.put(CommandName.GET_USER, new UserServiceImpl());
+        repository.put(CommandName.GET_USERS, new UserCommandImpl());
+        repository.put(CommandName.GET_USER, new UserCommandImpl());
     }
 
     Command getCommand(String name) {

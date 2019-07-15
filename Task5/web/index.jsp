@@ -25,6 +25,11 @@
     </tr>
 </section>
 
+<form action="PetBook?action=get_users" method="post">
+    Fname:<input name="fname" type="text" id="fname" placeholder="type first name"/>
+    <input type="submit" value="ok"/>
+</form>
+
 
 </body>
 </html>
