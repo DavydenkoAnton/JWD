@@ -13,15 +13,17 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class UserDaoMySqlImpl implements UserDao {
     private static final Logger LOGGER = LogManager.getLogger(UserDaoMySqlImpl.class.getName());
     String url = "jdbc:mysql://localhost:3306/petbook?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    ReentrantLock locker = new ReentrantLock();
 
     @Override
     public List<User> readUsers() throws DaoMySqlException {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT name,email FROM petbook.users ORDER BY id";
+        String sql = "SELECT login,password,name,email,phoneNumber,age FROM petbook.users ORDER BY id";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -40,8 +42,12 @@ public class UserDaoMySqlImpl implements UserDao {
         try {
             while (resultSet.next()) {
                 User user = new User();
+                user.setLogin(resultSet.getNString("login"));
+                user.setPassword(resultSet.getString("password"));
                 user.setName(resultSet.getString("name"));
                 user.setEmail(resultSet.getString("email"));
+                user.setPhoneNumber(resultSet.getInt("phoneNumber"));
+                user.setAge(resultSet.getInt("age"));
                 users.add(user);
             }
             resultSet.close();
@@ -54,7 +60,7 @@ public class UserDaoMySqlImpl implements UserDao {
     }
 
     @Override
-    public Integer create(User user) {
+    public void create(User user) {
 
         String sql = "INSERT INTO petbook.users" +
                 " (`login`, `password`, `name`, `email`, `phoneNumber`, `age`)" +
@@ -76,9 +82,8 @@ public class UserDaoMySqlImpl implements UserDao {
             st.setInt(5, user.getPhoneNumber());
             st.setInt(6, user.getAge());
 
-            if(st.executeUpdate() > 0) {
+            if (st.executeUpdate() > 0) {
                 con.commit();
-                return 0;
             }
 
         } catch (ConnectionPoolException | SQLException e) {
@@ -90,25 +95,6 @@ public class UserDaoMySqlImpl implements UserDao {
             }
             myConnectionPool.closeConnection(con, st);
         }
-
-        return 1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //        System.out.println("daomysql");
 //        String sql = "INSERT INTO petbook.users" +
 //                " (`login`, `password`, `name`, `email`, `phoneNumber`, `age`)" +
@@ -150,7 +136,6 @@ public class UserDaoMySqlImpl implements UserDao {
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }
-//        return 1;
     }
 
     @Override

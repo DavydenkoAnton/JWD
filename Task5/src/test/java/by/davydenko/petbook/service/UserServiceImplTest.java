@@ -16,13 +16,12 @@ import by.davydenko.petbook.entity.User;
 import by.davydenko.petbook.service.UserServiceImpl;
 
 
-
 import org.junit.Test;
 
 public class UserServiceImplTest {
 
 
-ReentrantLock locker=new ReentrantLock();
+    ReentrantLock locker = new ReentrantLock();
     public static final String DB_DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
     public static final String DB_URL = "jdbc:mysql://localhost:3306/petbook?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     public static final String DB_USER = "root";
@@ -35,39 +34,39 @@ ReentrantLock locker=new ReentrantLock();
     @Test
     public void ConnectionPoolTest() {
 
-        MyConnectionPool myConnectionPool=MyConnectionPool.getInstance();
+        MyConnectionPool myConnectionPool = MyConnectionPool.getInstance();
         try {
             myConnectionPool.initPoolData();
         } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
-        User user = new User();
+
+        ReentrantLock lock = new ReentrantLock();
 
 
-
-
-
-//        List<Thread> threads = new ArrayList<>();
-//        for (int i = 0; i < 1; i++) {
-            int temp =100+10;
-//            threads.add(new Thread(new Runnable() {
-//                @Override
-//                public void run() {
+        List<Thread> threads = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            int temp = 100 + 10;
+            threads.add(new Thread(new Runnable() {
+                @Override
+                public void run() {
                     System.out.println(temp);
-                    UserServiceImpl service = null;
-                    service = new UserServiceImpl();
+                    User user = new User();
+                    UserServiceImpl service = new UserServiceImpl();
+                    System.out.println(111);
                     user.setLogin(String.valueOf(temp));
                     user.setPassword(String.valueOf(temp));
                     user.setName(String.valueOf(temp));
                     user.setEmail(String.valueOf(temp));
                     user.setPhoneNumber(temp);
                     user.setAge(temp);
+                    System.out.println(112);
                     service.addUser(user);
                     System.out.println(120);
-//                }
-//            }));
-//        }
-//        threads.forEach(Thread::start);
+                }
+            }));
+        }
+        threads.forEach(Thread::start);
 
     }
 

@@ -4,7 +4,7 @@ import by.davydenko.petbook.entity.Pet;
 
 public interface PetDao extends Dao<Pet> {
     @Override
-    Integer create(Pet entity);
+    void create(Pet entity);
 
     @Override
     Pet read(Integer identity);

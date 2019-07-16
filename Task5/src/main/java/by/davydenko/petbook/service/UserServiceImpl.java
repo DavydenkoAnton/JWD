@@ -1,6 +1,5 @@
 package by.davydenko.petbook.service;
 
-import by.davydenko.petbook.controller.command.UserCommand;
 import by.davydenko.petbook.dao.UserDaoMySqlImpl;
 import by.davydenko.petbook.dao.DaoMySqlException;
 import by.davydenko.petbook.entity.User;

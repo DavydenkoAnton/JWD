@@ -8,7 +8,7 @@ public interface UserDao extends Dao<User> {
     List<User> readUsers() throws DaoMySqlException;
 
     @Override
-    Integer create(User entity);
+    void create(User entity);
 
     @Override
     User read(Integer identity) throws DaoMySqlException;

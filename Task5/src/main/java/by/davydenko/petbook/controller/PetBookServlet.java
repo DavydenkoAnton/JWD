@@ -27,17 +27,13 @@ public class PetBookServlet extends HttpServlet {
     public static final String DB_URL = "jdbc:mysql://localhost:3306/petbook?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     public static final String DB_USER = "root";
     public static final String DB_PASSWORD = "admin";
-    public static final int DB_POOL_START_SIZE = 10;
-    public static final int DB_POOL_MAX_SIZE = 1000;
+    public static final int DB_POOL_START_SIZE = 1;
+    public static final int DB_POOL_MAX_SIZE = 10;
     public static final int DB_POOL_CHECK_CONNECTION_TIMEOUT = 50;
-
-    private List<User> users;
-    private Command command;
-    private final CommandProvider commandProvider = new CommandProvider();
-
+    private static final String COMMAND = "command";
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) {
         try {
             ConnectionPool.getInstance().init(DB_DRIVER_CLASS, DB_URL, DB_USER, DB_PASSWORD, DB_POOL_START_SIZE, DB_POOL_MAX_SIZE, DB_POOL_CHECK_CONNECTION_TIMEOUT);
         } catch (ConnectionPoolException e) {
@@ -48,37 +44,51 @@ public class PetBookServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String requestParameter = request.getParameter("action");
+        process(request, response);
 
 
-        switch (requestParameter) {
-            case "get_users":
-                command = commandProvider.getCommand(requestParameter);
-                try {
-                    users = command.getList();
-                } catch (DaoMySqlException e) {
-                    e.printStackTrace();
-                }
-                request.setAttribute("users", users);
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
-                break;
+//        String requestParameter = request.getParameter("action");
+//
+//
+//        switch (requestParameter) {
+//            case "get_users":
+//                command = commandProvider.getCommand(requestParameter);
+//                try {
+//                    users = command.getList();
+//                } catch (DaoMySqlException e) {
+//                    e.printStackTrace();
+//                }
+//                request.setAttribute("users", users);
+//                request.getRequestDispatcher("/index.jsp").forward(request, response);
+//                break;
 
 //                default:
 //                    users=appController.getUsers();
 //                    request.setAttribute("users", users);
 //                    request.getRequestDispatcher("/index.jsp").forward(request, response);
 //                    break;
-        }
+//        }
 
     }
 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        process(request, response);
+    }
 
-        request.setCharacterEncoding("UTF-8");
-        String action = request.getParameter("action");
-        String fName = request.getParameter("fname");
-        int x = 0;
+
+    private void process(HttpServletRequest request, HttpServletResponse response) {
+
+        String commandName = request.getParameter(COMMAND);
+        Command command = CommandProvider.getInstance().getCommand(commandName);
+
+        try {
+            command.execute(request, response);
+        } catch (Exception e) {
+            LOGGER.error("Exception in Controller" + e);
+            //response.sendError(ERROR_NUMBER_500);
+        }
+
     }
 }

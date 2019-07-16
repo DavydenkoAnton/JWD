@@ -3,15 +3,16 @@ CREATE TABLE petbook.admin(
   password  int NOT NULL
 );
 
-CREATE TABLE petbook.users
+create table users
 (
-    id     int  PRIMARY KEY AUTO_INCREMENT,
-    login   varchar(255) UNIQUE NOT NULL,
-    password  varchar(255)  NOT NULL,
-    name  varchar(255)      NOT NULL,
-    email  varchar(255)     NOT NULL,
-    phoneNumber    bigint   NOT NULL,
-    age    int              NOT NULL
+id          int auto_increment
+primary key,
+  login       varchar(255) not null,
+  password    varchar(255) not null,
+  name        varchar(255) not null,
+  email       varchar(255) not null,
+  phoneNumber bigint       not null,
+  age         int          not null
 );
 
 CREATE TABLE petbook.pets

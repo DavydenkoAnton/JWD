@@ -22,6 +22,7 @@ import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,11 +47,11 @@ public class MyConnectionPool {
     private String user;
     private String password;
     private int poolSize;
-
+    ReentrantLock locker;
     private static final MyConnectionPool instance = new MyConnectionPool();
 
     private MyConnectionPool() {
-
+        this.locker = new ReentrantLock();
         this.driverName = DB_DRIVER_CLASS;
         this.url = DB_URL;
         this.user = DB_USER;
@@ -68,7 +69,7 @@ public class MyConnectionPool {
         return instance;
     }
 
-    public void initPoolData() throws ConnectionPoolException{
+    public void initPoolData() throws ConnectionPoolException {
 
         try {
             Class.forName(driverName);
@@ -79,6 +80,7 @@ public class MyConnectionPool {
                 Connection connection = DriverManager.getConnection(url, user, password);
                 PooledConnection pooledConnection = new PooledConnection(connection);
                 connectionQueue.add(pooledConnection);
+
             }
 
         } catch (SQLException e) {
@@ -90,7 +92,7 @@ public class MyConnectionPool {
         }
     }
 
-    public void dispose(){
+    public void dispose() {
         clearConnectionQueue();
     }
 
@@ -104,6 +106,8 @@ public class MyConnectionPool {
     }
 
     public Connection takeConnection() throws ConnectionPoolException {
+
+
         Connection connection = null;
         try {
             connection = connectionQueue.take();
@@ -113,6 +117,7 @@ public class MyConnectionPool {
             logger.error("Error connecting to the data source.", e);
             throw new ConnectionPoolException("Error connecting to the data source.", e);
         }
+
         return connection;
     }
 

@@ -41,4 +41,22 @@ public class User extends Person {
     public void setLogin(String login) {
         this.login = login;
     }
+
+
+    public String getNamee() {
+
+        return "asdasd ";
+    }
+
+    @Override
+    public int getAge() {
+        return super.getAge();
+    }
+
+    @Override
+    public String toString() {
+        String s = new String();
+        s = getName() + getLogin();
+        return s;
+    }
 }

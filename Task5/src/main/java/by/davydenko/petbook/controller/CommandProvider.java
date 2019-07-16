@@ -2,7 +2,7 @@ package by.davydenko.petbook.controller;
 
 import by.davydenko.petbook.controller.command.Command;
 import by.davydenko.petbook.controller.command.CommandName;
-import by.davydenko.petbook.controller.command.UserCommandImpl;
+import by.davydenko.petbook.controller.command.util.GoToStartPageCommand;
 
 
 import java.util.HashMap;
@@ -10,11 +10,16 @@ import java.util.Map;
 
 final class CommandProvider {
 
-    private final Map<CommandName, Command> repository = new HashMap<>();
+    private final static CommandProvider instance = new CommandProvider();
+    private final Map<CommandName, Command> commands = new HashMap<>();
 
-    CommandProvider() {
-        repository.put(CommandName.GET_USERS, new UserCommandImpl());
-        repository.put(CommandName.GET_USER, new UserCommandImpl());
+
+    private CommandProvider() {
+        commands.put(CommandName.START_PAGE, new GoToStartPageCommand());
+    }
+
+    public static CommandProvider getInstance() {
+        return instance;
     }
 
     Command getCommand(String name) {
@@ -22,9 +27,9 @@ final class CommandProvider {
         Command command = null;
         try {
             commandName = CommandName.valueOf(name.toUpperCase());
-            command = repository.get(commandName);
-        } catch ( NullPointerException | IllegalArgumentException e) {
-            command = repository.get(CommandName.WRONG_REQUEST);
+            command = commands.get(commandName);
+        } catch (NullPointerException | IllegalArgumentException e) {
+            command = commands.get(CommandName.WRONG_REQUEST);
         }
         return command;
     }
