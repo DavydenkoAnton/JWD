@@ -22,9 +22,13 @@ public class UserDaoMySqlImpl implements UserDao {
 
     @Override
     public List<User> readUsers() throws DaoMySqlException {
+
         List<User> users = new ArrayList<>();
         String sql = "SELECT login,password,name,email,phoneNumber,age FROM petbook.users ORDER BY id";
+
+
         Connection connection = null;
+
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
@@ -92,8 +96,9 @@ public class UserDaoMySqlImpl implements UserDao {
                 con.rollback();
             } catch (SQLException e1) {
                 LOGGER.error("SQLException in catch-block SQLUserDAO/addUser()", e1);
+            } finally {
+                myConnectionPool.closeConnection(con, st);
             }
-            myConnectionPool.closeConnection(con, st);
         }
 //        System.out.println("daomysql");
 //        String sql = "INSERT INTO petbook.users" +

@@ -2,8 +2,7 @@ package by.davydenko.petbook.controller;
 
 import by.davydenko.petbook.controller.command.Command;
 import by.davydenko.petbook.controller.command.CommandName;
-import by.davydenko.petbook.controller.command.util.GoToStartPageCommand;
-
+import by.davydenko.petbook.controller.command.impl.StartPageCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,7 @@ final class CommandProvider {
 
 
     private CommandProvider() {
-        commands.put(CommandName.START_PAGE, new GoToStartPageCommand());
+        commands.put(CommandName.START_PAGE, new StartPageCommand());
     }
 
     public static CommandProvider getInstance() {

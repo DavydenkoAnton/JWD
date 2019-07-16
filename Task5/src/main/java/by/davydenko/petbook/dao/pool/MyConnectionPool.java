@@ -34,8 +34,8 @@ public class MyConnectionPool {
     public static final String DB_USER = "root";
     public static final String DB_PASSWORD = "admin";
     public static final int DB_POOL_START_SIZE = 1;
-    public static final int DB_POOL_MAX_SIZE = 10;
-    public static final int DB_POOL_CHECK_CONNECTION_TIMEOUT = 50;
+    public static final int DB_POOL_MAX_SIZE = 1500;
+    public static final int DB_POOL_CHECK_CONNECTION_TIMEOUT = 500;
 
 
     private static final Logger logger = LogManager.getLogger(MyConnectionPool.class);
@@ -47,30 +47,24 @@ public class MyConnectionPool {
     private String user;
     private String password;
     private int poolSize;
-    ReentrantLock locker;
+
     private static final MyConnectionPool instance = new MyConnectionPool();
 
     private MyConnectionPool() {
-        this.locker = new ReentrantLock();
-        this.driverName = DB_DRIVER_CLASS;
-        this.url = DB_URL;
-        this.user = DB_USER;
-        this.password = DB_PASSWORD;
 
-        try {
-            this.poolSize = DB_POOL_MAX_SIZE;
-        } catch (NumberFormatException e) {
-            logger.error("NumberFormatException in constructor of MyConnectionPool");
-            poolSize = 5;
-        }
     }
 
     public static MyConnectionPool getInstance() {
         return instance;
     }
 
-    public void initPoolData() throws ConnectionPoolException {
+    public void init() {
 
+        this.driverName = DB_DRIVER_CLASS;
+        this.url = DB_URL;
+        this.user = DB_USER;
+        this.password = DB_PASSWORD;
+        this.poolSize = DB_POOL_MAX_SIZE;
         try {
             Class.forName(driverName);
             givenAwayConQueue = new ArrayBlockingQueue<Connection>(poolSize);
@@ -85,10 +79,8 @@ public class MyConnectionPool {
 
         } catch (SQLException e) {
             logger.error("SQLException in ConnectionPool", e);
-            throw new ConnectionPoolException("SQLException in ConnectionPool", e);
         } catch (ClassNotFoundException e) {
             logger.error("ClassNotFoundException in ConnectionPool ", e);
-            throw new ConnectionPoolException("Can't find database driver class", e);
         }
     }
 
@@ -106,8 +98,6 @@ public class MyConnectionPool {
     }
 
     public Connection takeConnection() throws ConnectionPoolException {
-
-
         Connection connection = null;
         try {
             connection = connectionQueue.take();
@@ -117,7 +107,6 @@ public class MyConnectionPool {
             logger.error("Error connecting to the data source.", e);
             throw new ConnectionPoolException("Error connecting to the data source.", e);
         }
-
         return connection;
     }
 

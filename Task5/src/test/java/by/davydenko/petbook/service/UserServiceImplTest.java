@@ -35,11 +35,9 @@ public class UserServiceImplTest {
     public void ConnectionPoolTest() {
 
         MyConnectionPool myConnectionPool = MyConnectionPool.getInstance();
-        try {
-            myConnectionPool.initPoolData();
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
-        }
+
+            myConnectionPool.init();
+
 
         ReentrantLock lock = new ReentrantLock();
 
