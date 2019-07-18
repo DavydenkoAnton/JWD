@@ -1,19 +1,12 @@
 package by.davydenko.petbook.service;
 
-import by.davydenko.petbook.dao.DaoMySqlException;
-import by.davydenko.petbook.dao.pool.ConnectionPool;
-import by.davydenko.petbook.dao.pool.ConnectionPoolException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
-import by.davydenko.petbook.dao.pool.MyConnectionPool;
+import by.davydenko.petbook.dao.pool.ConnectionPool;
+import by.davydenko.petbook.dao.pool.ConnectionPoolException;
 import by.davydenko.petbook.entity.User;
-import by.davydenko.petbook.service.UserServiceImpl;
 
 
 import org.junit.Test;
@@ -31,12 +24,16 @@ public class UserServiceImplTest {
     public static final int DB_POOL_CHECK_CONNECTION_TIMEOUT = 1000;
 
 
-    @Test
+
     public void ConnectionPoolTest() {
 
-        MyConnectionPool myConnectionPool = MyConnectionPool.getInstance();
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
 
-            myConnectionPool.init();
+        try {
+            connectionPool.init();
+        } catch (ConnectionPoolException e) {
+            e.printStackTrace();
+        }
 
 
         ReentrantLock lock = new ReentrantLock();

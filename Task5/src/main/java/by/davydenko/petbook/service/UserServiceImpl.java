@@ -1,7 +1,8 @@
 package by.davydenko.petbook.service;
 
-import by.davydenko.petbook.dao.UserDaoMySqlImpl;
+import by.davydenko.petbook.dao.impl.UserDaoMySqlImpl;
 import by.davydenko.petbook.dao.DaoMySqlException;
+import by.davydenko.petbook.dao.pool.ConnectionPoolException;
 import by.davydenko.petbook.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,9 +26,13 @@ public class UserServiceImpl  {
         return users;
     }
 
-    public void addUser(User user){
+    public void addUser(User user)  {
 
         userDaoMySql = new UserDaoMySqlImpl();
-        userDaoMySql.create(user);
+        try {
+            userDaoMySql.create(user);
+        } catch (DaoMySqlException e) {
+            e.printStackTrace();
+        }
     }
 }

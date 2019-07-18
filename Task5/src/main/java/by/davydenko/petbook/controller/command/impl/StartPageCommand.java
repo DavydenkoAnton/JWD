@@ -4,6 +4,8 @@ import by.davydenko.petbook.controller.command.Command;
 import by.davydenko.petbook.dao.DaoMySqlException;
 import by.davydenko.petbook.entity.User;
 import by.davydenko.petbook.service.UserServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,24 +17,23 @@ import java.util.List;
 
 public class StartPageCommand implements Command {
 
-    private static final String PARAMETER_PREVIOUS_REQUEST = "prev_request";
+    private static Logger logger = LogManager.getLogger(AddUserCommand.class);
+
     private static final Integer ERROR_NUMBER_500 = 500;
 
-    private static final String REDIRECT_PAGE_URL = "http://localhost:8080/petBook/Servlet?command=goToStartPage";
+    private static final String REDIRECT_PAGE_URL = "http://localhost:8080/Task5/PetBookServlet?command=goToStartPage";
 
-    public static final int rowsByPage = 5;
-
-    public static final int firstPageNumber = 1;
-
-    public static final int defaultNumberOfPages = 1;
-
-    private static final String TARGET_PAGE = "/WEB-INF/jsp/startPage.jsp";
+    private static final String TARGET_PAGE = "startPage.jsp";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws DaoMySqlException {
-        List<User> users;
+    public void execute(HttpServletRequest request, HttpServletResponse response)  {
+        List<User> users=null;
         UserServiceImpl userService=new UserServiceImpl();
-        users=userService.getUsers();
+        try {
+            users=userService.getUsers();
+        } catch (DaoMySqlException e) {
+            logger.error(this.getClass().getName());
+        }
 
         request.setAttribute("users", users);
         RequestDispatcher dispatcher = request.getRequestDispatcher(TARGET_PAGE);

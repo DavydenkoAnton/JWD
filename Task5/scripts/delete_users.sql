@@ -1,0 +1,1 @@
+delete from petbook.users where id>50;

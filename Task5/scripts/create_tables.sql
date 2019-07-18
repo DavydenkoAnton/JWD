@@ -1,12 +1,11 @@
 CREATE TABLE petbook.admin(
-  login varchar(255) NOT NULL,
+  `login` varchar(255) NOT NULL,
   password  int NOT NULL
 );
 
 create table users
 (
-id          int auto_increment
-primary key,
+`id`          int auto_increment  primary key,
   login       varchar(255) not null,
   password    varchar(255) not null,
   name        varchar(255) not null,
