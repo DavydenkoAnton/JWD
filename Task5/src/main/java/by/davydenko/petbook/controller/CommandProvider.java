@@ -2,36 +2,59 @@ package by.davydenko.petbook.controller;
 
 import by.davydenko.petbook.controller.command.Command;
 import by.davydenko.petbook.controller.command.CommandName;
-import by.davydenko.petbook.controller.command.impl.AddUserCommand;
-import by.davydenko.petbook.controller.command.impl.StartPageCommand;
+import by.davydenko.petbook.controller.command.impl.*;
+import by.davydenko.petbook.service.UserServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 final class CommandProvider {
 
-    private final static CommandProvider instance = new CommandProvider();
-    private final Map<CommandName, Command> commands = new HashMap<>();
+    private static final Logger logger = LogManager.getLogger(CommandProvider.class);
 
+    private final static CommandProvider instance = new CommandProvider();
+    private final Map<String, Command> commands = new ConcurrentHashMap<>();
 
     private CommandProvider() {
-        commands.put(CommandName.START_PAGE, new StartPageCommand());
-        commands.put(CommandName.ADD_USER, new AddUserCommand());
+
+        commands.put("main", new MainPageCommand());
+        commands.put("locale", new ChangeLocaleCommand());
     }
 
     public static CommandProvider getInstance() {
         return instance;
     }
 
-    Command getCommand(String name) {
-        CommandName commandName = null;
+
+    // TODO change uri
+    public Command getCommand(String commandName) {
+
         Command command = null;
+
         try {
-            commandName = CommandName.valueOf(name.toUpperCase());
             command = commands.get(commandName);
-        } catch (NullPointerException | IllegalArgumentException e) {
-            command = commands.get(CommandName.WRONG_REQUEST);
+        } catch (NullPointerException e) {
+            logger.error("NullPointerException", e);
+        } catch (IllegalArgumentException e) {
+            logger.error("IllegalArgumentException", e);
         }
+
+        return command;
+    }
+
+    public String getCommandNameFromUri(HttpServletRequest httpRequest) {
+        String command = null;
+        // Раскладываем адрес на составляющие
+        String[] list = httpRequest.getRequestURI().split("/");
+
+        if (list[list.length - 1].indexOf(".html") > 0) {
+            command = list[list.length - 1];
+        }
+        command = command.replace(".html", "");
         return command;
     }
 }

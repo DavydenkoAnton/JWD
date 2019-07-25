@@ -38,42 +38,25 @@ public class PetBookServlet extends HttpServlet {
             logger.error("Cannot start application", e);
             destroy();
         }
+
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        String commandName = request.getParameter(COMMAND);
-
-        command = CommandProvider.getInstance().getCommand(commandName);
-        try {
-            command.execute(request, response);
-        } catch (DaoMySqlException e) {
-            logger.error("Wrong get command" + e);
-            try {
-                response.sendError(ERROR_500);
-            } catch (IOException ex) {
-                logger.error(e);
-            }
-        }
+        process(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        int x=1;
-        logger.error("_____DO POST _______");
-        String commandName = request.getParameter(COMMAND);
+        process(request, response);
+    }
 
+    private void process(HttpServletRequest request, HttpServletResponse response) {
+
+        String commandName = (String) request.getAttribute(COMMAND);
         command = CommandProvider.getInstance().getCommand(commandName);
-        try {
-            command.execute(request, response);
-        } catch (DaoMySqlException e) {
-            logger.error("Wrong post command" + e);
-            try {
-                response.sendError(ERROR_500);
-            } catch (IOException ex) {
-                logger.error(e);
-            }
-        }
+        command.execute(request, response);
+
     }
 
 

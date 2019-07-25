@@ -6,10 +6,12 @@ import by.davydenko.petbook.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.Executor;
 
 public class Test {
     public static final String DB_DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
@@ -26,7 +28,7 @@ public class Test {
     public static void main(String[] args) {
 
 
-        ConnectionPool connectionPool=ConnectionPool.getInstance();
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
         try {
             connectionPool.init();
         } catch (ConnectionPoolException e) {
@@ -34,7 +36,7 @@ public class Test {
         }
 
         List<Thread> threads = new ArrayList<>();
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 400; i++) {
             int temp = 100 + i;
             threads.add(new Thread(() -> {
                 User user = new User();
@@ -52,5 +54,4 @@ public class Test {
 
 
     }
-
 }

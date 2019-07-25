@@ -17,8 +17,12 @@ import java.util.List;
 public class UserDaoMySqlImpl implements UserDao {
 
     private final static Logger logger = LogManager.getLogger(UserDaoMySqlImpl.class);
-    private final static String SELECT_USERS = "SELECT login,password,name,email,phoneNumber,age FROM petbook.users ORDER BY id";
+    private final static String SELECT_USERS = "SELECT name FROM petbook.users ORDER BY id";
+    private final static String SELECT_USER_LOGIN_PASSWORD = "SELECT name,role FROM petbook.users WHERE login=? AND password=?";
     private final static String INSERT_USER = "INSERT INTO petbook.users " +
+            "(`login`, `password`, `name`, `email`, `phoneNumber`, `age`)" +
+            " VALUES (?, ?, ?, ?, ?, ?)";
+    private final static String IS_EXIST_USER = "INSERT INTO petbook.users " +
             "(`login`, `password`, `name`, `email`, `phoneNumber`, `age`)" +
             " VALUES (?, ?, ?, ?, ?, ?)";
     private final static String SELECT_USER_ID = "SELECT name,email FROM petbook.users WHERE id=? ";
@@ -53,12 +57,7 @@ public class UserDaoMySqlImpl implements UserDao {
         try {
             while (resultSet.next()) {
                 User user = new User();
-                user.setLogin(resultSet.getNString(DBHelper.Users.LOGIN.getName()));
-                user.setPassword(resultSet.getString(DBHelper.Users.PASSWORD.getName()));
                 user.setName(resultSet.getString(DBHelper.Users.NAME.getName()));
-                user.setEmail(resultSet.getString(DBHelper.Users.EMAIL.getName()));
-                user.setPhoneNumber(resultSet.getInt(DBHelper.Users.PHONE.getName()));
-                user.setAge(resultSet.getInt(DBHelper.Users.AGE.getName()));
                 users.add(user);
             }
             resultSet.close();
@@ -100,18 +99,12 @@ public class UserDaoMySqlImpl implements UserDao {
 
         } catch (SQLException e) {
             try {
-                connection.rollback();
-            } catch (SQLException ex) {
+                connectionPool.closeConnection(connection, preparedStatement);
+            } catch (ConnectionPoolException ex) {
                 throw new DaoMySqlException(e);
             }
             throw new DaoMySqlException(e);
-        }/* finally {
-            try {
-                connectionPool.closeConnection(connection, preparedStatement);
-            } catch (ConnectionPoolException e) {
-                throw new DaoMySqlException(e);
-            }
-        }*/
+        }
 
 
     }
@@ -161,5 +154,51 @@ public class UserDaoMySqlImpl implements UserDao {
 
     }
 
+    /**
+     * @param login    String
+     * @param password String
+     * @return User
+     */
+    public User read(String login, String password) throws DaoMySqlException {
+        user = new User();
+        connection = null;
+        connectionPool = ConnectionPool.getInstance();
+        preparedStatement = null;
+        resultSet = null;
 
+
+        try {
+            connection = connectionPool.takeConnection();
+        } catch (ConnectionPoolException e) {
+            throw new DaoMySqlException(e);
+        }
+        try {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(SELECT_USER_LOGIN_PASSWORD);
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                resultSet.getRow();
+                user.setName(resultSet.getString(DBHelper.Users.NAME.getName()));
+                user.setRole(resultSet.getString(DBHelper.Users.ROLE.getName()));
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+
+        } catch (SQLException e) {
+            logger.error("----------SQLException------------",e);
+            try {
+                connectionPool.closeConnection(connection, preparedStatement);
+            } catch (ConnectionPoolException ex) {
+                logger.error(e);
+                throw new DaoMySqlException(e);
+            }
+            throw new DaoMySqlException(e);
+        }
+
+
+        return user;
+    }
 }

@@ -1,22 +1,6 @@
 package by.davydenko.petbook.dao.pool;
 
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.NClob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.sql.Struct;
+import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -70,7 +54,7 @@ public class ConnectionPool {
             }
 
         } catch (SQLException e) {
-            logger.error("SQLException in ConnectionPool",e);
+            logger.error("too many connections");
             throw new ConnectionPoolException(e);
         } catch (ClassNotFoundException e) {
             logger.error("ClassNotFoundException in ConnectionPool ", e);
@@ -156,6 +140,8 @@ public class ConnectionPool {
 
     /**
      * Inner private class PooledConnection of class ConnectionPool
+     * @author Davydenko
+     * @implNote Connection
      */
     private class PooledConnection implements Connection {
         private Connection connection;
@@ -163,6 +149,7 @@ public class ConnectionPool {
         public PooledConnection(Connection c) throws SQLException {
             this.connection = c;
             this.connection.setAutoCommit(true);
+            connection.isValid(5);
         }
 
         public void reallyClose() throws SQLException {

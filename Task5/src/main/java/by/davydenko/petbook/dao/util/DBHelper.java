@@ -6,7 +6,7 @@ final public class DBHelper {
     public static final String DB_LOGIN = "root";
     public static final String DB_PASSWORD = "admin";
     public static final int DB_POOL_START_SIZE = 1;
-    public static final int DB_POOL_MAX_SIZE = 3;
+    public static final int DB_POOL_MAX_SIZE = 5;
     public static final int DB_POOL_CHECK_CONNECTION_TIMEOUT = 5;
 
     private DBHelper() {
@@ -28,12 +28,13 @@ final public class DBHelper {
 
     public enum Users {
         ID("id"),
-        PASSWORD("password"),
         LOGIN("login"),
+        PASSWORD("password"),
         NAME("name"),
         EMAIL("email"),
         PHONE("phoneNumber"),
-        AGE("age");
+        AGE("age"),
+        ROLE("role");
         Users(String name) {
             this.name = name;
         }

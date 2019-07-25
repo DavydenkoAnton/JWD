@@ -1,11 +1,16 @@
 package by.davydenko.petbook.entity;
 
+import java.util.List;
+
 public class User extends Person {
 
+    private String login;
+    private String password;
     private String email;
     private int phoneNumber;
-    private String password;
-    private String login;
+    private String role;
+    private boolean authorized;
+    private List<Pet> pets;
 
     public User() {
     }
@@ -42,21 +47,27 @@ public class User extends Person {
         this.login = login;
     }
 
-
-    public String getNamee() {
-
-        return "asdasd ";
+    public boolean isAuthorized() {
+        return authorized;
     }
 
-    @Override
-    public int getAge() {
-        return super.getAge();
+    public void setAuthorized(boolean value) {
+        this.authorized = value;
     }
 
-    @Override
-    public String toString() {
-        String s = new String();
-        s = getName() + getLogin();
-        return s;
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public List<Pet> getPets() {
+        return pets;
+    }
+
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
     }
 }

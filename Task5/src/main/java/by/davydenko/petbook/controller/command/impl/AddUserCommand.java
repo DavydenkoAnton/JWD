@@ -5,6 +5,7 @@ import by.davydenko.petbook.controller.command.util.URLCreator;
 import by.davydenko.petbook.dao.DaoMySqlException;
 import by.davydenko.petbook.dao.util.DBHelper;
 import by.davydenko.petbook.entity.User;
+import by.davydenko.petbook.service.UserServiceException;
 import by.davydenko.petbook.service.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,8 +21,7 @@ import java.util.List;
 public class AddUserCommand implements Command {
 
     private static Logger logger = LogManager.getLogger(AddUserCommand.class);
-    private static final String REDIRECT_PAGE_URL = "http://localhost:8080/Task5/PetBookServlet?command=goToStartPage";//&success_param=true
-    private static final String TARGET_PAGE = "startPage.jsp";
+    private static final String REDIRECT_PAGE_URL = "http://localhost:8080/Task5/PetBook?command=start_page";//&success_param=true
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -39,21 +39,20 @@ public class AddUserCommand implements Command {
         user.setAge(Integer.valueOf(request.getParameter(DBHelper.Users.AGE.getName())));
 
         userService.addUser(user);
+
         try {
             users = userService.getUsers();
-        } catch (DaoMySqlException e) {
-            e.printStackTrace();
+        } catch (UserServiceException e) {
+            logger.error(e);
         }
 
-        logger.error("AddUserCommand worked");
-
+        response.setContentType("main.jsp");
         HttpSession session = request.getSession(true);
         session.setAttribute("users", users);
-
         try {
-            response.sendRedirect(TARGET_PAGE);
+            response.sendRedirect(REDIRECT_PAGE_URL);
         } catch (IOException e) {
-            logger.error("IOException (not redirected)",e);
+            logger.error("IOException (not redirected)", e);
         }
     }
 }
