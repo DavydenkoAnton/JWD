@@ -8,9 +8,6 @@ import by.davydenko.petbook.dao.pool.ConnectionPool;
 import by.davydenko.petbook.dao.pool.ConnectionPoolException;
 import by.davydenko.petbook.entity.User;
 
-
-import org.junit.Test;
-
 public class UserServiceImplTest {
 
 
@@ -56,7 +53,7 @@ public class UserServiceImplTest {
                     user.setPhoneNumber(temp);
                     user.setAge(temp);
                     System.out.println(112);
-                    service.addUser(user);
+             //       service.addUserToDB(user);
                     System.out.println(120);
                 }
             }));

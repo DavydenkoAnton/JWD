@@ -1,37 +1,36 @@
-CREATE TABLE petbook.admin(
-  `login` varchar(255) NOT NULL,
-  password  int NOT NULL
+create table admin(
+	id int auto_increment,
+	login varchar(255) not null,
+	password varchar(255) not null,
+constraint admin_pk
+primary key (id)
 );
 
-create table users
-(
-`id`          int auto_increment  primary key,
+create table users(
+  id          int auto_increment,
   login       varchar(255) not null,
   password    varchar(255) not null,
   name        varchar(255) not null,
   email       varchar(255) not null,
   phoneNumber bigint       not null,
-  age         int          not null
+  age         int          not null,
+constraint users_pk
+primary key (id)
 );
 
-CREATE TABLE petbook.pets
-(
+CREATE TABLE petbook.pets(
     id     int PRIMARY KEY AUTO_INCREMENT,
-    userId int,
+    user_id int,
     name   varchar(255) NOT NULL,
     breed  varchar(255) NOT NULL,
     age    int          NOT NULL,
 FOREIGN KEY(userId)REFERENCES petbook.users(id)ON
 DELETE CASCADE
-)
-;
+);
 
 CREATE TABLE petbook.messages (
-    id int PRIMARY KEY AUTO_INCREMENT,
     message varchar(255) NOT NULL,
-    userId int NOT NULL,
-    fromUserId int NOT NULL,
-FOREIGN KEY(userId)REFERENCES petbook.users(id)ON
-DELETE CASCADE
-)
-;
+    user_id int NOT NULL,
+    sender_id int NOT NULL,
+FOREIGN KEY(userId)REFERENCES petbook.users(id)
+);

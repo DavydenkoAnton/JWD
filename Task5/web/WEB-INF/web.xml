@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
-   <display-name>webHello</display-name>
+    <display-name>webHello</display-name>
 
     <servlet>
         <servlet-name>petBookServlet</servlet-name>
@@ -18,44 +18,37 @@
     <filter>
         <filter-name>EncodingFilter</filter-name>
         <filter-class>by.davydenko.petbook.controller.EncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
     </filter>
 
     <filter-mapping>
         <filter-name>EncodingFilter</filter-name>
-        <url-pattern>*.html</url-pattern>
+        <servlet-name>petBookServlet</servlet-name>
     </filter-mapping>
 
-        <filter>
-            <filter-name>AuthorizedUriFilter</filter-name>
-            <filter-class>by.davydenko.petbook.controller.AuthorizedUriFilter</filter-class>
-            <init-param>
-                <param-name>active</param-name>
-                <param-value>true</param-value>
-            </init-param>
-        </filter>
+    <filter>
+        <filter-name>SecurityUriFilter</filter-name>
+        <filter-class>by.davydenko.petbook.controller.SecurityUriFilter</filter-class>
+        <init-param>
+            <param-name>security</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
 
-        <filter-mapping>
-            <filter-name>AuthorizedUriFilter</filter-name>
-            <url-pattern>*.html</url-pattern>
-        </filter-mapping>
-
-
-        <filter>
-            <filter-name>ActionFilter</filter-name>
-            <filter-class>by.davydenko.petbook.controller.ActionFilter</filter-class>
-            <init-param>
-                <param-name>active2</param-name>
-                <param-value>true2</param-value>
-            </init-param>
-        </filter>
-
-        <filter-mapping>
-            <filter-name>ActionFilter</filter-name>
-            <servlet-name>petBookServlet</servlet-name>
-        </filter-mapping>
+    <filter-mapping>
+        <filter-name>SecurityUriFilter</filter-name>
+        <servlet-name>petBookServlet</servlet-name>
+    </filter-mapping>
 
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
+
+
+
 
 </web-app>

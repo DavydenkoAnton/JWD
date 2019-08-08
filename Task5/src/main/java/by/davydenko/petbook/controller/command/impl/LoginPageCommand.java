@@ -1,7 +1,6 @@
 package by.davydenko.petbook.controller.command.impl;
 
 import by.davydenko.petbook.controller.command.Command;
-import by.davydenko.petbook.dao.DaoMySqlException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,22 +13,24 @@ import java.io.IOException;
 public class LoginPageCommand implements Command {
 
     private static Logger logger = LogManager.getLogger(LoginPageCommand.class);
-    private static final String TARGET_PAGE = "jsp/login.jsp";
+    private static final String TARGET_PAGE = "/login.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher(TARGET_PAGE);
+        RequestDispatcher dispatcher;
 
 
         try {
-            dispatcher.forward(request,response);
+            dispatcher = request.getServletContext().getRequestDispatcher(TARGET_PAGE);
+            dispatcher.forward(request, response);
         } catch (ServletException e) {
-            logger.error("[ ServletException ]",e);
+            logger.error("[ ServletException ]", e);
         } catch (IOException e) {
-            logger.error("[ IOException ]",e);
+            logger.error("[ IOException ]", e);
         }
 
 
     }
+
 }

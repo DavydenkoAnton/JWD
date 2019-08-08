@@ -1,22 +1,16 @@
 package by.davydenko.petbook.controller;
 
 import by.davydenko.petbook.controller.command.Command;
-import by.davydenko.petbook.dao.DaoMySqlException;
 import by.davydenko.petbook.dao.pool.ConnectionPool;
 import by.davydenko.petbook.dao.pool.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.ResultSet;
 
 
 @MultipartConfig

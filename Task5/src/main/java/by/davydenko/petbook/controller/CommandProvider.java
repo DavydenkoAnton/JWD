@@ -1,14 +1,10 @@
 package by.davydenko.petbook.controller;
 
 import by.davydenko.petbook.controller.command.Command;
-import by.davydenko.petbook.controller.command.CommandName;
 import by.davydenko.petbook.controller.command.impl.*;
-import by.davydenko.petbook.service.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,9 +16,20 @@ final class CommandProvider {
     private final Map<String, Command> commands = new ConcurrentHashMap<>();
 
     private CommandProvider() {
-
         commands.put("main", new MainPageCommand());
         commands.put("locale", new ChangeLocaleCommand());
+        commands.put("login", new LoginPageCommand());
+        commands.put("loginUser", new LoginCommand());
+        commands.put("deleteUser", new DeleteUserCommand());
+        commands.put("user", new UserPageCommand());
+        commands.put("logout", new LogoutUserCommand());
+        commands.put("registration", new RegisterPageCommand());
+        commands.put("register", new RegisterUserCommand());
+        commands.put("admin", new UserPageCommand());
+        commands.put("message", new MessagePageCommand());
+        commands.put("sendMessage", new SendMessageCommand());
+        commands.put("pagingUsersNext", new PaggingUsersNext());
+        commands.put("pagingUsersPrev", new PaggingUsersPrev());
     }
 
     public static CommandProvider getInstance() {
@@ -46,15 +53,5 @@ final class CommandProvider {
         return command;
     }
 
-    public String getCommandNameFromUri(HttpServletRequest httpRequest) {
-        String command = null;
-        // Раскладываем адрес на составляющие
-        String[] list = httpRequest.getRequestURI().split("/");
 
-        if (list[list.length - 1].indexOf(".html") > 0) {
-            command = list[list.length - 1];
-        }
-        command = command.replace(".html", "");
-        return command;
-    }
 }

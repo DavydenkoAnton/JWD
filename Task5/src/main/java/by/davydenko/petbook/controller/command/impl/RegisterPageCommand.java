@@ -13,19 +13,21 @@ import java.io.IOException;
 public class RegisterPageCommand implements Command {
 
     private static Logger logger = LogManager.getLogger(RegisterPageCommand.class);
-    private static final String TARGET_PAGE = "jsp/registration.jsp";
+    private static final String TARGET_PAGE = "/registration.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher(TARGET_PAGE);
+        RequestDispatcher dispatcher;
+
 
         try {
-            dispatcher.forward(request,response);
+            dispatcher = request.getServletContext().getRequestDispatcher(TARGET_PAGE);
+            dispatcher.forward(request, response);
         } catch (ServletException e) {
-            logger.error("[ ServletException ]",e);
+            logger.error("[ ServletException ]", e);
         } catch (IOException e) {
-            logger.error("[ IOException ]",e);
+            logger.error("[ IOException ]", e);
         }
     }
 }

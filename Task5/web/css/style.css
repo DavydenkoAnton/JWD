@@ -1,0 +1,58 @@
+.container {
+    width: 100%;
+    margin: 0 auto;
+    background-color: ghostwhite;
+    height: 600px;
+}
+
+.header {
+    text-align: center;
+    padding-top: 10px;
+    font-size: 20px;
+    background-color: darkgrey;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    color: white;
+    height: 40px;
+}
+
+.menu{
+   float: left;
+    width:20%;
+    background-color: cadetblue;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    color: white;
+    height: 300px;
+}
+.content{
+    float: left;
+    width:75%;
+    height: 260px;
+    margin-left: 50px;
+}
+.pagLeft {
+    float:right;
+    margin-left: 50px;
+    width:150px;
+}
+
+.pagRight {
+    float:left;
+    width:150px;
+    margin-left: 50px;
+}
+.footer {
+    text-align: center;
+    padding-top: 10px;
+    font-size: 20px;
+    background-color: darkgrey;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    color: white;
+    height: 40px;
+    margin-top: -40px;
+}
+.a:link{
+    color: white;
+}
+.a:visited{
+    color: white;
+}

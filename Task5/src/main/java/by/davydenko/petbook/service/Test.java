@@ -6,12 +6,8 @@ import by.davydenko.petbook.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.Executor;
 
 public class Test {
     public static final String DB_DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
@@ -47,7 +43,7 @@ public class Test {
                 user.setEmail(String.valueOf(temp));
                 user.setPhoneNumber(temp);
                 user.setAge(temp);
-                service.addUser(user);
+             ///   service.addUser(user);
             }));
         }
         threads.forEach(Thread::start);

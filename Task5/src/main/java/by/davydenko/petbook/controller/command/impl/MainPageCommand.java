@@ -1,9 +1,14 @@
 package by.davydenko.petbook.controller.command.impl;
 
 import by.davydenko.petbook.controller.command.Command;
+import by.davydenko.petbook.dao.DaoFactory;
+import by.davydenko.petbook.dao.UserDao;
 import by.davydenko.petbook.entity.User;
-import by.davydenko.petbook.service.UserServiceException;
+import by.davydenko.petbook.service.ServiceException;
+import by.davydenko.petbook.service.ServiceFactory;
+import by.davydenko.petbook.service.UserService;
 import by.davydenko.petbook.service.UserServiceImpl;
+import com.sun.deploy.net.HttpRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,38 +18,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainPageCommand implements Command {
 
-    private static Logger logger = LogManager.getLogger(AddUserCommand.class);
+    private static Logger logger = LogManager.getLogger(RegisterUserCommand.class);
     private static final String TARGET_PAGE = "/main.jsp";
     private static final String ERROR_PAGE = "errorPage.jsp";
+    private HttpSession httpSession;
+    private RequestDispatcher dispatcher;
+    private ServiceFactory serviceFactory;
+    private UserService userService;
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+        httpSession = request.getSession();
+        Object o = httpSession.getAttribute("users");
 
-        RequestDispatcher dispatcher;
-        List<User> users = null;
-        UserServiceImpl userService = new UserServiceImpl();
-        HttpSession session = request.getSession();
-        request.removeAttribute("main");
-        try {
-            users = userService.getUsers();
-        } catch (UserServiceException e) {
-            logger.error(e);
+        if (o == null) {
+            serviceFactory = ServiceFactory.getInstance();
+            userService = serviceFactory.getUserService();
             try {
-                dispatcher = request.getRequestDispatcher(ERROR_PAGE);
-                dispatcher.forward(request, response);
-            } catch (ServletException | IOException ex) {
+                userService.pagingNext( httpSession);
+            } catch (ServiceException e) {
                 logger.error(e);
             }
         }
-
-
-        session.setAttribute("users", users);
-
-
         try {
             dispatcher = request.getServletContext().getRequestDispatcher(TARGET_PAGE);
             dispatcher.forward(request, response);

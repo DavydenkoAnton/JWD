@@ -4,12 +4,13 @@ import java.util.List;
 
 public class User extends Person {
 
+
     private String login;
     private String password;
     private String email;
     private int phoneNumber;
     private String role;
-    private boolean authorized;
+    private List<Message> messages;
     private List<Pet> pets;
 
     public User() {
@@ -47,14 +48,6 @@ public class User extends Person {
         this.login = login;
     }
 
-    public boolean isAuthorized() {
-        return authorized;
-    }
-
-    public void setAuthorized(boolean value) {
-        this.authorized = value;
-    }
-
     public String getRole() {
         return role;
     }
@@ -63,11 +56,4 @@ public class User extends Person {
         this.role = role;
     }
 
-    public List<Pet> getPets() {
-        return pets;
-    }
-
-    public void setPets(List<Pet> pets) {
-        this.pets = pets;
-    }
 }
