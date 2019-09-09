@@ -46,12 +46,8 @@ public class PetBookServlet extends HttpServlet {
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) {
-
         String commandName = (String) request.getAttribute(COMMAND);
         command = CommandProvider.getInstance().getCommand(commandName);
         command.execute(request, response);
-
     }
-
-
 }

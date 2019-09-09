@@ -1,5 +1,7 @@
 package by.davydenko.petbook.controller;
 
+import by.davydenko.petbook.controller.command.util.Attribute;
+import by.davydenko.petbook.entity.Role;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,8 +19,12 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import static by.davydenko.petbook.entity.Role.ADMIN;
+import static by.davydenko.petbook.entity.Role.USER;
+
 /**
  * SecurityUriFilter implements Filter
+ *
  * @see Filter
  */
 @WebFilter("/SecurityUriFilter")
@@ -43,16 +49,28 @@ public class SecurityUriFilter implements Filter {
         adminCommands.add("admin");
         adminCommands.add("deleteUser");
 
+
         userAuthorizedCommands = new ArrayList<>();
         userAuthorizedCommands.add("user");
+        userAuthorizedCommands.add("pet");
         userAuthorizedCommands.add("logout");
-        userAuthorizedCommands.add("message");
+        userAuthorizedCommands.add("messages");
         userAuthorizedCommands.add("sendMessage");
+        userAuthorizedCommands.add("editUserAvatar");
+        userAuthorizedCommands.add("editUserName");
+        userAuthorizedCommands.add("editPetName");
+        userAuthorizedCommands.add("editPetAvatar");
+        userAuthorizedCommands.add("editPetAge");
+        userAuthorizedCommands.add("editPetBreed");
+        userAuthorizedCommands.add("profile");
+        userAuthorizedCommands.add("getChatMessages");
 
         userNotAuthorizedCommands = new ArrayList<>();
         userNotAuthorizedCommands.add("main");
+        userNotAuthorizedCommands.add("articles");
+        userNotAuthorizedCommands.add("article");
         userNotAuthorizedCommands.add("login");
-        userNotAuthorizedCommands.add("register");
+        userNotAuthorizedCommands.add("registerUser");
         userNotAuthorizedCommands.add("registration");
         userNotAuthorizedCommands.add("login");
         userNotAuthorizedCommands.add("loginUser");
@@ -86,9 +104,9 @@ public class SecurityUriFilter implements Filter {
 
                 if (adminCommands.contains(commandName) && isAdmin()) {
                     httpRequest.setAttribute(COMMAND, commandName);
-                }else if (userAuthorizedCommands.contains(commandName) && (isUser()||isAdmin())) {
+                } else if (userAuthorizedCommands.contains(commandName) && (isUser() || isAdmin())) {
                     httpRequest.setAttribute(COMMAND, commandName);
-                } else if(userNotAuthorizedCommands.contains(commandName)) {
+                } else if (userNotAuthorizedCommands.contains(commandName)) {
                     httpRequest.setAttribute(COMMAND, commandName);
                 } else {
                     httpRequest.setAttribute(COMMAND, LOGIN_PAGE_COMMAND);
@@ -130,38 +148,33 @@ public class SecurityUriFilter implements Filter {
     }
 
     private boolean isAdmin() {
-        String role;
-        boolean check = false;
-        role = (String) httpSession.getAttribute("role");
+        Role role;
+        role = (Role) httpSession.getAttribute(Attribute.ROLE);
         if (role != null) {
-            if (role.equals("admin")) {
-                check = true;
-            }
+            return role.equals(ADMIN);
         }
-        return check;
+        return false;
     }
 
     private boolean isUser() {
-        String role;
-        boolean check = false;
-        role = (String) httpSession.getAttribute("role");
+        Role role;
+        role = (Role) httpSession.getAttribute(Attribute.ROLE);
         if (role != null) {
-            if (role.equals("user")) {
-                check = true;
-            }
+            return role.equals(USER);
         }
-        return check;
+        return false;
     }
 
 
     private String getCommandNameFromUri(HttpServletRequest httpRequest) {
-        String command = null;
+        String command = "";
         // Раскладываем адрес на составляющие
         String[] list = httpRequest.getRequestURI().split("/");
 
         if (list[list.length - 1].indexOf(".html") > 0) {
             command = list[list.length - 1];
         }
+
         command = command.replace(".html", "");
         return command;
     }

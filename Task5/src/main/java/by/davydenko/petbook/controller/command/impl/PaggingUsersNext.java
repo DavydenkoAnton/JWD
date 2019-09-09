@@ -18,7 +18,7 @@ import java.util.List;
 public class PaggingUsersNext implements Command {
 
     private static Logger logger = LogManager.getLogger(PaggingUsersNext.class);
-    private static final String REDIRECT_PAGE_URL = "http://localhost:8080/Task5/main.html";
+    private static final String REDIRECT_PAGE_URL = "http://localhost:8080/pb/main.html";
     private UserService userService;
     private ServiceFactory serviceFactory;
 

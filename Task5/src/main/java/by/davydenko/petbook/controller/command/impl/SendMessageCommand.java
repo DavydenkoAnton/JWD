@@ -17,7 +17,7 @@ public class SendMessageCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger(SendMessageCommand.class);
 
-    private static final String REDIRECT_MESSAGE_PAGE_URL = "http://localhost:8080/Task5/message.html";
+    private static final String REDIRECT_MESSAGE_PAGE_URL = "http://localhost:8080/pb/message.html";
     private MessageService messageService;
     private ServiceFactory serviceFactory;
     private UserService userService;
@@ -31,23 +31,10 @@ public class SendMessageCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
-        int senderId = 0;
-        int recieverId = 0;
-        String message;
-        HttpSession httpSession = request.getSession();
-
         try {
-            senderId = userService.getId(httpSession);
-            recieverId = userService.getIdByLogin(request);
+            messageService.sendMessage(request);
         } catch (ServiceException e) {
-            redirectToMessagePage(response);
-        }
-
-        try {
-            message = messageService.getMessage(request);
-            messageService.sendMessage(senderId, recieverId, message);
-        } catch (ServiceException e) {
-            logger.error(getClass().getName() + "[ Cannot send message ]");
+            logger.error(e);
         }
         redirectToMessagePage(response);
     }

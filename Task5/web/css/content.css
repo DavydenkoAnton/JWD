@@ -1,0 +1,23 @@
+.content {
+}
+
+.main_content {
+    width: 88%;
+    height: 300px;
+    margin-left: 12%;
+}
+
+.main_content img {
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    display: block;
+}
+.main_content p {
+    text-indent: 20px;
+    word-wrap: break-word;
+}
+
+.main_content h3 {
+    text-indent: 20px;
+}

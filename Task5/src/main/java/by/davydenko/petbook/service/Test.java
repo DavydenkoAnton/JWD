@@ -3,6 +3,7 @@ package by.davydenko.petbook.service;
 import by.davydenko.petbook.dao.pool.ConnectionPool;
 import by.davydenko.petbook.dao.pool.ConnectionPoolException;
 import by.davydenko.petbook.entity.User;
+import by.davydenko.petbook.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

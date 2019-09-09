@@ -1,0 +1,64 @@
+.sender {
+    overflow-y: auto;
+    float: left;
+    margin-top: 40px;
+    width: 10%;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    height: 300px;
+    margin-left: 50px;
+}
+
+.sender_btn {
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+    color: black;;
+    padding-left: 5px;
+    font-family: arial, serif;
+    font-size: inherit;
+}
+
+.chat_wrapper {
+    float: left;
+    margin-top: 40px;
+    width: 70%;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    height: 300px;
+    margin-left: 50px;
+}
+
+.chat {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    margin-top: 0;
+    width: 100%;
+    height: 75%;
+}
+
+.user_name {
+    color: green;
+}
+
+.user_message {
+    width: 70%;
+}
+
+.sender_name {
+    color: blue;
+}
+
+.sender_message {
+    width: 70%;
+}
+
+.date_message{
+    size: 10px;
+}
+
+.message_sender {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    padding-top: 5px;
+    height: 20%;
+}
+

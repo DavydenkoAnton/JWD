@@ -17,10 +17,13 @@ final public class DBHelper {
         USERS("users"),
         PETS("pets"),
         MESSAGES("messages");
+
         TableName(String name) {
             this.name = name;
         }
+
         private String name;
+
         public String getName() {
             return name;
         }
@@ -31,14 +34,35 @@ final public class DBHelper {
         LOGIN("login"),
         PASSWORD("password"),
         NAME("name"),
+        AVATAR_URL("avatarUrl"),
         EMAIL("email"),
         PHONE("phoneNumber"),
         AGE("age"),
         ROLE("role");
+
         Users(String name) {
             this.name = name;
         }
+
         private String name;
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    public enum Pets {
+        NAME("name"),
+        BREED("breed"),
+        AVATAR_URL("avatarUrl"),
+        AGE("age");
+
+        Pets(String name) {
+            this.name = name;
+        }
+
+        private String name;
+
         public String getName() {
             return name;
         }

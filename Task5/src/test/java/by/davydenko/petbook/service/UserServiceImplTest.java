@@ -7,6 +7,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import by.davydenko.petbook.dao.pool.ConnectionPool;
 import by.davydenko.petbook.dao.pool.ConnectionPoolException;
 import by.davydenko.petbook.entity.User;
+import by.davydenko.petbook.service.impl.UserServiceImpl;
 
 public class UserServiceImplTest {
 

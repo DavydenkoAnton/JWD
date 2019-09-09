@@ -1,0 +1,109 @@
+.articles_header {
+    margin-top: 40px;
+    margin-left: 10%;
+    border: 1px solid black;
+    border-radius: 3px;
+    height: 40px;
+    width: 90%;
+}
+
+.articles_header a {
+    text-decoration: none;
+    font-size: 16px;
+    font-family: arial, serif;
+    float: left;
+    margin-left: 20px;
+    color: black;
+}
+
+.articles_header form{
+    float: left;
+    padding-top: 9px;
+    margin-left: 30px;
+}
+
+.articles_header button{
+    float: left;
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+    color: black;
+    font-family: arial, serif;
+    font-size: 16px;
+}
+
+.articles_wrapper {
+    overflow-y: auto;
+    margin-top: 40px;
+    margin-left: 10%;
+    width: 90%;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    height: 300px;
+}
+
+.article_wrapper {
+    overflow-y: auto;
+    margin-top: 40px;
+    margin-left: 10%;
+    width: 90%;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    height: 300px;
+}
+
+.article_wrapper table {
+    width: 100%;
+}
+
+.article_item {
+    width: 90%;
+    height: 100%;
+    margin-left: 20px;
+}
+
+.article_item table {
+    width: 100%;
+}
+
+.article_item td {
+    width: 100%;
+}
+
+.article_item tr {
+    width: 100%;
+}
+
+.article_title {
+    width: 480px;
+    padding-left: 40px;
+}
+
+.article_title button{
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+    color: blue;
+    padding-left: 5px;
+    font-family: arial, serif;
+}
+
+.article_title a {
+    text-decoration: none;
+    font-size: 14px;
+    font-family: arial, serif;
+    margin-top: 10px;
+    margin-right: 10px;
+    color: blue;
+}
+
+.article_description {
+    width: 480px;
+    word-wrap: break-word;
+    padding-left: 20px;
+}
+
+.article_text {
+    margin-left: 20px;
+    word-wrap: break-word;
+}

@@ -82,7 +82,6 @@ public class ConnectionPool {
             givenAwayConQueue.add(connection);
 
         } catch (InterruptedException e) {
-            logger.error("Error connecting to the data source.", e);
             throw new ConnectionPoolException("Error connecting to the data source.", e);
         }
         return connection;
@@ -113,14 +112,12 @@ public class ConnectionPool {
         try {
             con.close();
         } catch (SQLException e) {
-            logger.error("Connection isn't return to the pool.");
-            throw new ConnectionPoolException(e);
+            throw new ConnectionPoolException("Connection isn't return to the pool.",e);
         }
         try {
             st.close();
         } catch (SQLException e) {
-            logger.error("Statement isn't closed.");
-            throw new ConnectionPoolException(e);
+            throw new ConnectionPoolException("Statement isn't closed.",e);
         }
     }
 

@@ -8,9 +8,6 @@ import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-/**
- * EncodingFilter реализует интерфейс Filter
- */
 @WebFilter("/EncodingFilter")
 public class EncodingFilter implements Filter {
 

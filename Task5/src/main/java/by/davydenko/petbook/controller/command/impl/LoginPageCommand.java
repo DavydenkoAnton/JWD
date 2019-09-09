@@ -13,24 +13,18 @@ import java.io.IOException;
 public class LoginPageCommand implements Command {
 
     private static Logger logger = LogManager.getLogger(LoginPageCommand.class);
-    private static final String TARGET_PAGE = "/login.jsp";
+    private static final String TARGET_PAGE = "/WEB-INF/jsp/login.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
-        RequestDispatcher dispatcher;
-
-
         try {
-            dispatcher = request.getServletContext().getRequestDispatcher(TARGET_PAGE);
+            RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher(TARGET_PAGE);
             dispatcher.forward(request, response);
-        } catch (ServletException e) {
-            logger.error("[ ServletException ]", e);
         } catch (IOException e) {
-            logger.error("[ IOException ]", e);
+            logger.error("IOException (not redirected)", e);
+        } catch (ServletException e) {
+            logger.error("ServletException (not redirected)", e);
         }
-
-
     }
-
 }

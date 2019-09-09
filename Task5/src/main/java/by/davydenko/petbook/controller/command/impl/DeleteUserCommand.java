@@ -13,8 +13,8 @@ import java.io.IOException;
 
 public class DeleteUserCommand implements Command {
 
-    private static Logger logger = LogManager.getLogger(LoginCommand.class);
-    private static final String REDIRECT_ADMIN_PAGE_URL = "http://localhost:8080/Task5/admin.html";
+    private static Logger logger = LogManager.getLogger(LoginUserCommand.class);
+    private static final String REDIRECT_ADMIN_PAGE_URL = "http://localhost:8080/pb/admin.html";
     private UserService userService;
     private ServiceFactory serviceFactory;
 

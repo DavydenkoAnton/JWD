@@ -12,7 +12,7 @@ import java.io.IOException;
 public class ChangeLocaleCommand implements Command {
 
     private static Logger logger = LogManager.getLogger(ChangeLocaleCommand.class);
-    private static final String REDIRECT_PAGE_URL = "http://localhost:8080/Task5/main.html";
+    private static final String REDIRECT_PAGE_URL = "http://localhost:8080/pb/main.html";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {

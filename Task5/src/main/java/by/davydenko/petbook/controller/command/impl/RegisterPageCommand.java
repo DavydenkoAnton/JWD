@@ -4,8 +4,6 @@ import by.davydenko.petbook.controller.command.Command;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -13,21 +11,15 @@ import java.io.IOException;
 public class RegisterPageCommand implements Command {
 
     private static Logger logger = LogManager.getLogger(RegisterPageCommand.class);
-    private static final String TARGET_PAGE = "/registration.jsp";
+    private static final String REGISTRATION_PAGE_URL = "http://localhost:8080/pb/registration.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
-        RequestDispatcher dispatcher;
-
-
+        //response.setContentType("registration.jsp");
         try {
-            dispatcher = request.getServletContext().getRequestDispatcher(TARGET_PAGE);
-            dispatcher.forward(request, response);
-        } catch (ServletException e) {
-            logger.error("[ ServletException ]", e);
+            response.sendRedirect(REGISTRATION_PAGE_URL);
         } catch (IOException e) {
-            logger.error("[ IOException ]", e);
+            logger.error("IOException (not redirected)", e);
         }
     }
 }

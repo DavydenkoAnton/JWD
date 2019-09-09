@@ -1,0 +1,9 @@
+.statistic {
+}
+
+.pet_statistic {
+    float: left;
+    margin-left: 2%;
+    margin-top: 2%;
+    width: 10%;
+}

@@ -1,6 +1,8 @@
 package by.davydenko.petbook.controller.command.impl;
 
 import by.davydenko.petbook.controller.command.Command;
+import by.davydenko.petbook.controller.command.util.Attribute;
+import by.davydenko.petbook.entity.Role;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,28 +14,40 @@ import java.io.IOException;
 public class LogoutUserCommand implements Command {
 
     private static Logger logger = LogManager.getLogger(LogoutUserCommand.class);
-    private static final String REDIRECT_MAIN_PAGE_URL = "http://localhost:8080/Task5/main.html";
+    private static final String REDIRECT_MAIN_PAGE_URL = "http://localhost:8080/pb/main.html";
+    private static final String REDIRECT_USER_PAGE_URL = "http://localhost:8080/pb/main.html";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
         HttpSession session = request.getSession(true);
-        String authorized = (String) session.getAttribute("authorized");
+        boolean authorized = (boolean) session.getAttribute(Attribute.AUTHORIZED);
 
-        if (authorized != null && authorized.equals("true")) {
-            session.setAttribute("authorized","");
-            session.setAttribute("role","");
-            session.setAttribute("id","");
+        if (authorized) {
+            session.invalidate();
+            redirectToMainPage(response);
+        } else {
+            redirectToUserPage(response);
         }
-        redirectToMainPage(request,response);
+
     }
 
-    private void redirectToMainPage(HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType("main.jsp");
+    private void redirectToMainPage(HttpServletResponse response) {
         try {
             response.sendRedirect(REDIRECT_MAIN_PAGE_URL);
         } catch (IOException e) {
             logger.error("IOException (not redirected)", e);
         }
     }
+
+    private void redirectToUserPage(HttpServletResponse response) {
+
+        try {
+            response.sendRedirect(REDIRECT_USER_PAGE_URL);
+        } catch (IOException e) {
+            logger.error("IOException (not redirected)", e);
+        }
+    }
+
 }
+

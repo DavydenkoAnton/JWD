@@ -11,4 +11,5 @@ public abstract class Animal extends Entity {
     public void setName(String name) {
         this.name = name;
     }
+
 }

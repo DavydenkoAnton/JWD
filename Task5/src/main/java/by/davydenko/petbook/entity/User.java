@@ -2,18 +2,20 @@ package by.davydenko.petbook.entity;
 
 import java.util.List;
 
+import static by.davydenko.petbook.entity.Role.USER;
+
 public class User extends Person {
 
 
     private String login;
     private String password;
     private String email;
+    private String avatarURL;
     private int phoneNumber;
-    private String role;
-    private List<Message> messages;
-    private List<Pet> pets;
+    private Role role;
 
     public User() {
+        role=USER;
     }
 
     public String getEmail() {
@@ -48,12 +50,19 @@ public class User extends Person {
         this.login = login;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
+    public String getAvatarURL() {
+        return avatarURL;
+    }
+
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
+    }
 }
