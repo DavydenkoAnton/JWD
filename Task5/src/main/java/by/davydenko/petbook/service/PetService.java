@@ -33,4 +33,10 @@ public interface PetService extends Service<Pet> {
     int getBirdPrefer() throws ServiceException;
 
     int getOtherPrefer() throws ServiceException;
+
+    Optional<List<Pet>> getPetsByType(HttpServletRequest request) throws ServiceException;
+
+    Optional<List<Pet>> getAllPets() throws ServiceException;
+
+    Optional<Pet> getPetById(HttpServletRequest request) throws ServiceException;
 }

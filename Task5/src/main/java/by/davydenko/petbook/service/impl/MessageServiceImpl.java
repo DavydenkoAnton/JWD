@@ -39,6 +39,26 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public int getReceiverId(HttpServletRequest request) throws ServiceException {
+        int receiverId;
+        try {
+            receiverId = messageCreator.createReceiverId(request);
+        } catch (CreatorException e) {
+            throw new ServiceException(e);
+        }
+        return receiverId;
+    }
+
+    @Override
+    public boolean isFriend(HttpServletRequest request) {
+
+            int userId=messageCreator.createByUserId(request);
+
+
+        return true;
+    }
+
+    @Override
     public String getMessage(HttpServletRequest request) {
         validatorFactory = ValidatorFactory.getInstance();
         creatorFactory = CreatorFactory.getInstance();
@@ -80,7 +100,7 @@ public class MessageServiceImpl implements MessageService {
             userId = messageCreator.createUserId(request);
             senderId = messageCreator.createSenderId(request);
         } catch (CreatorException e) {
-            e.printStackTrace();
+            throw new ServiceException(e);
         }
         try {
             optionalMessages = messageDao.readChatMessages(userId, senderId);

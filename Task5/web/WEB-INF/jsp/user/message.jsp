@@ -13,6 +13,7 @@
     <link href="<c:url value="/css/messages.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/header.css"/> " rel="stylesheet" type="text/css">
+    <link href="<c:url value="/css/content.css"/> " rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -55,7 +56,7 @@
                                         ${sender.name}
                                 </div>
                                 <div class="user_message">
-                                        ${chatMessage.message}
+                                    <p>${chatMessage.message}</p>
                                 </div>
                                 <div class="date_message">
                                         ${chatMessage.date}
@@ -75,7 +76,7 @@
                                placeholder="message"/>
 
                     </label><br/>
-                    <button type="submit" name="messageSenderId" value="${sender.userId}">
+                    <button type="submit" name="userId" value="${sender.userId}">
                         <fmt:message key="global.text.send" bundle="${cnt}"/>
                     </button>
                 </form>

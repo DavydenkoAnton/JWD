@@ -15,7 +15,7 @@
             <fmt:message key="global.text.myPage" bundle="${cnt}"/></a>
     </c:if>
 
-    <a href="<fmt:message key="command.petsPage" bundle="${cnt}"/>">
+    <a href="<fmt:message key="command.getAllPets" bundle="${cnt}"/>">
         <fmt:message key="global.text.pets" bundle="${cnt}"/></a>
     <a href="<fmt:message key="command.articlesPage" bundle="${cnt}"/>">
         <fmt:message key="global.text.articles" bundle="${cnt}"/></a>

@@ -24,9 +24,9 @@ public class MessageCreatorImpl implements MessageCreator {
     public int createSenderId(HttpServletRequest request) throws CreatorException {
         int userId = 0;
         try {
-            userId = Integer.parseInt(request.getParameter(Attribute.MESSAGE_SENDER_ID));
+            userId = Integer.valueOf(request.getParameter(Attribute.USER_ID));
         } catch (NumberFormatException e) {
-            throw new CreatorException("wrong user id format");
+            throw new CreatorException("wrong user id format",e);
         }
         return userId;
     }
@@ -59,5 +59,27 @@ public class MessageCreatorImpl implements MessageCreator {
         java.util.Date dt = new java.util.Date();
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(dt);
+    }
+
+    @Override
+    public int createReceiverId(HttpServletRequest request) throws CreatorException {
+        int receiverId = 0;
+        try {
+            receiverId = Integer.parseInt(request.getParameter(Attribute.RECEIVER_ID));
+        } catch (NumberFormatException e) {
+            throw new CreatorException("wrong user id format");
+        }
+        return receiverId;
+    }
+
+    @Override
+    public int createByUserId(HttpServletRequest request)  {
+        int userId;
+        try {
+            userId = (int)request.getSession().getAttribute(Attribute.USER_ID);
+        } catch (ClassCastException e) {
+            userId=0;
+        }
+        return userId;
     }
 }

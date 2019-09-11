@@ -4,7 +4,7 @@ import by.davydenko.petbook.controller.command.util.Attribute;
 import by.davydenko.petbook.dao.DaoException;
 import by.davydenko.petbook.dao.DaoFactory;
 import by.davydenko.petbook.dao.PetDao;
-import by.davydenko.petbook.entity.ArticleType;
+import by.davydenko.petbook.entity.PetType;
 import by.davydenko.petbook.entity.Pet;
 import by.davydenko.petbook.service.PetService;
 import by.davydenko.petbook.service.ServiceException;
@@ -33,42 +33,77 @@ import java.util.Optional;
 
 public final class PetServiceImpl implements PetService {
 
-    private static Logger logger = LogManager.getLogger(PetServiceImpl.class);
     private static final String PET_AVATAR_FOLDER = "img/pets_avatars";
     private static final String JPEG_FORMAT = "image/jpeg";
-    private CreatorFactory creatorFactory = CreatorFactory.getInstance();
-    private DaoFactory daoFactory = DaoFactory.getInstance();
     private UserCreator userCreator;
     private PetCreator petCreator;
     private PetDao petDao;
 
     public PetServiceImpl() {
+        CreatorFactory creatorFactory = CreatorFactory.getInstance();
+        DaoFactory daoFactory = DaoFactory.getInstance();
         userCreator = creatorFactory.getUserCreator();
         petCreator = creatorFactory.getPetCreator();
         petDao = daoFactory.getPetDao();
     }
 
     @Override
+    public Optional<List<Pet>> getAllPets() throws ServiceException {
+        Optional<List<Pet>> optionalPets;
+        try {
+            optionalPets=petDao.read();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalPets;
+    }
+
+    @Override
+    public Optional<List<Pet>> getPetsByType(HttpServletRequest request) throws ServiceException {
+        Optional<List<Pet>> optionalPets;
+        PetType petType;
+        try {
+            petType = petCreator.createType(request);
+        } catch (CreatorException e) {
+            throw new ServiceException(e);
+        }
+        if (petType != null) {
+            try {
+                optionalPets = petDao.readByType(petType);
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            }
+        } else {
+            try {
+                optionalPets = petDao.read();
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            }
+        }
+        return optionalPets;
+    }
+
+    @Override
     public int getDogPrefer() throws ServiceException {
-        return getPrefer(ArticleType.DOG);
+        return getPrefer(PetType.DOG);
     }
 
     @Override
     public int getCatPrefer() throws ServiceException {
-        return getPrefer(ArticleType.CAT);
+        return getPrefer(PetType.CAT);
     }
 
     @Override
     public int getBirdPrefer() throws ServiceException {
-        return getPrefer(ArticleType.BIRD);
+        return getPrefer(PetType.BIRD);
     }
 
     @Override
     public int getOtherPrefer() throws ServiceException {
-        return getPrefer(ArticleType.OTHERS);
+        return getPrefer(PetType.OTHERS);
     }
 
-    private int getPrefer(ArticleType type) throws ServiceException {
+    private int getPrefer(PetType type) throws ServiceException {
         Optional<List<Pet>> optionalPetsByType;
         Optional<List<Pet>> optionalPets;
         int result = 0;
@@ -82,7 +117,7 @@ public final class PetServiceImpl implements PetService {
                     double byTypePets = petsByType.size();
                     double allPets = petsAll.size();
                     double buffResult = 100 / (allPets / byTypePets);
-                    result = (int)buffResult;
+                    result = (int) buffResult;
                 }
             }
         } catch (DaoException e) {
@@ -105,7 +140,19 @@ public final class PetServiceImpl implements PetService {
     public Optional<Pet> getPetByUserId(HttpServletRequest request) throws ServiceException {
         Optional<Pet> pet;
         try {
-            int id = userCreator.createId(request);
+            int id = petCreator.idByUserId(request);
+            pet = petDao.readByUserId(id);
+        } catch (CreatorException | DaoException e) {
+            throw new ServiceException(e);
+        }
+        return pet;
+    }
+
+    @Override
+    public Optional<Pet> getPetById(HttpServletRequest request) throws ServiceException {
+        Optional<Pet> pet;
+        try {
+            int id = petCreator.byId(request);
             pet = petDao.readByUserId(id);
         } catch (CreatorException | DaoException e) {
             throw new ServiceException(e);

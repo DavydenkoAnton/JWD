@@ -13,4 +13,8 @@ public interface MessageService extends Service<Message> {
     String getMessage(HttpServletRequest request);
 
     Optional<List<Message>> getChatMessages(HttpServletRequest request) throws ServiceException;
+
+    int getReceiverId(HttpServletRequest request) throws ServiceException;
+
+    boolean isFriend(HttpServletRequest request);
 }

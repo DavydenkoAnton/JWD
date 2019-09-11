@@ -6,8 +6,7 @@ import by.davydenko.petbook.dao.DaoException;
 import by.davydenko.petbook.dao.pool.ConnectionPool;
 import by.davydenko.petbook.dao.pool.ConnectionPoolException;
 import by.davydenko.petbook.entity.Article;
-import by.davydenko.petbook.entity.ArticleType;
-import by.davydenko.petbook.entity.Message;
+import by.davydenko.petbook.entity.PetType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,7 +32,7 @@ public class ArticleDaoImpl implements ArticleDao {
     }
 
     @Override
-    public Optional<List<Article>> readByType(ArticleType articleType) throws DaoException {
+    public Optional<List<Article>> readByType(PetType petType) throws DaoException {
         List<Article> articles = null;
         Connection connection;
         ConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -47,7 +46,7 @@ public class ArticleDaoImpl implements ArticleDao {
         }
         try {
             preparedStatement = connection.prepareStatement(SELECT_ARTICLES_BY_TYPE);
-            preparedStatement.setString(1, articleType.toString());
+            preparedStatement.setString(1, petType.toString());
             resultSet = preparedStatement.executeQuery();
             articles = new ArrayList<>();
             while (resultSet.next()) {
@@ -57,7 +56,7 @@ public class ArticleDaoImpl implements ArticleDao {
                 article.setText(resultSet.getString(Attribute.TEXT));
                 article.setDescription(resultSet.getString(Attribute.DESCRIPTION));
                 article.setId(resultSet.getInt(Attribute.ID));
-                article.setArticleType(ArticleType.valueOf(resultSet.getString(Attribute.TYPE)));
+                article.setPetType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
                 articles.add(article);
             }
         } catch (SQLException e) {
@@ -96,7 +95,7 @@ public class ArticleDaoImpl implements ArticleDao {
                 article.setText(resultSet.getString(Attribute.TEXT));
                 article.setDescription(resultSet.getString(Attribute.DESCRIPTION));
                 article.setId(resultSet.getInt(Attribute.ID));
-                article.setArticleType(ArticleType.valueOf(resultSet.getString(Attribute.TYPE)));
+                article.setPetType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
             }
         } catch (SQLException e) {
             throw new DaoException(e);

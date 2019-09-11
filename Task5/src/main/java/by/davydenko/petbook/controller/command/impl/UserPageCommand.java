@@ -39,20 +39,15 @@ public class UserPageCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         try {
-            Optional<Pet> optionalPet = petService.getPetByUserId(request);
+            Optional<Pet> optionalPet = petService.getPetById(request);
             if (optionalPet.isPresent()) {
                 Pet pet = optionalPet.get();
                 request.getSession().setAttribute(Attribute.PET, pet);
             }
-            Optional<User> optionalUser = userService.getUserById(request);
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
-                request.getSession().setAttribute(Attribute.USER, user);
-                if (user.getRole().equals(Role.USER)) {
-                    forwardToUserPage(request, response);
-                } else if (user.getRole().equals(Role.ADMIN)) {
-                    forwardToAdminPage(request, response);
-                }
+            if (request.getSession().getAttribute(Attribute.ROLE).equals(Role.USER)) {
+                forwardToUserPage(request, response);
+            } else if (request.getSession().getAttribute(Attribute.ROLE).equals(Role.ADMIN)) {
+                forwardToAdminPage(request, response);
             } else {
                 forwardToLoginPage(request, response);
             }

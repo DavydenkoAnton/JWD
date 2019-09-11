@@ -8,8 +8,8 @@
 <html>
 <head>
     <title><fmt:message key="global.text.profile" bundle="${cnt}"/></title>
-    <link href="<c:url value="../../../css/style.css"/>" rel="stylesheet" type="text/css">
-    <link href="<c:url value="../../../css/header.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/css/header.css"/>" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="wrapper">

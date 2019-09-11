@@ -17,10 +17,10 @@ import java.util.Optional;
 
 public class MessageDaoImpl implements MessageDao {
 
-    private final static String SELECT_CHAT_MESSAGES = "SELECT message,date,user_id,sender_id FROM petbook.messages " +
-            "WHERE (user_id=? OR sender_id=?) AND (user_id=? OR sender_id=?) ORDER BY date DESC ";
+    private final static String SELECT_CHAT_MESSAGES = "SELECT message,date,userId,senderId FROM petbook.messages " +
+            "WHERE (userId=? OR senderId=?) AND (userId=? OR senderId=?) ORDER BY date DESC ";
     private final static String INSERT_MESSAGE = "INSERT INTO petbook.messages " +
-            "(message, user_id, sender_id,date) VALUES (?, ?, ?,?)";
+            "(message, userId, senderId,date) VALUES (?, ?, ?,?)";
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;

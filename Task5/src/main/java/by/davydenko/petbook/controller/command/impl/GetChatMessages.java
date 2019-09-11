@@ -34,12 +34,12 @@ public class GetChatMessages implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         try {
-            Optional<Pet> optionalSender = petService.getSender(request);
+            Optional<Pet> optionalSender = petService.getPetByUserId(request);
             if (optionalSender.isPresent()) {
                 Pet sender = optionalSender.get();
                 request.getSession().setAttribute(Attribute.MESSAGE_SENDER, sender);
             }
-            Optional<Pet> optionalReceiver=petService.getReceiver(request);
+            Optional<Pet> optionalReceiver=petService.getPetById(request);
             if (optionalReceiver.isPresent()) {
                 Pet receiver = optionalReceiver.get();
                 request.getSession().setAttribute(Attribute.MESSAGE_RECEIVER, receiver);

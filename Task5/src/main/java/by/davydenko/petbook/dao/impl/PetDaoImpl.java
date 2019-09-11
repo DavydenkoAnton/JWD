@@ -6,7 +6,7 @@ import by.davydenko.petbook.dao.PetDao;
 import by.davydenko.petbook.dao.pool.ConnectionPool;
 import by.davydenko.petbook.dao.pool.ConnectionPoolException;
 import by.davydenko.petbook.dao.util.DBHelper;
-import by.davydenko.petbook.entity.ArticleType;
+import by.davydenko.petbook.entity.PetType;
 import by.davydenko.petbook.entity.Pet;
 
 import java.sql.Connection;
@@ -19,16 +19,16 @@ import java.util.Optional;
 
 public class PetDaoImpl implements PetDao {
 
-    private static final String SELECT_PET_BY_USER_ID = "SELECT name,breed,age,avatarUrl,user_id FROM petbook.pets WHERE user_id=?";
+    private static final String SELECT_PET_BY_USER_ID = "SELECT name,breed,age,avatarUrl,userId FROM petbook.pets WHERE userId=?";
     private static final String SELECT_ALL = "SELECT * FROM petbook.pets";
-    private static final String SELECT_PETS_BY_TYPE = "SELECT name,breed,age,avatarUrl,user_id,type FROM petbook.pets WHERE type=?";
-    private static final String SELECT_PET_BY_SENDER_MESSAGE_ID = "SELECT name,breed,age,avatarUrl,user_id FROM petbook.pets " +
-            "WHERE pets.user_id IN (SELECT petbook.messages.sender_id FROM petbook.messages WHERE messages.user_id=?)";
-    private final static String UPDATE_PET_NAME = "UPDATE petbook.pets  SET name=? WHERE user_id=? ";
-    private final static String UPDATE_PET_BREED = "UPDATE petbook.pets  SET breed=? WHERE user_id=? ";
-    private final static String UPDATE_PET_AVATAR = "UPDATE petbook.pets  SET avatarUrl=? WHERE user_id=? ";
-    private final static String UPDATE_PET_AGE = "UPDATE petbook.pets  SET age=? WHERE user_id=? ";
-    private final static String CREATE_BY_USER_ID = "INSERT INTO petbook.pets (user_id) VALUES (?)";
+    private static final String SELECT_PETS_BY_TYPE = "SELECT name,breed,age,avatarUrl,userId,type FROM petbook.pets WHERE type=?";
+    private static final String SELECT_PET_BY_SENDER_MESSAGE_ID = "SELECT name,breed,age,avatarUrl,userId FROM petbook.pets " +
+            "WHERE pets.userId IN (SELECT petbook.messages.senderId FROM petbook.messages WHERE messages.userId=?)";
+    private final static String UPDATE_PET_NAME = "UPDATE petbook.pets  SET name=? WHERE userId=? ";
+    private final static String UPDATE_PET_BREED = "UPDATE petbook.pets  SET breed=? WHERE userId=? ";
+    private final static String UPDATE_PET_AVATAR = "UPDATE petbook.pets  SET avatarUrl=? WHERE userId=? ";
+    private final static String UPDATE_PET_AGE = "UPDATE petbook.pets  SET age=? WHERE userId=? ";
+    private final static String CREATE_BY_USER_ID = "INSERT INTO petbook.pets (userId) VALUES (?)";
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
@@ -155,7 +155,7 @@ public class PetDaoImpl implements PetDao {
     }
 
     @Override
-    public Optional<List<Pet>> readByType(ArticleType type) throws DaoException {
+    public Optional<List<Pet>> readByType(PetType type) throws DaoException {
         List<Pet> pets = null;
         connection = null;
         connectionPool = ConnectionPool.getInstance();

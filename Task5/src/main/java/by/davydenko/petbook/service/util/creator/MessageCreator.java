@@ -14,4 +14,8 @@ public interface MessageCreator extends Creator<Message> {
     int createSenderId(HttpServletRequest request) throws CreatorException;
     String createMessage(HttpServletRequest request) throws CreatorException;
     String createDate(HttpServletRequest request);
+
+    int createReceiverId(HttpServletRequest request) throws CreatorException;
+
+    int createByUserId(HttpServletRequest request);
 }

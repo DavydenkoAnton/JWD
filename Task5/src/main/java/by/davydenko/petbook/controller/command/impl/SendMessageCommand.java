@@ -17,7 +17,7 @@ public class SendMessageCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger(SendMessageCommand.class);
 
-    private static final String REDIRECT_MESSAGE_PAGE_URL = "http://localhost:8080/pb/message.html";
+    private static final String REDIRECT_MESSAGE_PAGE_URL = "http://localhost:8080/pb/messages.html";
     private MessageService messageService;
     private ServiceFactory serviceFactory;
     private UserService userService;

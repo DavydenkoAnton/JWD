@@ -34,7 +34,7 @@ public final class ArticlesPageCommand implements by.davydenko.petbook.controlle
             if (optionalArticles.isPresent()) {
                 List<Article> articles = optionalArticles.get();
                 request.getSession().setAttribute(Attribute.ARTICLES, articles);
-                request.getSession().setAttribute(Attribute.ARTICLE_TYPE, articles.get(0).getArticleType());
+                request.getSession().setAttribute(Attribute.ARTICLE_TYPE, articles.get(0).getPetType());
             }
         } catch (ServiceException e) {
             logger.error(e);

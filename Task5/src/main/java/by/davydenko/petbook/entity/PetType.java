@@ -1,6 +1,6 @@
 package by.davydenko.petbook.entity;
 
-public enum ArticleType {
+public enum PetType {
     DOG("dog"),
     CAT("cat"),
     BIRD("bird"),
@@ -8,12 +8,12 @@ public enum ArticleType {
 
     private final String name;
 
-     ArticleType(String name) {
+     PetType(String name) {
         this.name = name;
     }
 
-    public static ArticleType getType(int id) {
-        return ArticleType.values()[id];
+    public static PetType getType(int id) {
+        return PetType.values()[id];
     }
 
     public int getId() {

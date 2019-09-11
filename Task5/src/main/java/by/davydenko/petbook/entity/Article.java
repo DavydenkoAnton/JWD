@@ -1,19 +1,17 @@
 package by.davydenko.petbook.entity;
 
-import com.sun.istack.internal.NotNull;
-
 
 public class Article extends Text {
-    private ArticleType articleType;
+    private PetType petType;
     private String title;
     private String description;
 
-    public ArticleType getArticleType() {
-        return articleType;
+    public PetType getPetType() {
+        return petType;
     }
 
-    public void setArticleType(ArticleType articleType) {
-        this.articleType = articleType;
+    public void setPetType(PetType petType) {
+        this.petType = petType;
     }
 
     public String getTitle() {

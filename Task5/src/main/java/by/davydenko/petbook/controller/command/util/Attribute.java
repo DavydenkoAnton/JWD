@@ -6,25 +6,29 @@ public final class Attribute {
     public static final String ARTICLE = "article";
     public static final String ARTICLE_TYPE = "articleType";
     public static final String ARTICLE_TITLE = "articleTitle";
+    public static final String BREED = "breed";
     public static final String DOG_PREFER_VALUE = "dogPreferValue";
     public static final String CAT_PREFER_VALUE = "catPreferValue";
     public static final String BIRD_PREFER_VALUE = "birdPreferValue";
+    public static final String FRIEND = "friend";
     public static final String OTHER_PREFER_VALUE = "otherPreferValue";
     public static final String MESSAGE_SENDER = "messageSender";
     public static final String MESSAGE_SENDER_ID = "messageSenderId";
     public static final String MESSAGE_DATE = "date";
+    public static final String PET_TYPE = "petType";
     public static final String LOGIN = "login";
     public static final String CHAT_MESSAGES = "chatMessages";
     public static final String ROLE = "role";
     public static final String AUTHORIZED = "authorized";
     public static final String TYPE = "type";
     public static final String USER = "user";
-    public static final String USER_ID = "user_id";
-    public static final String SENDER_ID = "sender_id";
+    public static final String USER_ID = "userId";
+    public static final String SENDER_ID = "senderId";
     public static final String USER_AVATAR = "userAvatar";
     public static final String PET_AVATAR = "petAvatar";
     public static final String AVATAR_URL = "avatarUrl";
     public static final String PET = "pet";
+    public static final String PETS = "pets";
     public static final String NAME = "name";
     public static final String EMAIL = "email";
     public static final String PHONE_NUMBER = "phoneNumber";
@@ -39,4 +43,5 @@ public final class Attribute {
     public static final String DOGS = "dogs";
     public static final String CATS = "cats";
     public static final String BIRDS = "birds";
+    public static final String RECEIVER_ID = "receiverId";
 }

@@ -1,6 +1,6 @@
 package by.davydenko.petbook.dao;
 
-import by.davydenko.petbook.entity.ArticleType;
+import by.davydenko.petbook.entity.PetType;
 import by.davydenko.petbook.entity.Pet;
 
 import java.util.List;
@@ -35,5 +35,5 @@ public interface PetDao extends Dao<Pet> {
 
     void createByUserId(int userId) throws DaoException;
 
-    Optional<List<Pet>> readByType(ArticleType type) throws DaoException;
+    Optional<List<Pet>> readByType(PetType type) throws DaoException;
 }

@@ -64,12 +64,17 @@ public class SecurityUriFilter implements Filter {
         userAuthorizedCommands.add("editPetBreed");
         userAuthorizedCommands.add("profile");
         userAuthorizedCommands.add("getChatMessages");
+        userAuthorizedCommands.add("sendMessagePage");
+        userAuthorizedCommands.add("visit");
 
         userNotAuthorizedCommands = new ArrayList<>();
         userNotAuthorizedCommands.add("main");
         userNotAuthorizedCommands.add("articles");
         userNotAuthorizedCommands.add("article");
         userNotAuthorizedCommands.add("login");
+        userNotAuthorizedCommands.add("pets");
+        userNotAuthorizedCommands.add("getAllPets");
+        userNotAuthorizedCommands.add("getPetsByType");
         userNotAuthorizedCommands.add("registerUser");
         userNotAuthorizedCommands.add("registration");
         userNotAuthorizedCommands.add("login");

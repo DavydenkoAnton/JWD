@@ -2,7 +2,7 @@
 }
 
 .main_content {
-    width: 88%;
+    width: 90%;
     height: 300px;
     margin-left: 12%;
 }
@@ -13,11 +13,79 @@
     width: 60%;
     display: block;
 }
+
 .main_content p {
     text-indent: 20px;
     word-wrap: break-word;
+    width: 95%;
 }
 
 .main_content h3 {
     text-indent: 20px;
+}
+
+.pets_content {
+    margin-left: 10%;
+    width: 90%;
+}
+
+.pets_content table {
+    width: 100%;
+}
+
+.pets_content_item {
+    margin-top: 10px;
+    width: 100%;
+    height: 100px;
+    border-radius: 10px;
+    background-color: aliceblue;
+}
+
+.pets_content_item img {
+    float: left;
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 80px;
+    border-radius: 50%;
+}
+
+.pets_content_item_credentials {
+    float: left;
+    width: 200px;
+    margin-top: 10px;
+    margin-left: 50px;
+}
+
+.pets_content_item_credentials p {
+    margin-top: 40px;
+    font-family: Calibri,sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+}
+
+.pets_content_item_credentials a {
+    text-decoration: none;
+    font-size: 12px;
+    font-family: arial, serif;
+    color: cadetblue;
+}
+
+.pets_content_item_credentials a:hover {
+    color: blue;
+}
+
+.btn-link {
+    padding: 0;
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+    color: dimgray;
+    font-family: arial, serif;
+    font-size: 14px;
+}
+
+.btn-link:hover {
+color: blue;
 }

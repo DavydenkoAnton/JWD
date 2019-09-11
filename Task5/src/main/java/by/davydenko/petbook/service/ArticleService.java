@@ -1,7 +1,6 @@
 package by.davydenko.petbook.service;
 
 import by.davydenko.petbook.entity.Article;
-import by.davydenko.petbook.entity.ArticleType;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
