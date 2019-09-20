@@ -32,8 +32,9 @@ public class ArticlePageCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<Article> optionalArticle;
+        String articleTitle = request.getParameter(Attribute.ARTICLE_TITLE);
         try {
-            optionalArticle = articleService.getArticle(request);
+            optionalArticle = articleService.getArticle(articleTitle);
             if (optionalArticle.isPresent()) {
                 Article article = optionalArticle.get();
                 request.getSession().setAttribute(Attribute.ARTICLE, article);
@@ -45,6 +46,9 @@ public class ArticlePageCommand implements Command {
         }
         forwardToArticlesPage(request, response);
     }
+
+
+
 
     private void forwardToArticlePage(HttpServletRequest request, HttpServletResponse response) {
         try {

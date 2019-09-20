@@ -47,11 +47,13 @@ public class SecurityUriFilter implements Filter {
     static {
         adminCommands = new ArrayList<>();
         adminCommands.add("admin");
-        adminCommands.add("deleteUser");
+        adminCommands.add("deleteByLogin");
 
 
         userAuthorizedCommands = new ArrayList<>();
+        userAuthorizedCommands.add("addPetPhoto");
         userAuthorizedCommands.add("user");
+        userAuthorizedCommands.add("photos");
         userAuthorizedCommands.add("pet");
         userAuthorizedCommands.add("logout");
         userAuthorizedCommands.add("messages");
@@ -64,6 +66,8 @@ public class SecurityUriFilter implements Filter {
         userAuthorizedCommands.add("editPetBreed");
         userAuthorizedCommands.add("profile");
         userAuthorizedCommands.add("getChatMessages");
+        userAuthorizedCommands.add("pagingPetPhotoNext");
+        userAuthorizedCommands.add("pagingPetPhotoPrev");
         userAuthorizedCommands.add("sendMessagePage");
         userAuthorizedCommands.add("visit");
 

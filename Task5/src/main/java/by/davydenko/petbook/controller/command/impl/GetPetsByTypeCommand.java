@@ -26,8 +26,9 @@ public class GetPetsByTypeCommand implements by.davydenko.petbook.controller.com
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<List<Pet>> optionalPets;
+        String petType=request.getParameter(Attribute.PET_TYPE);
         try{
-            optionalPets=petService.getPetsByType(request);
+            optionalPets=petService.getByType(petType);
             if(optionalPets.isPresent()){
                 List<Pet> pets=optionalPets.get();
                 request.getSession().setAttribute(Attribute.PETS,pets);

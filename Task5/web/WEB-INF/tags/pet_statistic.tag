@@ -6,20 +6,23 @@
 <fmt:setBundle basename="global" var="cnt"/>
 
 <div class="pet_statistic">
-    <div>
-        <p><fmt:message key="global.text.usersStatistic" bundle="${cnt}"/> </p>
+
+    <h3><fmt:message key="global.text.usersStatistic" bundle="${cnt}"/></h3>
+    <div class="pet_statistic_item">
+        <h4><fmt:message key="global.text.dogs" bundle="${cnt}"/></h4>
+        <h5>${sessionScope.dogPreferValue} %</h5>
     </div>
-    <div >
-        <p><fmt:message key="global.text.dogs" bundle="${cnt}"/> ${sessionScope.dogPreferValue} %</p>
+    <div class="pet_statistic_item">
+        <h4><fmt:message key="global.text.cats" bundle="${cnt}"/></h4>
+        <h5> ${sessionScope.catPreferValue} %</h5>
     </div>
-    <div>
-        <p><fmt:message key="global.text.cats" bundle="${cnt}"/> ${sessionScope.catPreferValue} %</p>
+    <div class="pet_statistic_item">
+        <h4><fmt:message key="global.text.birds" bundle="${cnt}"/></h4>
+        <h5> ${sessionScope.birdPreferValue} %</h5>
     </div>
-    <div>
-        <p><fmt:message key="global.text.birds" bundle="${cnt}"/> ${sessionScope.birdPreferValue} %</p>
-    </div>
-    <div>
-        <p><fmt:message key="global.text.other" bundle="${cnt}"/> ${sessionScope.otherPreferValue} %</p>
+    <div class="pet_statistic_item">
+        <h4><fmt:message key="global.text.other" bundle="${cnt}"/></h4>
+        <h5> ${sessionScope.otherPreferValue} %</h5>
     </div>
 </div>
 

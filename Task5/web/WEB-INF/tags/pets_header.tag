@@ -25,10 +25,10 @@
             <fmt:message key="global.text.birds" bundle="${cnt}"/>
         </button>
     </form>
-    <form action="<fmt:message key="command.petsPage" bundle="${cnt}"/>" method="post">
+    <form action="<fmt:message key="command.getPetsByType" bundle="${cnt}"/>" method="post">
         <button type="submit" name="<fmt:message key="global.text.petType" bundle="${cnt}"/>"
-                value="<fmt:message key="global.text.others" bundle="${cnt}"/>">
-            <fmt:message key="global.text.other" bundle="${cnt}"/>
+                value="<fmt:message key="global.text.other" bundle="${cnt}"/>">
+            <fmt:message key="global.text.others" bundle="${cnt}"/>
         </button>
     </form>
 </div>

@@ -16,8 +16,8 @@
     <link href="<c:url value="/css/content.css"/> " rel="stylesheet" type="text/css">
 </head>
 <body>
-<tag:header/>
 <div class="wrapper">
+    <tag:header/>
     <tag:pet_statistic/>
     <tag:main_content/>
 </div>

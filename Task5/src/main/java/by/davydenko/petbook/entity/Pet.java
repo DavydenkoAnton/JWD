@@ -3,7 +3,7 @@ package by.davydenko.petbook.entity;
 public class Pet extends Animal {
     private String breed;
     private int age;
-    private String avatarURL;
+    private String avatarUrl;
     private int userId;
 
     public String getBreed() {
@@ -22,12 +22,12 @@ public class Pet extends Animal {
         this.age = age;
     }
 
-    public String getAvatarURL() {
-        return avatarURL;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setAvatarURL(String avatarURL) {
-        this.avatarURL = avatarURL;
+    public void setAvatarUrl(String avatarURL) {
+        this.avatarUrl = avatarURL;
     }
 
     public int getUserId() {

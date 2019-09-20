@@ -7,14 +7,19 @@
 
 <fmt:setBundle basename="global" var="cnt"/>
 <c:set var="senders" value="${sessionScope.messageSenders}"/>
-<c:set var="sender" value="${sessionScope.messageSender}"/>
 <div class="sender">
     <table>
         <c:forEach items="${senders}" var="sender">
             <tr>
                 <td>
+                    <c:if test="${not empty sender.avatarUrl}">
+                        <img src="${sender.avatarUrl}" alt=""/>
+                    </c:if>
+                    <c:if test="${empty sender.avatarUrl}">
+                        <img src="<c:url value="/img/no_img_user.png"/>"alt="">
+                    </c:if>
                     <form action="<fmt:message key="command.getChatMessages" bundle="${cnt}"/>" method="post">
-                        <button class="btn-link" type="submit"
+                        <button class="sender_btn" type="submit"
                                 name="<fmt:message key="attribute.text.userId" bundle="${cnt}"/>"
                                 value="${sender.userId}">
                             ${sender.name}

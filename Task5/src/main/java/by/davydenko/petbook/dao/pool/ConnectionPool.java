@@ -8,7 +8,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.locks.ReentrantLock;
 
-import by.davydenko.petbook.dao.util.DBHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,18 +17,16 @@ public class ConnectionPool {
 
     private BlockingQueue<Connection> connectionQueue;
     private BlockingQueue<Connection> givenAwayConQueue;
-    private String driverName;
-    private String url;
-    private String user;
-    private String password;
-    private int poolSize;
+    private final static String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
+    private final static String URL = "jdbc:mysql://localhost:3306/petbook?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private final static String LOGIN = "root";
+    private final static String PASSWORD = "admin";
+    private final static int POOL_SIZE_MAX = 10;
 
     private static final ConnectionPool instance = new ConnectionPool();
-    private ReentrantLock locker = new ReentrantLock();
-
+    //private ReentrantLock locker = new ReentrantLock();
 
     private ConnectionPool() {
-
     }
 
     public static ConnectionPool getInstance() {
@@ -37,36 +34,25 @@ public class ConnectionPool {
     }
 
     public void init() throws ConnectionPoolException {
-        this.driverName = DBHelper.DB_DRIVER_CLASS;
-        this.url = DBHelper.DB_URL;
-        this.user = DBHelper.DB_LOGIN;
-        this.password = DBHelper.DB_PASSWORD;
-        this.poolSize = DBHelper.DB_POOL_MAX_SIZE;
         try {
-            Class.forName(driverName);
-            givenAwayConQueue = new ArrayBlockingQueue<>(poolSize);
-            connectionQueue = new ArrayBlockingQueue<>(poolSize);
-
-            for (int i = 0; i < poolSize; i++) {
-                Connection connection = DriverManager.getConnection(url, user, password);
+            Class.forName(DRIVER_NAME);
+            givenAwayConQueue = new ArrayBlockingQueue<>(POOL_SIZE_MAX);
+            connectionQueue = new ArrayBlockingQueue<>(POOL_SIZE_MAX);
+            for (int i = 0; i < POOL_SIZE_MAX; i++) {
+                Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
                 PooledConnection pooledConnection = new PooledConnection(connection);
                 connectionQueue.add(pooledConnection);
             }
-
-        } catch (SQLException e) {
-            logger.error("too many connections");
-            throw new ConnectionPoolException(e);
-        } catch (ClassNotFoundException e) {
-            logger.error("ClassNotFoundException in ConnectionPool ", e);
+        } catch (SQLException | ClassNotFoundException e) {
             throw new ConnectionPoolException(e);
         }
     }
 
-    public void dispose()throws ConnectionPoolException {
+    public void dispose() throws ConnectionPoolException {
         clearConnectionQueue();
     }
 
-    private void clearConnectionQueue() throws ConnectionPoolException{
+    private void clearConnectionQueue() throws ConnectionPoolException {
         try {
             closeConnectionsQueue(givenAwayConQueue);
             closeConnectionsQueue(connectionQueue);
@@ -108,20 +94,20 @@ public class ConnectionPool {
         }
     }
 
-    public void closeConnection(Connection con, Statement st)throws ConnectionPoolException {
+    public void closeConnection(Connection con, Statement st) throws ConnectionPoolException {
         try {
             con.close();
         } catch (SQLException e) {
-            throw new ConnectionPoolException("Connection isn't return to the pool.",e);
+            throw new ConnectionPoolException("Connection isn't return to the pool.", e);
         }
         try {
             st.close();
         } catch (SQLException e) {
-            throw new ConnectionPoolException("Statement isn't closed.",e);
+            throw new ConnectionPoolException("Statement isn't closed.", e);
         }
     }
 
-    private void closeConnectionsQueue(BlockingQueue<Connection> queue)throws ConnectionPoolException  {
+    private void closeConnectionsQueue(BlockingQueue<Connection> queue) throws ConnectionPoolException {
         Connection connection;
         try {
             while ((connection = queue.poll()) != null) {
@@ -130,13 +116,14 @@ public class ConnectionPool {
                 }
                 ((PooledConnection) connection).reallyClose();
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new ConnectionPoolException(e);
         }
     }
 
     /**
      * Inner private class PooledConnection of class ConnectionPool
+     *
      * @author Davydenko
      * @implNote Connection
      */

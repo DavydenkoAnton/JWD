@@ -23,13 +23,18 @@ public class MessagePageCommand implements Command {
     private static Logger logger = LogManager.getLogger(MessagePageCommand.class);
     private static final String ADMIN_MESSAGE_PAGE = "/WEB-INF/jsp/admin/message.jsp";
     private static final String USER_MESSAGE_PAGE = "/WEB-INF/jsp/user/message.jsp";
+    private PetService petService;
+
+    public MessagePageCommand(){
+        ServiceFactory serviceFactory = ServiceFactory.getInstance();
+        petService = serviceFactory.getPetService();
+    }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        ServiceFactory serviceFactory = ServiceFactory.getInstance();
-        PetService petService = serviceFactory.getPetService();
+        String userId = String.valueOf(request.getSession().getAttribute(Attribute.ID));
         try {
-            Optional<List<Pet>> optionalMessageSenders = petService.getMessageSenders(request);
+            Optional<List<Pet>> optionalMessageSenders = petService.getMessageSenders(userId);
             if (optionalMessageSenders.isPresent()) {
                 List<Pet> messageSenders = optionalMessageSenders.get();
                 request.getSession().setAttribute(Attribute.MESSAGE_SENDERS, messageSenders);
@@ -37,10 +42,10 @@ public class MessagePageCommand implements Command {
         } catch (ServiceException e) {
             logger.error(e);
         }
-if(request.getSession().getAttribute(Attribute.ROLE).equals(Role.ADMIN)){
-    redirectToAdminMessagePage(request, response);
-}else if(request.getSession().getAttribute(Attribute.ROLE).equals(Role.USER))
-        redirectToUserMessagePage(request, response);
+        if (request.getSession().getAttribute(Attribute.ROLE).equals(Role.ADMIN)) {
+            redirectToAdminMessagePage(request, response);
+        } else if (request.getSession().getAttribute(Attribute.ROLE).equals(Role.USER))
+            redirectToUserMessagePage(request, response);
     }
 
     private void redirectToUserMessagePage(HttpServletRequest request, HttpServletResponse response) {

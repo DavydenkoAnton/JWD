@@ -17,17 +17,15 @@ public class AdminPageMessagesCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        redirectToMessagePage(request, response);
+        forwardToMessagePage(request, response);
     }
 
-    private void redirectToMessagePage(HttpServletRequest request, HttpServletResponse response) {
+    private void forwardToMessagePage(HttpServletRequest request, HttpServletResponse response) {
         try {
             RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher(MESSAGE_PAGE);
             dispatcher.forward(request, response);
-        } catch (ServletException e) {
-            logger.error("[ ServletException ]", e);
-        } catch (IOException e) {
-            logger.error("[ IOException ]", e);
+        } catch (ServletException | IOException e) {
+            logger.error(e);
         }
     }
 }

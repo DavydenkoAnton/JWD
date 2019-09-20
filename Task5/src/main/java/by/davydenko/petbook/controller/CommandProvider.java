@@ -19,11 +19,13 @@ final class CommandProvider {
         commands.put("main", new MainPageCommand());
         commands.put("articles", new ArticlesPageCommand());
         commands.put("article", new ArticlePageCommand());
+        commands.put("addPetPhoto", new AddPetPhotoCommand());
         commands.put("locale", new ChangeLocaleCommand());
         commands.put("login", new LoginPageCommand());
+        commands.put("photos", new PhotosPageCommand());
         commands.put("visit", new VisitPageCommand());
         commands.put("loginUser", new LoginUserCommand());
-        commands.put("deleteUser", new DeleteUserCommand());
+        commands.put("deleteByLogin", new DeleteUserCommand());
         commands.put("user", new UserPageCommand());
         commands.put("pet", new PetPageCommand());
         commands.put("pets", new PetsPageCommand());
@@ -43,8 +45,8 @@ final class CommandProvider {
         commands.put("editPetName", new EditPetNameCommand());
         commands.put("editPetBreed", new EditPetBreedCommand());
         commands.put("editPetAge", new EditPetAgeCommand());
-        commands.put("pagingUsersNext", new PaggingUsersNext());
-        commands.put("pagingUsersPrev", new PaggingUsersPrev());
+        commands.put("pagingPetPhotoPrev", new PagingPetPhotoPrev());
+        commands.put("pagingPetPhotoNext", new PagingPetPhotoNext());
         commands.put("getChatMessages", new GetChatMessages());
     }
 

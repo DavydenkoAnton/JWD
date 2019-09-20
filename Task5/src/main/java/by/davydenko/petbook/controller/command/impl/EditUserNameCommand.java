@@ -9,22 +9,9 @@ import by.davydenko.petbook.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.WritableByteChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.Optional;
 
 public class EditUserNameCommand implements Command {
@@ -41,11 +28,12 @@ public class EditUserNameCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
+        String name = request.getParameter(Attribute.NAME);
+        String userId = request.getParameter(Attribute.USER_ID);
         try {
-            userService.uploadName(request);
-            Optional<User> optionalUser = userService.getUserById(request);
-            if(optionalUser.isPresent()) {
+            userService.uploadName(name, userId);
+            Optional<User> optionalUser = userService.getById(userId);
+            if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 request.getSession().setAttribute(Attribute.USER, user);
             }

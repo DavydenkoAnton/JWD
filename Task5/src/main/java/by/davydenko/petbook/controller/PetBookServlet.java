@@ -12,19 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @MultipartConfig
 public class PetBookServlet extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(PetBookServlet.class);
     private static final String COMMAND = "command";
-    private static final int ERROR_500 = 500;
-    private Command command;
-
 
     @Override
     public void init(ServletConfig config) {
-
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         try {
             connectionPool.init();
@@ -32,7 +27,6 @@ public class PetBookServlet extends HttpServlet {
             logger.error("Cannot start application", e);
             destroy();
         }
-
     }
 
     @Override
@@ -47,7 +41,7 @@ public class PetBookServlet extends HttpServlet {
 
     private void process(HttpServletRequest request, HttpServletResponse response) {
         String commandName = (String) request.getAttribute(COMMAND);
-        command = CommandProvider.getInstance().getCommand(commandName);
+        Command command = CommandProvider.getInstance().getCommand(commandName);
         command.execute(request, response);
     }
 }

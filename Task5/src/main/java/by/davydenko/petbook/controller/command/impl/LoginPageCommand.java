@@ -13,18 +13,30 @@ import java.io.IOException;
 public class LoginPageCommand implements Command {
 
     private static Logger logger = LogManager.getLogger(LoginPageCommand.class);
-    private static final String TARGET_PAGE = "/WEB-INF/jsp/login.jsp";
+    private static final String LOGIN_PAGE_URL = "/WEB-INF/jsp/login.jsp";
+    private static final String ERROR_PAGE_URL = "/WEB-INF/jsp/error.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
         try {
-            RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher(TARGET_PAGE);
+            forwardToLoginPage(request, response);
+        } catch (IOException | ServletException e) {
+            logger.error(e);
+            forwardToErrorPage(request, response);
+        }
+    }
+
+    private void forwardToLoginPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher(LOGIN_PAGE_URL);
+        dispatcher.forward(request, response);
+    }
+
+    private void forwardToErrorPage(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher(ERROR_PAGE_URL);
             dispatcher.forward(request, response);
-        } catch (IOException e) {
-            logger.error("IOException (not redirected)", e);
-        } catch (ServletException e) {
-            logger.error("ServletException (not redirected)", e);
+        } catch (IOException | ServletException e) {
+            logger.error(e);
         }
     }
 }

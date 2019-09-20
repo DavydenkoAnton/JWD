@@ -5,7 +5,6 @@ import by.davydenko.petbook.dao.DaoException;
 import by.davydenko.petbook.dao.UserDao;
 import by.davydenko.petbook.dao.pool.ConnectionPool;
 import by.davydenko.petbook.dao.pool.ConnectionPoolException;
-import by.davydenko.petbook.dao.util.DBHelper;
 import by.davydenko.petbook.entity.Role;
 import by.davydenko.petbook.entity.User;
 import org.apache.logging.log4j.LogManager;
@@ -31,59 +30,23 @@ public class UserDaoImpl implements UserDao {
     private final static String DELETE_USER_LOGIN = "DELETE  FROM petbook.users WHERE login=? ";
     private final static String UPDATE_USER_AVATAR = "UPDATE petbook.users  SET avatarUrl=? WHERE id=? ";
     private final static String UPDATE_USER_NAME = "UPDATE petbook.users  SET name=? WHERE id=? ";
-    private String url = DBHelper.DB_URL;
-    private String login = DBHelper.DB_LOGIN;
-    private String password = DBHelper.DB_PASSWORD;
-    private List<User> users;
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     private ConnectionPool connectionPool;
 
+    public UserDaoImpl() {
+        connectionPool = ConnectionPool.getInstance();
+    }
+
     @Override
     public List<User> readUsers() throws DaoException {
-
-        users = new ArrayList<>();
-        connection = null;
-        preparedStatement = null;
-        resultSet = null;
-
-        try {
-            Class.forName(DBHelper.DB_DRIVER_CLASS);
-            connection = DriverManager.getConnection(url, login, password);
-            preparedStatement = connection.prepareStatement(SELECT_USERS_COUNT);
-            resultSet = preparedStatement.executeQuery();
-        } catch (SQLException | ClassNotFoundException e) {
-            logger.error(e);
-            throw new DaoException(e);
-        }
-
-        try {
-            while (resultSet.next()) {
-                String role = resultSet.getString(DBHelper.Users.ROLE.getName());
-                if (!role.equals(ADMIN)) {
-                    User user = new User();
-                    user.setName(resultSet.getString(DBHelper.Users.NAME.getName()));
-                    users.add(user);
-                }
-            }
-            resultSet.close();
-            preparedStatement.close();
-            connection.close();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        List<User> users = new ArrayList<>();
         return users;
     }
 
     @Override
     public void create(User user) throws DaoException {
-
-        connection = null;
-        preparedStatement = null;
-        connectionPool = ConnectionPool.getInstance();
-
-
         try {
             connection = connectionPool.takeConnection();
         } catch (ConnectionPoolException e) {
@@ -93,7 +56,6 @@ public class UserDaoImpl implements UserDao {
         try {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(SQL_INSERT_USER);
-
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getName());
@@ -107,28 +69,20 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-
     }
 
     @Override
     public void create(String login, String password) throws DaoException {
-
     }
 
     @Override
     public Optional<User> read(int userId) throws DaoException {
         User user = null;
-        connection = null;
-        connectionPool = ConnectionPool.getInstance();
-        preparedStatement = null;
-        resultSet = null;
-
         try {
             connection = connectionPool.takeConnection();
         } catch (ConnectionPoolException e) {
             throw new DaoException(e);
         }
-
         try {
             preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID);
             preparedStatement.setInt(1, userId);
@@ -152,18 +106,12 @@ public class UserDaoImpl implements UserDao {
         } catch (ConnectionPoolException e) {
             throw new DaoException(e);
         }
-
         return Optional.ofNullable(user);
     }
 
 
     public Optional<User> read(String login, String password) throws DaoException {
         User user = null;
-        connection = null;
-        connectionPool = ConnectionPool.getInstance();
-        preparedStatement = null;
-        resultSet = null;
-
         try {
             connection = connectionPool.takeConnection();
         } catch (ConnectionPoolException e) {
@@ -177,10 +125,10 @@ public class UserDaoImpl implements UserDao {
             while (resultSet.next()) {
                 resultSet.getRow();
                 user = new User();
-                user.setName(resultSet.getString(DBHelper.Users.NAME.getName()));
-                user.setRole(Role.valueOf(resultSet.getString(DBHelper.Users.ROLE.getName())));
-                user.setAvatarURL(resultSet.getString(DBHelper.Users.AVATAR_URL.getName()));
-                user.setId(resultSet.getInt(DBHelper.Users.ID.getName()));
+                user.setName(resultSet.getString(Attribute.NAME));
+                user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
+                user.setAvatarURL(resultSet.getString(Attribute.AVATAR_URL));
+                user.setId(resultSet.getInt(Attribute.ID));
             }
             resultSet.close();
             preparedStatement.close();
@@ -195,7 +143,6 @@ public class UserDaoImpl implements UserDao {
         return Optional.ofNullable(user);
     }
 
-
     @Override
     public void update(User user) {
 
@@ -203,12 +150,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void updateAvatarURL(int id, String userAvatarURL) throws DaoException {
-        connection = null;
-        connectionPool = ConnectionPool.getInstance();
-        preparedStatement = null;
-        resultSet = null;
-
-
         try {
             connection = connectionPool.takeConnection();
         } catch (ConnectionPoolException e) {
@@ -224,7 +165,6 @@ public class UserDaoImpl implements UserDao {
                 connection.commit();
             }
             preparedStatement.close();
-
         } catch (SQLException e) {
             throw new DaoException("Cannot update user avatar", e);
         }
@@ -307,8 +247,6 @@ public class UserDaoImpl implements UserDao {
         connectionPool = ConnectionPool.getInstance();
         preparedStatement = null;
         resultSet = null;
-
-
         try {
             connection = connectionPool.takeConnection();
         } catch (ConnectionPoolException e) {
@@ -320,12 +258,10 @@ public class UserDaoImpl implements UserDao {
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 resultSet.getRow();
-                id = resultSet.getInt(DBHelper.Users.ID.getName());
+                id = resultSet.getInt(Attribute.ID);
             }
-
             resultSet.close();
             preparedStatement.close();
-
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -339,39 +275,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int getUsersCapacity() throws DaoException {
-
-        users = new ArrayList<>();
-        connection = null;
-        preparedStatement = null;
-        resultSet = null;
-
-        try {
-            Class.forName(DBHelper.DB_DRIVER_CLASS);
-            connection = DriverManager.getConnection(url, login, password);
-            preparedStatement = connection.prepareStatement(SELECT_USERS);
-            preparedStatement.setString(1, "user");
-            resultSet = preparedStatement.executeQuery();
-        } catch (SQLException | ClassNotFoundException e) {
-            logger.error(e);
-            throw new DaoException(e);
-        }
-
-        try {
-            while (resultSet.next()) {
-                User user = new User();
-                user.setRole(Role.valueOf(resultSet.getString(DBHelper.Users.ROLE.getName())));
-                users.add(user);
-            }
-            resultSet.close();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-        try {
-            connectionPool.closeConnection(connection, preparedStatement);
-        } catch (ConnectionPoolException e) {
-            throw new DaoException(e);
-        }
-        return users.size();
+        return 0;
     }
 }

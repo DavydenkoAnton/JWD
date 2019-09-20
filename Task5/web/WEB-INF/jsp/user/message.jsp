@@ -27,14 +27,15 @@
     <tag:header/>
     <tag:menu/>
     <tag:senders/>
-
-
     <div class="chat_wrapper">
+        <div class="chat_sender">
+            <p>${sender.name}</p>
+        </div>
         <div class="chat">
             <table>
                 <c:forEach items="${chatMessages}" var="chatMessage">
                     <c:if test="${chatMessage.senderId==receiver.userId}">
-                        <tr>
+                        <tr class="sender_item">
                             <td>
                                 <div class="sender_name">
                                         ${receiver.name}
@@ -50,13 +51,13 @@
                         </tr>
                     </c:if>
                     <c:if test="${chatMessage.senderId==sender.userId}">
-                        <tr>
+                        <tr class="receiver_item">
                             <td>
                                 <div class="user_name">
                                         ${sender.name}
                                 </div>
                                 <div class="user_message">
-                                    <p>${chatMessage.message}</p>
+                                        ${chatMessage.message}
                                 </div>
                                 <div class="date_message">
                                         ${chatMessage.date}
@@ -70,12 +71,9 @@
         </div>
         <div class="message_sender">
             <c:if test="${not empty sender}">
-                <form action="<fmt:message key="command.sendMessage" bundle="${cnt}"/>" method="post">
-                    <label>
-                        <input name="message" type="text" required aria-setsize="100"
-                               placeholder="message"/>
-
-                    </label><br/>
+                <form action="<fmt:message key="command.sendMessage" bundle="${cnt}"/>" method="post" id="form_sender">
+                    <textarea name="messageText" form="form_sender"></textarea>
+                    <br/>
                     <button type="submit" name="userId" value="${sender.userId}">
                         <fmt:message key="global.text.send" bundle="${cnt}"/>
                     </button>

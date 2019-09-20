@@ -21,11 +21,11 @@
 
     <div class="content">
         <c:set var="pet" value="${sessionScope.pet}" />
-        <c:if test="${empty pet.avatarURL}">
+        <c:if test="${empty pet.avatarUrl}">
             <img src="<c:url value="/img/no_img_user.png"/>" height="128" width="128" alt="">
         </c:if>
-        <c:if test="${not empty pet.avatarURL}">
-            <img src="${pet.avatarURL}" height="128" width="128" alt="">
+        <c:if test="${not empty pet.avatarUrl}">
+            <img src="${pet.avatarUrl}" height="128" width="128" alt="">
             ${pet.name}
             ${pet.age}
             ${pet.breed}

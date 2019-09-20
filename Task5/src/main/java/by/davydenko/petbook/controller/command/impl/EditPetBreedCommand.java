@@ -20,19 +20,20 @@ public class EditPetBreedCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger(EditUserNameCommand.class);
     private static final String REDIRECT_PROFILE_PAGE_URL = "http://localhost:8080/pb/profile.html";
-    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private PetService petService;
 
     public EditPetBreedCommand() {
+        ServiceFactory serviceFactory = ServiceFactory.getInstance();
         petService = serviceFactory.getPetService();
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
+        String breed = request.getParameter(Attribute.BREED);
+        String userId = String.valueOf(request.getSession().getAttribute(Attribute.ID));
         try {
-            petService.uploadBreed(request);
-            Optional<Pet> optionalPet = petService.getPetByUserId(request);
+            petService.uploadBreed(breed,userId);
+            Optional<Pet> optionalPet = petService.getByUserId(userId);
             if(optionalPet.isPresent()) {
                 Pet pet = optionalPet.get();
                 request.getSession().setAttribute(Attribute.PET, pet);

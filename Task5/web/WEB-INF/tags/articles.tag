@@ -20,7 +20,7 @@
                                     <button type="submit"
                                             name="<fmt:message key="global.text.articleTitle" bundle="${cnt}"/>"
                                             value="${article.title}">
-                                        <p>${article.title}</p>
+                                            ${article.title}
                                     </button>
                                 </form>
                             </div>

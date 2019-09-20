@@ -21,18 +21,17 @@ public class VisitPageCommand implements by.davydenko.petbook.controller.command
     private static final String VISIT_PAGE_URL = "/WEB-INF/jsp/visit.jsp";
     private static final String ERROR_PAGE = "/WEB-INF/jsp/error.jsp";
     private PetService petService;
-    private MessageService messageService ;
 
     public VisitPageCommand() {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         petService = serviceFactory.getPetService();
-        messageService=serviceFactory.getMessageService();
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+        String userId = request.getParameter(Attribute.USER_ID);
         try {
-            Optional<Pet> optionalPet = petService.getPetByUserId(request);
+            Optional<Pet> optionalPet = petService.getByUserId(userId);
             //boolean friend=messageService.isFriend(request);
             boolean friend=true;
             if (optionalPet.isPresent()) {

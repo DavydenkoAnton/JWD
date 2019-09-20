@@ -34,26 +34,35 @@ public class EditPetAvatarCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditUserNameCommand.class);
     private static final String REDIRECT_PROFILE_PAGE_URL = "http://localhost:8080/pb/profile.html";
     private static final String USERS_AVATARS_PATH = "img/users_avatars";
-    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
+    private static final String PET_AVATAR_FOLDER = "img/pets_avatars";
     private PetService petService;
 
     public EditPetAvatarCommand() {
+        ServiceFactory serviceFactory = ServiceFactory.getInstance();
         petService = serviceFactory.getPetService();
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        Optional<Pet> optionalPet;
-        Pet pet;
+        Part part = null;
         try {
-            petService.uploadAvatar(request);
-            optionalPet = petService.getPetByUserId(request);
-            if (optionalPet.isPresent()) {
-                pet = optionalPet.get();
-                request.getSession().setAttribute(Attribute.PET,pet);
-            }
-        } catch (ServiceException e) {
+            part = request.getPart(Attribute.PET_AVATAR);
+        } catch (IOException | ServletException e) {
             logger.error(e);
+        }
+        String path = request.getServletContext().getRealPath("/") ;
+        String userId = String.valueOf(request.getSession().getAttribute(Attribute.ID));
+        if (part != null) {
+            try {
+                petService.uploadAvatar(part, path, userId);
+                Optional<Pet> optionalPet = petService.getByUserId(userId);
+                if (optionalPet.isPresent()) {
+                    Pet pet = optionalPet.get();
+                    request.getSession().setAttribute(Attribute.PET, pet);
+                }
+            } catch (ServiceException e) {
+                logger.error(e);
+            }
         }
         redirectToProfilePage(response);
     }

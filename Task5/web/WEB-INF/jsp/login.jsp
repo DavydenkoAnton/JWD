@@ -12,10 +12,8 @@
     <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
 </head>
 <body>
-
-<tag:header/>
 <div class="wrapper">
-
+    <tag:header/>
     <div id="form-wrapper">
         <img src="<c:url value="/img/no_img_user.png"/>" alt=""/>
         <h5><fmt:message key="global.text.login" bundle="${cnt}"/></h5>

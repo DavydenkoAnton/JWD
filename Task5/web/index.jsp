@@ -3,7 +3,8 @@
 
 <html>
 <head>
-    <title>Title</title>
+    <title>redirecting</title>
+
 </head>
 <body>
 <c:redirect url="main.html"/>

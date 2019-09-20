@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserDao extends Dao<User> {
+
     List<User> readUsers() throws DaoException;
 
     @Override

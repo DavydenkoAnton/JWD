@@ -1,6 +1,8 @@
 package by.davydenko.petbook.controller.command.impl;
 
 import by.davydenko.petbook.controller.command.Command;
+import by.davydenko.petbook.controller.command.util.Attribute;
+import by.davydenko.petbook.entity.Message;
 import by.davydenko.petbook.service.MessageService;
 import by.davydenko.petbook.service.ServiceException;
 import by.davydenko.petbook.service.ServiceFactory;
@@ -12,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 public class SendMessageCommand implements Command {
 
@@ -30,9 +34,16 @@ public class SendMessageCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
+        String receiverId = String.valueOf(request.getSession().getAttribute(Attribute.ID));
+        String senderId = request.getParameter(Attribute.USER_ID);
+        String text = request.getParameter(Attribute.MESSAGE_TEXT);
         try {
-            messageService.sendMessage(request);
+            messageService.sendMessage(receiverId, senderId, text);
+            Optional<List<Message>> optionalMessages = messageService.getChatMessages(receiverId, senderId);
+            if (optionalMessages.isPresent()) {
+                List<Message> chatMessages = optionalMessages.get();
+                request.getSession().setAttribute(Attribute.CHAT_MESSAGES, chatMessages);
+            }
         } catch (ServiceException e) {
             logger.error(e);
         }

@@ -5,7 +5,6 @@ import by.davydenko.petbook.dao.DaoException;
 import by.davydenko.petbook.dao.PetDao;
 import by.davydenko.petbook.dao.pool.ConnectionPool;
 import by.davydenko.petbook.dao.pool.ConnectionPoolException;
-import by.davydenko.petbook.dao.util.DBHelper;
 import by.davydenko.petbook.entity.PetType;
 import by.davydenko.petbook.entity.Pet;
 
@@ -20,6 +19,8 @@ import java.util.Optional;
 public class PetDaoImpl implements PetDao {
 
     private static final String SELECT_PET_BY_USER_ID = "SELECT name,breed,age,avatarUrl,userId FROM petbook.pets WHERE userId=?";
+    private static final String SELECT_PHOTO_URL_BY_ID = "SELECT url FROM petbook.photo WHERE userId=?";
+    private static final String SELECT_PHOTO_URL_BY_ID_FROM_TO = "SELECT url FROM petbook.photo WHERE userId=? AND id>? AND id<?";
     private static final String SELECT_ALL = "SELECT * FROM petbook.pets";
     private static final String SELECT_PETS_BY_TYPE = "SELECT name,breed,age,avatarUrl,userId,type FROM petbook.pets WHERE type=?";
     private static final String SELECT_PET_BY_SENDER_MESSAGE_ID = "SELECT name,breed,age,avatarUrl,userId FROM petbook.pets " +
@@ -29,10 +30,15 @@ public class PetDaoImpl implements PetDao {
     private final static String UPDATE_PET_AVATAR = "UPDATE petbook.pets  SET avatarUrl=? WHERE userId=? ";
     private final static String UPDATE_PET_AGE = "UPDATE petbook.pets  SET age=? WHERE userId=? ";
     private final static String CREATE_BY_USER_ID = "INSERT INTO petbook.pets (userId) VALUES (?)";
-    private Connection connection = null;
-    private PreparedStatement preparedStatement = null;
-    private ResultSet resultSet = null;
-    private ConnectionPool connectionPool = null;
+    private final static String CREATE_PHOTO_URL_BY_ID = "INSERT INTO petbook.photo (userId,url) VALUES (?,?) ";
+    private Connection connection;
+    private PreparedStatement preparedStatement;
+    private ResultSet resultSet;
+    private ConnectionPool connectionPool;
+
+    public PetDaoImpl() {
+        connectionPool = ConnectionPool.getInstance();
+    }
 
     @Override
     public void create(Pet pet) {
@@ -71,6 +77,48 @@ public class PetDaoImpl implements PetDao {
     }
 
     @Override
+    public void createPhotoById(int id, String path) throws DaoException {
+        try {
+            connection = connectionPool.takeConnection();
+        } catch (ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
+        try {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(CREATE_PHOTO_URL_BY_ID);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, path);
+            if (preparedStatement.executeUpdate() > 0) {
+                connection.commit();
+            }
+            connectionPool.closeConnection(connection, preparedStatement);
+        } catch (ConnectionPoolException | SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public void createAvatarById(int id, String path) throws DaoException {
+        try {
+            connection = connectionPool.takeConnection();
+        } catch (ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
+        try {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(UPDATE_PET_AVATAR);
+            preparedStatement.setString(1, path);
+            preparedStatement.setInt(2, id);
+            if (preparedStatement.executeUpdate() > 0) {
+                connection.commit();
+            }
+            connectionPool.closeConnection(connection, preparedStatement);
+        } catch (ConnectionPoolException | SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public Optional<Pet> read(int id) throws DaoException {
         return Optional.empty();
     }
@@ -78,11 +126,6 @@ public class PetDaoImpl implements PetDao {
     @Override
     public Optional<List<Pet>> read() throws DaoException {
         List<Pet> pets = null;
-        connection = null;
-        connectionPool = ConnectionPool.getInstance();
-        preparedStatement = null;
-        resultSet = null;
-
         try {
             connection = connectionPool.takeConnection();
         } catch (ConnectionPoolException e) {
@@ -95,10 +138,10 @@ public class PetDaoImpl implements PetDao {
             while (resultSet.next()) {
                 resultSet.getRow();
                 Pet pet = new Pet();
-                pet.setName(resultSet.getString(DBHelper.Pets.NAME.getName()));
-                pet.setBreed(resultSet.getString(DBHelper.Pets.BREED.getName()));
-                pet.setAge(resultSet.getInt(DBHelper.Pets.AGE.getName()));
-                pet.setAvatarURL(resultSet.getString(DBHelper.Pets.AVATAR_URL.getName()));
+                pet.setName(resultSet.getString(Attribute.NAME));
+                pet.setBreed(resultSet.getString(Attribute.BREED));
+                pet.setAge(resultSet.getInt(Attribute.AGE));
+                pet.setAvatarUrl(resultSet.getString(Attribute.AVATAR_URL));
                 pet.setUserId(resultSet.getInt(Attribute.USER_ID));
                 pets.add(pet);
             }
@@ -135,10 +178,10 @@ public class PetDaoImpl implements PetDao {
             while (resultSet.next()) {
                 resultSet.getRow();
                 pet = new Pet();
-                pet.setName(resultSet.getString(DBHelper.Pets.NAME.getName()));
-                pet.setBreed(resultSet.getString(DBHelper.Pets.BREED.getName()));
-                pet.setAge(resultSet.getInt(DBHelper.Pets.AGE.getName()));
-                pet.setAvatarURL(resultSet.getString(DBHelper.Pets.AVATAR_URL.getName()));
+                pet.setName(resultSet.getString(Attribute.NAME));
+                pet.setBreed(resultSet.getString(Attribute.BREED));
+                pet.setAge(resultSet.getInt(Attribute.AGE));
+                pet.setAvatarUrl(resultSet.getString(Attribute.AVATAR_URL));
                 pet.setUserId(resultSet.getInt(Attribute.USER_ID));
             }
             resultSet.close();
@@ -157,11 +200,6 @@ public class PetDaoImpl implements PetDao {
     @Override
     public Optional<List<Pet>> readByType(PetType type) throws DaoException {
         List<Pet> pets = null;
-        connection = null;
-        connectionPool = ConnectionPool.getInstance();
-        preparedStatement = null;
-        resultSet = null;
-
         try {
             connection = connectionPool.takeConnection();
         } catch (ConnectionPoolException e) {
@@ -175,10 +213,10 @@ public class PetDaoImpl implements PetDao {
             while (resultSet.next()) {
                 resultSet.getRow();
                 Pet pet = new Pet();
-                pet.setName(resultSet.getString(DBHelper.Pets.NAME.getName()));
-                pet.setBreed(resultSet.getString(DBHelper.Pets.BREED.getName()));
-                pet.setAge(resultSet.getInt(DBHelper.Pets.AGE.getName()));
-                pet.setAvatarURL(resultSet.getString(DBHelper.Pets.AVATAR_URL.getName()));
+                pet.setName(resultSet.getString(Attribute.NAME));
+                pet.setBreed(resultSet.getString(Attribute.BREED));
+                pet.setAge(resultSet.getInt(Attribute.AGE));
+                pet.setAvatarUrl(resultSet.getString(Attribute.AVATAR_URL));
                 pet.setUserId(resultSet.getInt(Attribute.USER_ID));
                 pets.add(pet);
             }
@@ -193,6 +231,54 @@ public class PetDaoImpl implements PetDao {
             throw new DaoException(e);
         }
         return Optional.ofNullable(pets);
+    }
+
+    @Override
+    public List<String> readPhotosUrl(int id) throws DaoException {
+        List<String> photosUrl = new ArrayList<>();
+        try {
+            connection = connectionPool.takeConnection();
+        } catch (ConnectionPoolException e) {
+            throw new DaoException("cannot create connection");
+        }
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PHOTO_URL_BY_ID);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                resultSet.getRow();
+                photosUrl.add(resultSet.getString(Attribute.URL));
+            }
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
+        return photosUrl;
+    }
+
+    @Override
+    public List<String> readPhotosUrl(int id,int from,int to) throws DaoException {
+        List<String> photosUrl = new ArrayList<>();
+        try {
+            connection = connectionPool.takeConnection();
+        } catch (ConnectionPoolException e) {
+            throw new DaoException("cannot create connection");
+        }
+        try {
+            preparedStatement = connection.prepareStatement(SELECT_PHOTO_URL_BY_ID_FROM_TO);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, from);
+            preparedStatement.setInt(3, to);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                resultSet.getRow();
+                photosUrl.add(resultSet.getString(Attribute.URL));
+            }
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
+        return photosUrl;
     }
 
     @Override
@@ -216,10 +302,10 @@ public class PetDaoImpl implements PetDao {
             while (resultSet.next()) {
                 resultSet.getRow();
                 Pet pet = new Pet();
-                pet.setName(resultSet.getString(DBHelper.Pets.NAME.getName()));
-                pet.setBreed(resultSet.getString(DBHelper.Pets.BREED.getName()));
-                pet.setAge(resultSet.getInt(DBHelper.Pets.AGE.getName()));
-                pet.setAvatarURL(resultSet.getString(DBHelper.Pets.AVATAR_URL.getName()));
+                pet.setName(resultSet.getString(Attribute.NAME));
+                pet.setBreed(resultSet.getString(Attribute.BREED));
+                pet.setAge(resultSet.getInt(Attribute.AGE));
+                pet.setAvatarUrl(resultSet.getString(Attribute.AVATAR_URL));
                 pet.setUserId(resultSet.getInt(Attribute.USER_ID));
                 pets.add(pet);
             }

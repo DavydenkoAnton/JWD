@@ -34,3 +34,8 @@ CREATE TABLE petbook.messages(
   user_id   int NOT NULL,
   sender_id int NOT NULL
 );
+
+create table photo(
+  userId int not null,
+  url varchar(255) not null
+);

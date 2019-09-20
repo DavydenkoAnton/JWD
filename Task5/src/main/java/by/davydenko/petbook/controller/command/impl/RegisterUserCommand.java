@@ -2,7 +2,6 @@ package by.davydenko.petbook.controller.command.impl;
 
 import by.davydenko.petbook.controller.command.Command;
 import by.davydenko.petbook.controller.command.util.Attribute;
-import by.davydenko.petbook.entity.Pet;
 import by.davydenko.petbook.entity.User;
 import by.davydenko.petbook.service.PetService;
 import by.davydenko.petbook.service.ServiceException;
@@ -13,39 +12,38 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
-
 
 public class RegisterUserCommand implements Command {
 
     private static Logger logger = LogManager.getLogger(RegisterUserCommand.class);
-    private static final String REDIRECT_LOGIN_PAGE_URL = "http://localhost:8080/pb/login.html";
-    private static final String REDIRECT_REGISTRATION_PAGE_URL = "http://localhost:8080/pb/registration.html";
-    private ServiceFactory serviceFactory;
+    private static final String LOGIN_PAGE_URL = "http://localhost:8080/pb/login.html";
+    private static final String REGISTRATION_PAGE_URL = "http://localhost:8080/pb/registration.html";
     private UserService userService;
     private PetService petService;
 
-
     public RegisterUserCommand() {
-        serviceFactory = ServiceFactory.getInstance();
+        ServiceFactory serviceFactory = ServiceFactory.getInstance();
         userService = serviceFactory.getUserService();
         petService = serviceFactory.getPetService();
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+        final String login = request.getParameter(Attribute.LOGIN);
+        final String password = request.getParameter(Attribute.PASSWORD);
+        final String userName = request.getParameter(Attribute.USER_NAME);
         try {
-            userService.registerUser(request);
-            Optional<User> optionalUser = userService.getUserByLoginPassword(request);
+            userService.registerUser(login, password, userName);
+            Optional<User> optionalUser = userService.getByLoginPassword(login, password);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 request.getSession().setAttribute(Attribute.ROLE, user.getRole());
                 request.getSession().setAttribute(Attribute.AUTHORIZED, true);
                 request.getSession().setAttribute(Attribute.ID, user.getId());
+                petService.registerByUserId(user.getId());
             }
-            petService.registerPet(request);
             redirectToLoginPage(response);
         } catch (ServiceException e) {
             redirectToRegistrationPage(response);
@@ -53,24 +51,21 @@ public class RegisterUserCommand implements Command {
         }
     }
 
-
     private void redirectToRegistrationPage(HttpServletResponse response) {
         response.setContentType("registration.jsp");
         try {
-            response.sendRedirect(REDIRECT_REGISTRATION_PAGE_URL);
+            response.sendRedirect(REGISTRATION_PAGE_URL);
         } catch (IOException e) {
-            logger.error("IOException (not redirected)", e);
+            logger.error(e);
         }
     }
 
     private void redirectToLoginPage(HttpServletResponse response) {
         response.setContentType("login.jsp");
         try {
-            response.sendRedirect(REDIRECT_LOGIN_PAGE_URL);
+            response.sendRedirect(LOGIN_PAGE_URL);
         } catch (IOException e) {
-            logger.error("IOException (not redirected)", e);
+            logger.error(e);
         }
     }
-
-
 }

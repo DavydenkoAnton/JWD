@@ -12,8 +12,8 @@
                 <td>
                     <div class="pets_content_item">
                         <c:choose>
-                        <c:when test="${not empty pet.avatarURL}">
-                            <img src="${pet.avatarURL}" alt=""/>
+                        <c:when test="${not empty pet.avatarUrl}">
+                            <img src="${pet.avatarUrl}" alt=""/>
                         </c:when>
                         <c:otherwise>
                             <img src="<c:url value="/img/no_img_user.png"/>" alt=""/>

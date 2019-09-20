@@ -3,7 +3,6 @@ package by.davydenko.petbook.controller.command.impl;
 import by.davydenko.petbook.controller.command.Command;
 import by.davydenko.petbook.controller.command.util.Attribute;
 import by.davydenko.petbook.entity.Pet;
-import by.davydenko.petbook.entity.Role;
 import by.davydenko.petbook.entity.User;
 import by.davydenko.petbook.service.PetService;
 import by.davydenko.petbook.service.ServiceException;
@@ -16,9 +15,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 public class PetPageCommand implements Command {
@@ -38,10 +35,10 @@ public class PetPageCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
+        String userId = request.getParameter(Attribute.USER_ID);
         try {
-            Optional<User> optionalUser = userService.getUserById(request);
-            Optional<Pet> optionalPet = petService.getPetByUserId(request);
+            Optional<User> optionalUser = userService.getById(userId);
+            Optional<Pet> optionalPet = petService.getByUserId(userId);
             if (optionalPet.isPresent() && optionalUser.isPresent()) {
                 Pet pet = optionalPet.get();
                 User user = optionalUser.get();

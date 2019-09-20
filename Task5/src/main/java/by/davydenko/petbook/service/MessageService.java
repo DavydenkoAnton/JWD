@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MessageService extends Service<Message> {
-    void sendMessage(HttpServletRequest request) throws ServiceException;
+
+    void sendMessage(String receiverId, String senderId, String text) throws ServiceException;
+
     String getMessage(HttpServletRequest request);
 
-    Optional<List<Message>> getChatMessages(HttpServletRequest request) throws ServiceException;
+    Optional<List<Message>> getChatMessages(String receiverId, String senderId) throws ServiceException;
 
     int getReceiverId(HttpServletRequest request) throws ServiceException;
 

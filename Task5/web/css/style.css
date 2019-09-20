@@ -2,25 +2,43 @@
     width: 100%;
     margin: 0 auto;
     height: 100vh;
-
+    min-width: 800px;
+    background-color: gainsboro;
+    border-radius: 10px;
 }
 
 .menu {
     float: left;
     margin-top: 40px;
-    width: 8%;
+    margin-left: 3%;
+    width: 12%;
+    min-width: 90px;
     height: 300px;
-    border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
-.menu a {
+.menu_item {
+    height: 36px;
+}
+
+.menu_item_a {
+    width: 80%;
+    margin-left: 24%;
+    padding-top: 13px
+}
+
+.menu_item_a a {
     text-decoration: none;
     font-family: arial, serif;
-    margin-left: 10px;
-    color: black;
+    color: #487879;
 }
 
-.pet_profile{
+.menu_item img {
+    width: 20px;
+    float: left;
+    padding-top: 10px;
+}
+
+.pet_profile {
     float: left;
     margin-top: 40px;
     margin-left: 40px;
@@ -29,7 +47,7 @@
     border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
-.admin_profile{
+.admin_profile {
     float: left;
     margin-top: 40px;
     margin-left: 40px;
@@ -59,6 +77,7 @@
     height: 40px;
     margin-left: 50px;
 }
+
 .pagLeft {
     float: right;
     margin-left: 50px;

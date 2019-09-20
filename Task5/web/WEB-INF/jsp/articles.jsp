@@ -15,14 +15,14 @@
     <link href="<c:url value="/css/articles.css"/> " rel="stylesheet" type="text/css">
 </head>
 <body>
-<tag:header/>
-<c:if test="${sessionScope.role=='USER'}">
-    <tag:menu/>
-</c:if>
-<c:if test="${sessionScope.role == 'ADMIN'}">
-    <tag:admin_menu/>
-</c:if>
 <div class="wrapper">
+    <tag:header/>
+    <c:if test="${sessionScope.role=='USER'}">
+        <tag:menu/>
+    </c:if>
+    <c:if test="${sessionScope.role == 'ADMIN'}">
+        <tag:admin_menu/>
+    </c:if>
     <tag:articles_header/>
     <tag:articles/>
 </div>

@@ -4,11 +4,43 @@
 .pet_statistic {
     float: left;
     margin-top: 2%;
-    width: 10%;
-    border: 1px solid black;
-    border-radius: 3px;
+    width: 12%;
+    height: 30%;
+    border: 2px solid #487879;
+    border-radius: 10px;
+    background-color: white;
 }
 
-.pet_statistic p{
-    padding-left: 10px;
+.pet_statistic_item {
+    min-width: 100%;
+    height: 30px;
+}
+
+.pet_statistic h3 {
+    font-family: arial, sans-serif;
+    font-size: 14px;
+    display: block;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.pet_statistic_item h4 {
+    float: left;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-family: arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    margin-left: 10%;
+}
+
+.pet_statistic_item h5 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-family: arial, sans-serif;
+    font-size: 13px;
+    float: right;
+    font-weight: 500;
+    margin-right: 10%;
 }

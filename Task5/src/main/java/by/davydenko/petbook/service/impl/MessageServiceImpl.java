@@ -3,7 +3,6 @@ package by.davydenko.petbook.service.impl;
 import by.davydenko.petbook.dao.DaoException;
 import by.davydenko.petbook.dao.DaoFactory;
 import by.davydenko.petbook.dao.MessageDao;
-import by.davydenko.petbook.dao.UserDao;
 import by.davydenko.petbook.dao.pool.ConnectionPoolException;
 import by.davydenko.petbook.entity.Message;
 import by.davydenko.petbook.service.MessageService;
@@ -11,31 +10,22 @@ import by.davydenko.petbook.service.ServiceException;
 import by.davydenko.petbook.service.util.creator.CreatorException;
 import by.davydenko.petbook.service.util.creator.CreatorFactory;
 import by.davydenko.petbook.service.util.creator.MessageCreator;
-import by.davydenko.petbook.service.util.validator.MessageValidator;
-import by.davydenko.petbook.service.util.validator.ValidatorFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
 public class MessageServiceImpl implements MessageService {
-    private static final Logger logger = LogManager.getLogger(MessageServiceImpl.class);
     private MessageCreator messageCreator;
     private CreatorFactory creatorFactory;
     private MessageDao messageDao;
     private DaoFactory daoFactory;
-    private MessageValidator messageValidator;
-    private ValidatorFactory validatorFactory;
-    private UserDao userDao;
 
     public MessageServiceImpl() {
         creatorFactory = CreatorFactory.getInstance();
         daoFactory = DaoFactory.getInstance();
         messageCreator = creatorFactory.getMessageCreator();
         messageDao = daoFactory.getMessageDao();
-        userDao = daoFactory.getUserDao();
     }
 
     @Override
@@ -52,7 +42,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public boolean isFriend(HttpServletRequest request) {
 
-            int userId=messageCreator.createByUserId(request);
+        int userId = messageCreator.createByUserId(request);
 
 
         return true;
@@ -60,27 +50,24 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public String getMessage(HttpServletRequest request) {
-        validatorFactory = ValidatorFactory.getInstance();
         creatorFactory = CreatorFactory.getInstance();
-        messageValidator = validatorFactory.getMessageValidator();
         messageCreator = creatorFactory.getMessageCreator();
-        String message = "";
-
-        if (messageValidator.validMessage(request)) {
-            message = request.getParameter("message");
-        }
-
-        return message;
+        return "messageServiceImpl getMessage()";
     }
 
     @Override
-    public void sendMessage(HttpServletRequest request) throws ServiceException {
-        Message message = new Message();
+    public void sendMessage(String receiverId, String senderId, String text) throws ServiceException {
+        Message message;
         try {
-            message.setUserId(messageCreator.createUserId(request));
-            message.setSenderId(messageCreator.createSenderId(request));
-            message.setDate(messageCreator.createDate(request));
-            message.setMessage(messageCreator.createMessage(request));
+            int receiver_id = messageCreator.createId(receiverId);
+            int sender_id = messageCreator.createId(senderId);
+            String messageTemp = messageCreator.createMessage(text);
+            String date = messageCreator.createDate();
+            message = new Message();
+            message.setUserId(receiver_id);
+            message.setSenderId(sender_id);
+            message.setDate(date);
+            message.setMessage(messageTemp);
         } catch (CreatorException e) {
             throw new ServiceException(e);
         }
@@ -92,19 +79,13 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Optional<List<Message>> getChatMessages(HttpServletRequest request) throws ServiceException {
+    public Optional<List<Message>> getChatMessages(String receiverId, String senderId) throws ServiceException {
         Optional<List<Message>> optionalMessages;
-        int userId = 0;
-        int senderId = 0;
         try {
-            userId = messageCreator.createUserId(request);
-            senderId = messageCreator.createSenderId(request);
-        } catch (CreatorException e) {
-            throw new ServiceException(e);
-        }
-        try {
-            optionalMessages = messageDao.readChatMessages(userId, senderId);
-        } catch (DaoException e) {
+            int receiver_id = messageCreator.createId(receiverId);
+            int sender_id = messageCreator.createId(senderId);
+            optionalMessages = messageDao.readChatMessages(receiver_id, sender_id);
+        } catch (CreatorException | DaoException e) {
             throw new ServiceException(e);
         }
         return optionalMessages;

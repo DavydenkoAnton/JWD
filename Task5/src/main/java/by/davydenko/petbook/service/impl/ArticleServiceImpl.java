@@ -28,23 +28,23 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Optional<List<Article>> getArticles(HttpServletRequest request) throws ServiceException {
+    public Optional<List<Article>> getArticles(String type) throws ServiceException {
         Optional<List<Article>> optionalArticles;
-        PetType petType = articleCreator.createType(request);
         try {
+            PetType petType = articleCreator.createType(type);
             optionalArticles = articleDao.readByType(petType);
-        } catch (DaoException e) {
+        } catch (DaoException | CreatorException e) {
             throw new ServiceException(e);
         }
         return optionalArticles;
     }
 
     @Override
-    public Optional<Article> getArticle(HttpServletRequest request) throws ServiceException {
+    public Optional<Article> getArticle(String articleTitle) throws ServiceException {
         Optional<Article> optionalArticle;
-        String articleTitle = null;
+
         try {
-            articleTitle = articleCreator.createTitle(request);
+            articleTitle = articleCreator.createTitle(articleTitle);
         } catch (CreatorException e) {
             throw new ServiceException(e);
         }

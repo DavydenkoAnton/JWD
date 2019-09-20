@@ -3,40 +3,48 @@ package by.davydenko.petbook.service;
 import by.davydenko.petbook.entity.Pet;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
 public interface PetService extends Service<Pet> {
 
-    Optional<Pet> getPetByUserId(HttpServletRequest request) throws ServiceException;
+    void uploadName(String name, String userId) throws ServiceException;
 
-    void uploadName(HttpServletRequest request) throws ServiceException;
+    void uploadBreed(String breed, String userId) throws ServiceException;
 
-    void uploadBreed(HttpServletRequest request) throws ServiceException;
+    void uploadAvatar(Part image, String path, String userId) throws ServiceException;
 
-    void uploadAvatar(HttpServletRequest request) throws ServiceException;
+    void uploadAge(String age, String userId) throws ServiceException;
 
-    void uploadAge(HttpServletRequest request) throws ServiceException;
+    Optional<List<Pet>> getMessageSenders(String userId) throws ServiceException;
 
-    Optional<List<Pet>> getMessageSenders(HttpServletRequest request) throws ServiceException;
+    Optional<Pet> getSender(String userId) throws ServiceException;
 
-    Optional<Pet> getSender(HttpServletRequest request) throws ServiceException;
+    Optional<Pet> getReceiver(String userId) throws ServiceException;
 
-    Optional<Pet> getReceiver(HttpServletRequest request) throws ServiceException;
+    void registerByUserId(int userId) throws ServiceException;
 
-    void registerPet(HttpServletRequest request) throws ServiceException;
+    int getDogPercent() throws ServiceException;
 
-    int getDogPrefer() throws ServiceException;
+    int getCatPercent() throws ServiceException;
 
-    int getCatPrefer() throws ServiceException;
+    int getBirdPercent() throws ServiceException;
 
-    int getBirdPrefer() throws ServiceException;
+    int getOtherPercent() throws ServiceException;
 
-    int getOtherPrefer() throws ServiceException;
-
-    Optional<List<Pet>> getPetsByType(HttpServletRequest request) throws ServiceException;
+    Optional<List<Pet>> getByType(String type) throws ServiceException;
 
     Optional<List<Pet>> getAllPets() throws ServiceException;
 
-    Optional<Pet> getPetById(HttpServletRequest request) throws ServiceException;
+    Optional<Pet> getByUserId(String userId) throws ServiceException;
+
+    List<String> getPetPhotosById(int id) throws ServiceException;
+
+    List<String> getPetPhotosById(int id, int from) throws ServiceException;
+
+    void uploadPhoto(Part part, String path, String userId) throws ServiceException;
+
+    List<String> getPagingPhotoCount(List<String> petPhotoUrl, int from);
 }

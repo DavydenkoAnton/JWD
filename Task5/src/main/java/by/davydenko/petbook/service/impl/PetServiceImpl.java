@@ -1,6 +1,5 @@
 package by.davydenko.petbook.service.impl;
 
-import by.davydenko.petbook.controller.command.util.Attribute;
 import by.davydenko.petbook.dao.DaoException;
 import by.davydenko.petbook.dao.DaoFactory;
 import by.davydenko.petbook.dao.PetDao;
@@ -12,21 +11,20 @@ import by.davydenko.petbook.service.util.creator.CreatorException;
 import by.davydenko.petbook.service.util.creator.CreatorFactory;
 import by.davydenko.petbook.service.util.creator.PetCreator;
 import by.davydenko.petbook.service.util.creator.UserCreator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
+import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +32,9 @@ import java.util.Optional;
 public final class PetServiceImpl implements PetService {
 
     private static final String PET_AVATAR_FOLDER = "img/pets_avatars";
+    private static final String PET_PHOTO_FOLDER = "img/pets_photo";
     private static final String JPEG_FORMAT = "image/jpeg";
+    private static final int PHOTOS_MAX_SIZE = 5;
     private UserCreator userCreator;
     private PetCreator petCreator;
     private PetDao petDao;
@@ -51,7 +51,7 @@ public final class PetServiceImpl implements PetService {
     public Optional<List<Pet>> getAllPets() throws ServiceException {
         Optional<List<Pet>> optionalPets;
         try {
-            optionalPets=petDao.read();
+            optionalPets = petDao.read();
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -59,11 +59,11 @@ public final class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Optional<List<Pet>> getPetsByType(HttpServletRequest request) throws ServiceException {
+    public Optional<List<Pet>> getByType(String type) throws ServiceException {
         Optional<List<Pet>> optionalPets;
         PetType petType;
         try {
-            petType = petCreator.createType(request);
+            petType = petCreator.createType(type);
         } catch (CreatorException e) {
             throw new ServiceException(e);
         }
@@ -84,26 +84,26 @@ public final class PetServiceImpl implements PetService {
     }
 
     @Override
-    public int getDogPrefer() throws ServiceException {
-        return getPrefer(PetType.DOG);
+    public int getDogPercent() throws ServiceException {
+        return getPercentOfType(PetType.DOG);
     }
 
     @Override
-    public int getCatPrefer() throws ServiceException {
-        return getPrefer(PetType.CAT);
+    public int getCatPercent() throws ServiceException {
+        return getPercentOfType(PetType.CAT);
     }
 
     @Override
-    public int getBirdPrefer() throws ServiceException {
-        return getPrefer(PetType.BIRD);
+    public int getBirdPercent() throws ServiceException {
+        return getPercentOfType(PetType.BIRD);
     }
 
     @Override
-    public int getOtherPrefer() throws ServiceException {
-        return getPrefer(PetType.OTHERS);
+    public int getOtherPercent() throws ServiceException {
+        return getPercentOfType(PetType.OTHER);
     }
 
-    private int getPrefer(PetType type) throws ServiceException {
+    private int getPercentOfType(PetType type) throws ServiceException {
         Optional<List<Pet>> optionalPetsByType;
         Optional<List<Pet>> optionalPets;
         int result = 0;
@@ -127,20 +127,19 @@ public final class PetServiceImpl implements PetService {
     }
 
     @Override
-    public void registerPet(HttpServletRequest request) throws ServiceException {
+    public void registerByUserId(int userId) throws ServiceException {
         try {
-            int userId = userCreator.createId(request);
             petDao.createByUserId(userId);
-        } catch (CreatorException | DaoException e) {
+        } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public Optional<Pet> getPetByUserId(HttpServletRequest request) throws ServiceException {
+    public Optional<Pet> getByUserId(String userId) throws ServiceException {
         Optional<Pet> pet;
         try {
-            int id = petCreator.idByUserId(request);
+            int id = petCreator.userId(userId);
             pet = petDao.readByUserId(id);
         } catch (CreatorException | DaoException e) {
             throw new ServiceException(e);
@@ -149,23 +148,11 @@ public final class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Optional<Pet> getPetById(HttpServletRequest request) throws ServiceException {
-        Optional<Pet> pet;
-        try {
-            int id = petCreator.byId(request);
-            pet = petDao.readByUserId(id);
-        } catch (CreatorException | DaoException e) {
-            throw new ServiceException(e);
-        }
-        return pet;
-    }
-
-    @Override
-    public Optional<List<Pet>> getMessageSenders(HttpServletRequest request) throws ServiceException {
+    public Optional<List<Pet>> getMessageSenders(String id) throws ServiceException {
         Optional<List<Pet>> optionalPets;
         int userId;
         try {
-            userId = userCreator.createId(request);
+            userId = userCreator.createId(id);
         } catch (CreatorException e) {
             throw new ServiceException(e);
         }
@@ -180,83 +167,133 @@ public final class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Optional<Pet> getSender(HttpServletRequest request) throws ServiceException {
-        Optional<Pet> correspondent;
-        try {
-            int correspondentId = petCreator.createCorrespondentId(request);
-            correspondent = petDao.readByUserId(correspondentId);
-        } catch (CreatorException | DaoException e) {
-            throw new ServiceException(e);
-        }
+    public Optional<Pet> getSender(String userId) throws ServiceException {
+        Optional<Pet> correspondent = null;
+//        try {
+//            int correspondentId = petCreator.createCorrespondentId(request);
+//            correspondent = petDao.readByUserId(correspondentId);
+//        } catch (CreatorException | DaoException e) {
+//            throw new ServiceException(e);
+//        }
         return correspondent;
     }
 
     @Override
-    public Optional<Pet> getReceiver(HttpServletRequest request) throws ServiceException {
-        Optional<Pet> reciever;
-        try {
-            int recieverId = petCreator.createReceiverId(request);
-            reciever = petDao.readByUserId(recieverId);
-        } catch (CreatorException | DaoException e) {
-            throw new ServiceException(e);
-        }
+    public Optional<Pet> getReceiver(String userId) throws ServiceException {
+        Optional<Pet> reciever = null;
+//        try {
+//            int recieverId = petCreator.createReceiverId(request);
+//            reciever = petDao.readByUserId(recieverId);
+//        } catch (CreatorException | DaoException e) {
+//            throw new ServiceException(e);
+//        }
         return reciever;
     }
 
     @Override
-    public void uploadAvatar(HttpServletRequest request) throws ServiceException {
-
-        Part image;
+    public List<String> getPetPhotosById(int id, int from) throws ServiceException {
+        List<String> photoUrls;
+        int to = from + PHOTOS_MAX_SIZE;
         try {
-            image = request.getPart(Attribute.PET_AVATAR);
-        } catch (IOException | ServletException e) {
-            throw new ServiceException("cannot get image from request", e);
+            photoUrls = petDao.readPhotosUrl(id, from, to);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
         }
+        return photoUrls;
+    }
 
+    @Override
+    public List<String> getPetPhotosById(int id) throws ServiceException {
+        List<String> photoUrls;
+        try {
+            photoUrls = petDao.readPhotosUrl(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return photoUrls;
+    }
 
+    @Override
+    public List<String> getPagingPhotoCount(List<String> petPhotoUrl, int from) {
+        List<String> bufPhotosUrl = new ArrayList<>();
+        int count = 0;
+        int to = from + PHOTOS_MAX_SIZE;
+        for (String s : petPhotoUrl) {
+            count++;
+            if (s != null && count < to && count > from) {
+                bufPhotosUrl.add(s);
+            }
+
+        }
+        return bufPhotosUrl;
+    }
+
+    @Override
+    public void uploadAvatar(Part image, String path, String userId) throws ServiceException {
+        uploadImage(image, path, userId, PET_AVATAR_FOLDER);
+    }
+
+    @Override
+    public void uploadPhoto(Part image, String path, String userId) throws ServiceException {
+        uploadImage(image, path, userId, PET_PHOTO_FOLDER);
+    }
+
+    private void uploadImage(Part image, String path, String userId, String pathFolder) throws ServiceException {
         int id = 0;
-        try {
-            id = userCreator.createId(request);
-        } catch (CreatorException e) {
-            throw new ServiceException("cannot get user id", e);
-        }
-
         String imageName;
-
-        String contentType = image.getContentType();
-        if (contentType.equalsIgnoreCase(JPEG_FORMAT)) {
-            imageName = id + ".jpg";
-        } else {
-            throw new ServiceException("wrong image format for pet avatar");
-        }
-
-        final String path = request.getServletContext().getRealPath("/") + PET_AVATAR_FOLDER;
-        final Path outputFile;
+        Path outputFile;
         try {
-            outputFile = Paths.get(path, imageName);
-        } catch (InvalidPathException e) {
-            throw new ServiceException("Invalid path for pet avatar", e);
+            id = petCreator.userId(userId);
+            imageName = petCreator.imageName(image, id);
+            path += pathFolder;
+            outputFile = petCreator.outputFile(path, imageName);
+        } catch (CreatorException e) {
+            throw new ServiceException(e);
         }
-
+        path = path.replace("\\\\", File.separator);
+        Path dirPathObj = Paths.get(path);
+        if (!Files.exists(dirPathObj)) {
+            try {
+                Files.createDirectories(dirPathObj);
+            } catch (IOException e) {
+                throw new ServiceException("Problem Occurred While Creating The Directory Structure" + e);
+            }
+        }
         try (final ReadableByteChannel input = Channels.newChannel(image.getInputStream());
              final WritableByteChannel output = Channels.newChannel(new FileOutputStream(outputFile.toFile()));) {
             pipe(input, output);
         } catch (IOException e) {
             throw new ServiceException("IO error during read/write user avatar", e);
         }
-        setAvatarURL(id, imageName);
+        path = pathFolder + "/" + imageName;
+        switch (pathFolder) {
+            case PET_AVATAR_FOLDER:
+                uploadAvatar(id, path);
+                break;
+            case PET_PHOTO_FOLDER:
+                uploadPhoto(id, path);
+                break;
+        }
+
     }
 
-    private void setAvatarURL(int userId, String imageName) throws ServiceException {
-        final String path = PET_AVATAR_FOLDER + "/" + imageName;
+    private void uploadPhoto(int id, String path) throws ServiceException {
         try {
-            petDao.updateAvatarURL(userId, path);
+            petDao.createPhotoById(id, path);
         } catch (DaoException e) {
-            throw new ServiceException("cannot write avatar url to db");
+            throw new ServiceException("cannot write image url to database");
         }
     }
 
-    private static void pipe(ReadableByteChannel in, WritableByteChannel out)
+    private void uploadAvatar(int id, String path) throws ServiceException {
+        try {
+            petDao.createAvatarById(id, path);
+        } catch (DaoException e) {
+            throw new ServiceException("cannot write image url to database");
+        }
+    }
+
+    private void pipe(ReadableByteChannel in, WritableByteChannel out)
             throws IOException {
         final ByteBuffer buffer = ByteBuffer.allocate(1024);
         while (in.read(buffer) >= 0 || buffer.position() > 0) {
@@ -267,12 +304,12 @@ public final class PetServiceImpl implements PetService {
     }
 
     @Override
-    public void uploadName(HttpServletRequest request) throws ServiceException {
+    public void uploadName(String petName, String userId) throws ServiceException {
         String name;
         int id;
         try {
-            name = userCreator.createName(request);
-            id = userCreator.createId(request);
+            name = userCreator.createName(petName);
+            id = userCreator.createId(userId);
         } catch (CreatorException e) {
             throw new ServiceException(e);
         }
@@ -285,12 +322,12 @@ public final class PetServiceImpl implements PetService {
     }
 
     @Override
-    public void uploadBreed(HttpServletRequest request) throws ServiceException {
+    public void uploadBreed(String petBreed, String userId) throws ServiceException {
         String breed;
         int id;
         try {
-            breed = petCreator.createBreed(request);
-            id = userCreator.createId(request);
+            breed = petCreator.createBreed(petBreed);
+            id = userCreator.createId(userId);
         } catch (CreatorException e) {
             throw new ServiceException(e);
         }
@@ -303,12 +340,12 @@ public final class PetServiceImpl implements PetService {
     }
 
     @Override
-    public void uploadAge(HttpServletRequest request) throws ServiceException {
+    public void uploadAge(String petAge, String userId) throws ServiceException {
         int age;
         int id;
         try {
-            age = petCreator.createAge(request);
-            id = userCreator.createId(request);
+            age = petCreator.createAge(petAge);
+            id = userCreator.createId(userId);
         } catch (CreatorException e) {
             throw new ServiceException(e);
         }

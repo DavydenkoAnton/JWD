@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface ArticleService extends Service<Article> {
 
 
-    Optional<List<Article>> getArticles(HttpServletRequest request) throws ServiceException;
+    Optional<List<Article>> getArticles(String petType) throws ServiceException;
 
-    Optional<Article> getArticle(HttpServletRequest request) throws ServiceException;
+    Optional<Article> getArticle(String articleTitle) throws ServiceException;
 }

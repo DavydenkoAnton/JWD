@@ -1,12 +1,9 @@
 package by.davydenko.petbook.service.util.creator.impl;
 
-import by.davydenko.petbook.controller.command.util.Attribute;
 import by.davydenko.petbook.entity.Article;
 import by.davydenko.petbook.entity.PetType;
 import by.davydenko.petbook.service.util.creator.ArticleCreator;
 import by.davydenko.petbook.service.util.creator.CreatorException;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class ArticleCreatorImpl implements ArticleCreator {
 
@@ -16,27 +13,27 @@ public class ArticleCreatorImpl implements ArticleCreator {
     }
 
     @Override
-    public PetType createType(HttpServletRequest request) {
-        String articleType = request.getParameter(Attribute.ARTICLE_TYPE);
-        if (articleType != null) {
-            switch (articleType) {
-                case Attribute.DOGS:
-                    return PetType.DOG;
-                case Attribute.CATS:
-                    return PetType.CAT;
-                case Attribute.BIRDS:
-                    return PetType.BIRD;
+    public PetType createType(String type) throws CreatorException {
+        PetType petType;
+        if (type != null) {
+            try {
+                petType = PetType.valueOf(type.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new CreatorException("wrong pet type");
             }
+        } else {
+            petType = PetType.OTHER;
         }
-        return PetType.OTHERS;
+        return petType;
     }
 
     @Override
-    public String createTitle(HttpServletRequest request) throws CreatorException {
-        String articleTitle = request.getParameter(Attribute.ARTICLE_TITLE);
-        if(articleTitle==null ||articleTitle.isEmpty()){
-            throw new CreatorException("article title is null or empty");
+    public String createTitle(String title) throws CreatorException {
+        if (title == null) {
+            throw new CreatorException("title is null");
+        } else if (title.isEmpty()) {
+            throw new CreatorException("title is empty");
         }
-        return articleTitle;
+        return title;
     }
 }

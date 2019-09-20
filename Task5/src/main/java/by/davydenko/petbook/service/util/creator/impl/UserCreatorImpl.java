@@ -21,49 +21,52 @@ import java.util.regex.Pattern;
 public final class UserCreatorImpl implements UserCreator {
 
     private static final Logger logger = LogManager.getLogger(UserCreatorImpl.class);
+    private static final int MAX_LOGIN_LENGTH = 16;
+    private static final int MAX_PASSWORD_LENGTH = 16;
+    private static final int MAX_USER_NAME_LENGTH = 16;
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
             "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private Pattern pattern;
     private Matcher matcher;
 
-    public UserCreatorImpl() {
-    }
-
 
     @Override
-    public User create(HttpServletRequest request) throws CreatorException {
-        User user = new User();
-        user.setLogin(createLogin(request));
-        user.setPassword(createPassword(request));
-        user.setName(createName(request));
-        user.setEmail(createEmail(request));
-        user.setPhoneNumber(createPhoneNumber(request));
-        user.setAge(createAge(request));
-        user.setRole(createRole());
-        return user;
+    public User create() {
+        return new User();
     }
-
-    public User createFromLoginPassword() {
-        User user = new User();
-        return user;
-    }
-
 
     @Override
-    public String createLogin(HttpServletRequest request) throws CreatorException {
-        String login = request.getParameter(Attribute.LOGIN);
-        if (login == null||login.isEmpty()) {
-            throw new CreatorException("login incorrect");
+    public String createLogin(String login) throws CreatorException {
+        if (login == null) {
+            throw new CreatorException("login is null");
+        } else if (login.isEmpty()) {
+            throw new CreatorException("login is empty");
+        } else if (login.length() > MAX_LOGIN_LENGTH) {
+            throw new CreatorException("login length more than 16");
         }
         return login;
     }
 
+    @Override
+    public String createName(String userName) throws CreatorException {
+        if (userName == null) {
+            throw new CreatorException("userName is null");
+        } else if (userName.isEmpty()) {
+            throw new CreatorException("userName is empty");
+        } else if (userName.length() > MAX_USER_NAME_LENGTH) {
+            throw new CreatorException("login length more than 16");
+        }
+        return userName;
+    }
 
     @Override
-    public String createPassword(HttpServletRequest request) throws CreatorException {
-        String password = request.getParameter(Attribute.PASSWORD);
-        if (password == null || password.isEmpty()) {
-            throw new CreatorException("password incorrect");
+    public String createPassword(String password) throws CreatorException {
+        if (password == null) {
+            throw new CreatorException("password is null");
+        } else if (password.isEmpty()) {
+            throw new CreatorException("password is empty");
+        } else if (password.length() > MAX_PASSWORD_LENGTH) {
+            throw new CreatorException("password length more than 16");
         }
         return hash(password);
     }
@@ -78,15 +81,6 @@ public final class UserCreatorImpl implements UserCreator {
             logger.error(e);
         }
         return password;
-    }
-
-    @Override
-    public String createName(HttpServletRequest request) throws CreatorException {
-        String name = request.getParameter(Attribute.NAME);
-        if (name == null || name.isEmpty()) {
-            throw new CreatorException("name incorrect");
-        }
-        return name;
     }
 
 
@@ -109,28 +103,15 @@ public final class UserCreatorImpl implements UserCreator {
     }
 
     @Override
-    public int createId(HttpSession session) throws CreatorException {
-        int id;
+    public int createId(String id) throws CreatorException {
+        int userId;
         try {
-            id = (Integer) session.getAttribute(Attribute.ID);
+            userId = Integer.valueOf(id);
         } catch (NumberFormatException e) {
-            throw new CreatorException("wrong id format");
+            throw new CreatorException("wrong user id format");
         }
-        return id;
+        return userId;
     }
-
-    @Override
-    public int createId(HttpServletRequest request) throws CreatorException {
-        int id;
-        try {
-            id = (Integer) request.getSession().getAttribute(Attribute.ID);
-        } catch (NumberFormatException e) {
-            throw new CreatorException("wrong id format");
-        }
-        return id;
-    }
-
-
 
     @Override
     public int createPhoneNumber(HttpServletRequest request) throws CreatorException {

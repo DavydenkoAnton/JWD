@@ -16,6 +16,7 @@
     <link href="<c:url value="/css/content.css"/> " rel="stylesheet" type="text/css">
 </head>
 <body>
+<div class="wrapper">
 <tag:header/>
 <c:if test="${sessionScope.role=='USER'}">
     <tag:menu/>
@@ -23,7 +24,6 @@
 <c:if test="${sessionScope.role == 'ADMIN'}">
     <tag:admin_menu/>
 </c:if>
-<div class="wrapper">
     <tag:pets_header/>
     <tag:pets/>
 </div>

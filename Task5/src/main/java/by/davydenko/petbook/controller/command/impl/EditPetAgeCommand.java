@@ -26,10 +26,11 @@ public class EditPetAgeCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
+        String age = request.getParameter(Attribute.AGE);
+        String userId = String.valueOf(request.getSession().getAttribute(Attribute.ID));
         try {
-            petService.uploadAge(request);
-            Optional<Pet> optionalPet = petService.getPetByUserId(request);
+            petService.uploadAge(age,userId);
+            Optional<Pet> optionalPet = petService.getByUserId(userId);
             if (optionalPet.isPresent()) {
                 Pet pet = optionalPet.get();
                 request.getSession().setAttribute(Attribute.PET, pet);

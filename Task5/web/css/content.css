@@ -2,31 +2,42 @@
 }
 
 .main_content {
-    width: 90%;
-    height: 300px;
-    margin-left: 12%;
+    margin-top: 2%;
+    width: 86%;
+    float: right;
+    background-color: white;
+    border: 2px solid #487879;
+    border-radius: 10px;
 }
 
 .main_content img {
     margin-left: auto;
     margin-right: auto;
-    width: 60%;
+    height: 27%;
     display: block;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    background-color: white;
 }
 
 .main_content p {
     text-indent: 20px;
     word-wrap: break-word;
     width: 95%;
+    text-align: justify;
+    margin-left: 2%;
 }
 
 .main_content h3 {
-    text-indent: 20px;
+    margin-left: 2%;
 }
 
 .pets_content {
-    margin-left: 10%;
-    width: 90%;
+    margin-top: 10px;
+    float: right;
+    width: 80%;
+    overflow-y: auto;
+    height: 500px;
 }
 
 .pets_content table {
@@ -34,7 +45,6 @@
 }
 
 .pets_content_item {
-    margin-top: 10px;
     width: 100%;
     height: 100px;
     border-radius: 10px;
@@ -75,6 +85,7 @@
     color: blue;
 }
 
+
 .btn-link {
     padding: 0;
     border: none;
@@ -88,4 +99,61 @@
 
 .btn-link:hover {
 color: blue;
+}
+
+.photos_content{
+    width: 82%;
+    height: 400px;
+    border-radius: 3px;
+    margin-left: 18%;
+    margin-top: 40px;
+    background-color: white;
+}
+.photos_content table{
+    width: 100%;
+    border: 6px solid #487879;
+    border-radius: 10px;
+}
+.photos_content table{
+
+}
+.photos_content tr{
+    float: left;
+    width: 25%;
+}
+.photos_content img{
+    object-fit: cover;
+    width: 100%;
+    height: 200px;
+}
+
+.paging_pet_content {
+    margin-top: 40px;
+    height: 60px;
+    border-radius: 3px;
+}
+
+.paging_pet_content img{
+    height: 60px;
+    width: 60px;
+}
+.paging_pet_content button{
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+}
+.paging_pet_photo_prev{
+    float: left;
+    margin-left: 25%;
+}
+
+.paging_pet_photo_next{
+    float: right;
+    margin-right: 25%;
+}
+
+.add_pet_photo_content{
+    height: 60px;
+    margin-top: 40px;
 }

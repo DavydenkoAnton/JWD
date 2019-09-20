@@ -9,21 +9,17 @@ import javax.servlet.http.HttpSession;
 public interface UserCreator extends Creator<User> {
 
     @Override
-    default User create() {
-        return null;
-    }
+    User create();
 
-    String createLogin(HttpServletRequest request)throws CreatorException;
+    String createLogin(String login)throws CreatorException;
 
-    String createPassword(HttpServletRequest request)throws CreatorException;
+    String createPassword(String password)throws CreatorException;
 
-    User create(HttpServletRequest request)throws CreatorException;
-
-    String createName(HttpServletRequest request)throws CreatorException;
+    String createName(String name)throws CreatorException;
 
     String createEmail(HttpServletRequest request) throws CreatorException;
 
-    int createId(HttpServletRequest request) throws CreatorException;
+    int createId(String id) throws CreatorException;
 
     int createPhoneNumber(HttpServletRequest request) throws CreatorException;
 
@@ -32,7 +28,5 @@ public interface UserCreator extends Creator<User> {
     Role createRole();
 
     int createUserCount(HttpSession session);
-
-    int createId(HttpSession session) throws CreatorException;
 
 }

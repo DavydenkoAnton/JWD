@@ -4,7 +4,7 @@ public enum PetType {
     DOG("dog"),
     CAT("cat"),
     BIRD("bird"),
-    OTHERS("others");
+    OTHER("other");
 
     private final String name;
 

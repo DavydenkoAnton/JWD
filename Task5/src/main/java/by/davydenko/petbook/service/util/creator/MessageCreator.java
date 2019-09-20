@@ -10,10 +10,9 @@ public interface MessageCreator extends Creator<Message> {
     @Override
     Message create();
 
-    int createUserId(HttpServletRequest request) throws CreatorException;
-    int createSenderId(HttpServletRequest request) throws CreatorException;
-    String createMessage(HttpServletRequest request) throws CreatorException;
-    String createDate(HttpServletRequest request);
+    int createId(String id) throws CreatorException;
+    String createMessage(String text) throws CreatorException;
+    String createDate();
 
     int createReceiverId(HttpServletRequest request) throws CreatorException;
 

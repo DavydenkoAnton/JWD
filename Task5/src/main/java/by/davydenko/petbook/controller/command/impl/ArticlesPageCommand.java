@@ -28,13 +28,13 @@ public final class ArticlesPageCommand implements by.davydenko.petbook.controlle
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        Optional<List<Article>> optionalArticles;
+        String petType = request.getParameter(Attribute.PET_TYPE);
         try {
-            optionalArticles = articleService.getArticles(request);
+            Optional<List<Article>> optionalArticles = articleService.getArticles(petType);
             if (optionalArticles.isPresent()) {
                 List<Article> articles = optionalArticles.get();
                 request.getSession().setAttribute(Attribute.ARTICLES, articles);
-                request.getSession().setAttribute(Attribute.ARTICLE_TYPE, articles.get(0).getPetType());
+                request.getSession().setAttribute(Attribute.PET_TYPE, articles.get(0).getPetType());
             }
         } catch (ServiceException e) {
             logger.error(e);
@@ -47,10 +47,8 @@ public final class ArticlesPageCommand implements by.davydenko.petbook.controlle
         try {
             RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher(USER_PAGE);
             dispatcher.forward(request, response);
-        } catch (ServletException e) {
-            logger.error("[ ServletException ]", e);
-        } catch (IOException e) {
-            logger.error("[ IOException ]", e);
+        } catch (ServletException | IOException e) {
+            logger.error(e);
         }
     }
 }

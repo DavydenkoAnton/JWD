@@ -9,22 +9,11 @@ import by.davydenko.petbook.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.WritableByteChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.Optional;
 
 public class EditUserAvatarCommand implements Command {
@@ -42,16 +31,25 @@ public class EditUserAvatarCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
-
+        Part part = null;
         try {
-            userService.uploadAvatar(request);
-            Optional<User> optionalUser = userService.getUserById(request);
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
-                request.getSession().setAttribute(Attribute.USER, user);
-            }
-        } catch (ServiceException e) {
+            part = request.getPart(Attribute.USER_AVATAR);
+        } catch (IOException | ServletException e) {
             logger.error(e);
+        }
+        String path = request.getServletContext().getRealPath("/");
+        String userId = request.getParameter(Attribute.USER_ID);
+        if (part != null) {
+            try {
+                userService.uploadAvatar(part, path, userId);
+                Optional<User> optionalUser = userService.getById(userId);
+                if (optionalUser.isPresent()) {
+                    User user = optionalUser.get();
+                    request.getSession().setAttribute(Attribute.USER, user);
+                }
+            } catch (ServiceException e) {
+                logger.error(e);
+            }
         }
         redirectToProfilePage(response);
     }

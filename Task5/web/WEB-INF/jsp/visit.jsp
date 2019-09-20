@@ -23,7 +23,7 @@
             <tag:menu/>
         </c:when>
         <c:when test="${sessionScope.role=='ADMIN'}">
-            <tag:menu/>
+            <tag:admin_menu/>
         </c:when>
     </c:choose>
     <c:set var="pet" value="${sessionScope.pet}" scope="session"/>
@@ -32,17 +32,23 @@
     </c:if>
     <div class="content">
         <c:set var="pet" value="${sessionScope.pet}" />
-        <c:if test="${empty pet.avatarURL}">
+        <c:if test="${empty pet.avatarUrl}">
             <img src="<c:url value="/img/no_img_user.png"/>" height="128" width="128" alt="">
         </c:if>
-        <c:if test="${not empty pet.avatarURL}">
-            <img src="${pet.avatarURL}" height="128" width="128" alt="">
+        <c:if test="${not empty pet.avatarUrl}">
+            <img src="${pet.avatarUrl}" height="128" width="128" alt="">
             ${pet.name}<br>
             ${pet.age}<br>
             ${pet.breed}<br>
         </c:if>
         <br>
-
+        <form action="<fmt:message key="command.sendMessage" bundle="${cnt}"/>" method="post" id="form_sender">
+            <textarea name="messageText" form="form_sender"></textarea>
+            <br/>
+            <button type="submit" name="userId" value="${pet.userId}">
+                <fmt:message key="global.text.send" bundle="${cnt}"/>
+            </button>
+        </form>
         <c:set var="friend" value="${sessionScope.friend}" scope="session"/>
         <c:choose>
             <c:when test="${friend}">

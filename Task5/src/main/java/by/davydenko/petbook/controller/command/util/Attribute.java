@@ -7,14 +7,15 @@ public final class Attribute {
     public static final String ARTICLE_TYPE = "articleType";
     public static final String ARTICLE_TITLE = "articleTitle";
     public static final String BREED = "breed";
-    public static final String DOG_PREFER_VALUE = "dogPreferValue";
-    public static final String CAT_PREFER_VALUE = "catPreferValue";
-    public static final String BIRD_PREFER_VALUE = "birdPreferValue";
+    public static final String DOG_PERCENT_VALUE = "dogPreferValue";
+    public static final String CAT_PERCENT_VALUE = "catPreferValue";
+    public static final String BIRD_PERCENT_VALUE = "birdPreferValue";
     public static final String FRIEND = "friend";
-    public static final String OTHER_PREFER_VALUE = "otherPreferValue";
+    public static final String OTHER_PERCENT_VALUE = "otherPreferValue";
     public static final String MESSAGE_SENDER = "messageSender";
     public static final String MESSAGE_SENDER_ID = "messageSenderId";
     public static final String MESSAGE_DATE = "date";
+    public static final String MESSAGE_TEXT = "messageText";
     public static final String PET_TYPE = "petType";
     public static final String LOGIN = "login";
     public static final String CHAT_MESSAGES = "chatMessages";
@@ -36,7 +37,7 @@ public final class Attribute {
     public static final String AGE = "age";
     public static final String MESSAGE = "message";
     public static final String MESSAGE_SENDERS = "messageSenders";
-    public static final String MESSAGE_RECEIVER ="messageReceiver" ;
+    public static final String MESSAGE_RECEIVER = "messageReceiver";
     public static final String TITLE = "title";
     public static final String TEXT = "text";
     public static final String DESCRIPTION = "description";
@@ -44,4 +45,11 @@ public final class Attribute {
     public static final String CATS = "cats";
     public static final String BIRDS = "birds";
     public static final String RECEIVER_ID = "receiverId";
+    public static final String USER_NAME = "userName";
+    public static final String PET_NAME = "petName";
+    public static final String PET_PHOTOS = "petPhotos";
+    public static final String PET_PHOTO = "petPhoto";
+    public static final String URL = "url";
+    public static final String PAGING_PHOTO_BTN = "pagingPhotoBtn";
+    public static final String PAGING_VALUE ="pagingValue" ;
 }

@@ -20,10 +20,10 @@
 
     <div class="pet_profile">
         <div class="edit_avatar">
-            <c:if test="${not empty pet.avatarURL}">
-                <img src="${pet.avatarURL}" height="150" width="150" alt="">
+            <c:if test="${not empty pet.avatarUrl}">
+                <img src="${pet.avatarUrl}" height="150" width="150" alt="">
             </c:if>
-            <c:if test="${empty pet.avatarURL}">
+            <c:if test="${empty pet.avatarUrl}">
                 <img src="<c:url value="/img/no_img_user.png"/>" height="150" width="150" alt="">
             </c:if>
 
@@ -44,7 +44,7 @@
                 <fmt:message key="global.text.name" bundle="${cnt}"/>
             </c:if>
             <form method="post" action="<fmt:message key="command.editPetName" bundle="${cnt}"/>">
-                <input type="text" name="name">
+                <input type="text" name="petName">
                 <button type="submit"><fmt:message key="global.text.edit" bundle="${cnt}"/></button>
             </form>
         </div>

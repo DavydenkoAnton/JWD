@@ -71,7 +71,7 @@
             <c:if test="${not empty sender}">
                 <form action="<fmt:message key="command.sendMessage" bundle="${cnt}"/>" method="post">
                     <label>
-                        <input name="message" type="text" required aria-setsize="100"
+                        <input name="messageText" type="text" required aria-setsize="100"
                                placeholder="message"/>
 
                     </label><br/>

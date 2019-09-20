@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface ArticleCreator extends Creator<Article> {
 
-    PetType createType(HttpServletRequest request);
+    PetType createType(String petType) throws CreatorException;
 
-    String createTitle(HttpServletRequest request) throws CreatorException;
+    String createTitle(String title) throws CreatorException;
 }

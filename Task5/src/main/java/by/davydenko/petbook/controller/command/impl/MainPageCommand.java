@@ -17,8 +17,8 @@ import java.io.IOException;
 public final class MainPageCommand implements Command {
 
     private static Logger logger = LogManager.getLogger(MainPageCommand.class);
-    private static final String TARGET_PAGE = "/WEB-INF/jsp/main.jsp";
-    private static final String ERROR_PAGE = "/error.jsp";
+    private static final String MAIN_PAGE_URL = "/WEB-INF/jsp/main.jsp";
+    private static final String ERROR_PAGE_URL = "http://localhost:8080/pb/error.html";
     private PetService petService;
 
     public MainPageCommand() {
@@ -28,29 +28,37 @@ public final class MainPageCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        int dogPrefer = 0;
-        int catPrefer = 0;
-        int birdPrefer = 0;
-        int otherPrefer = 0;
         try {
-            dogPrefer = petService.getDogPrefer();
-            catPrefer = petService.getCatPrefer();
-            birdPrefer = petService.getBirdPrefer();
-            otherPrefer = petService.getOtherPrefer();
+            int dogPercent=petService.getDogPercent();
+            int catPercent=petService.getCatPercent();
+            int birdPercent=petService.getBirdPercent();
+            int otherPercent=petService.getOtherPercent();
+            request.getSession().setAttribute(Attribute.DOG_PERCENT_VALUE, dogPercent);
+            request.getSession().setAttribute(Attribute.CAT_PERCENT_VALUE, catPercent);
+            request.getSession().setAttribute(Attribute.BIRD_PERCENT_VALUE, birdPercent);
+            request.getSession().setAttribute(Attribute.OTHER_PERCENT_VALUE, otherPercent);
+            forwardToMainPage(request,response);
         } catch (ServiceException e) {
             logger.error(e);
+            redirectToErrorPage(response);
         }
-        request.getSession().setAttribute(Attribute.DOG_PREFER_VALUE, dogPrefer);
-        request.getSession().setAttribute(Attribute.CAT_PREFER_VALUE, catPrefer);
-        request.getSession().setAttribute(Attribute.BIRD_PREFER_VALUE, birdPrefer);
-        request.getSession().setAttribute(Attribute.OTHER_PREFER_VALUE, otherPrefer);
+    }
+
+    private void forwardToMainPage(HttpServletRequest request, HttpServletResponse response) {
         try {
-            RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher(TARGET_PAGE);
+            RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher(MAIN_PAGE_URL);
             dispatcher.forward(request, response);
+        } catch (IOException | ServletException e) {
+            logger.error( e);
+        }
+    }
+
+    private void redirectToErrorPage(HttpServletResponse response) {
+        response.setContentType("error.jsp");
+        try {
+            response.sendRedirect(ERROR_PAGE_URL);
         } catch (IOException e) {
-            logger.error("IOException (not redirected)", e);
-        } catch (ServletException e) {
-            logger.error("ServletException (not redirected)", e);
+            logger.error( e);
         }
     }
 }
