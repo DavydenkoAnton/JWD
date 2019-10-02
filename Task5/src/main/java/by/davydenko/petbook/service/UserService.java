@@ -16,7 +16,7 @@ public interface UserService extends Service<User> {
 
     void deleteByLogin(String login) throws ServiceException;
 
-    void registerUser(String login, String password, String userName) throws ServiceException;
+    void registerUser(String login, String password,String passwordCheck) throws ServiceException;
 
     int getIdByLogin(String login) throws ServiceException;
 
@@ -24,4 +24,7 @@ public interface UserService extends Service<User> {
 
     void uploadAvatar(Part part,String path, String userId) throws ServiceException;
 
+    Optional<List<User>> getAllUsers() throws ServiceException;
+
+    void changeRole(String id)throws ServiceException;
 }

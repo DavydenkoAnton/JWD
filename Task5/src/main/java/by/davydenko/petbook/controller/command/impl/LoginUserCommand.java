@@ -2,6 +2,7 @@ package by.davydenko.petbook.controller.command.impl;
 
 import by.davydenko.petbook.controller.command.Command;
 import by.davydenko.petbook.controller.command.util.Attribute;
+import by.davydenko.petbook.controller.command.util.Error;
 import by.davydenko.petbook.entity.User;
 import by.davydenko.petbook.service.ServiceException;
 import by.davydenko.petbook.service.ServiceFactory;
@@ -33,10 +34,12 @@ public class LoginUserCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        String login=request.getParameter(Attribute.LOGIN);
-        String password=request.getParameter(Attribute.PASSWORD);
+        Error error = Error.getInstance();
+        error.clean();
+        String login = request.getParameter(Attribute.LOGIN);
+        String password = request.getParameter(Attribute.PASSWORD);
         try {
-            Optional<User> optionalUser = userService.getByLoginPassword(login,password);
+            Optional<User> optionalUser = userService.getByLoginPassword(login, password);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 request.getSession().setAttribute(Attribute.ID, user.getId());
@@ -47,12 +50,15 @@ public class LoginUserCommand implements Command {
                     redirectToUserPage(response);
                 } else if (user.getRole().equals(ADMIN)) {
                     redirectToAdminPage(response);
+                }else {
+                    redirectToLoginPage(response);
                 }
             } else {
                 redirectToLoginPage(response);
             }
         } catch (ServiceException e) {
             logger.error(e);
+            request.getSession().setAttribute(Attribute.ERROR, error);
             redirectToLoginPage(response);
         }
     }
@@ -62,7 +68,7 @@ public class LoginUserCommand implements Command {
         try {
             response.sendRedirect(USER_PAGE_URL);
         } catch (IOException e) {
-            logger.error( e);
+            logger.error(e);
         }
     }
 
@@ -89,7 +95,7 @@ public class LoginUserCommand implements Command {
         try {
             response.sendRedirect(ERROR_PAGE_URL);
         } catch (IOException e) {
-            logger.error( e);
+            logger.error(e);
         }
     }
 }

@@ -37,11 +37,17 @@ public interface PetDao extends Dao<Pet> {
 
     Optional<List<Pet>> readByType(PetType type) throws DaoException;
 
+    Optional<List<Pet>> readByTypeNoUser(String petType, int id)throws DaoException;
+
     List<String> readPhotosUrl(int id) throws DaoException;
 
-    List<String> readPhotosUrl(int id,int from,int to) throws DaoException;
+    List<String> readPhotosUrl(int id, int from, int to) throws DaoException;
 
     void createPhotoById(int id, String path) throws DaoException;
 
     void createAvatarById(int id, String path) throws DaoException;
+
+    void updateType(int id, PetType type) throws DaoException;
+
+    Optional<List<Pet>> readAllNoUser(int idTemp)throws DaoException;
 }

@@ -73,7 +73,7 @@ public class MessageServiceImpl implements MessageService {
         }
         try {
             messageDao.create(message);
-        } catch (ConnectionPoolException | DaoException e) {
+        } catch ( DaoException e) {
             throw new ServiceException(e);
         }
     }

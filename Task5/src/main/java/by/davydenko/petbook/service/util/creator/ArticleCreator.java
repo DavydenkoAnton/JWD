@@ -10,4 +10,10 @@ public interface ArticleCreator extends Creator<Article> {
     PetType createType(String petType) throws CreatorException;
 
     String createTitle(String title) throws CreatorException;
+
+    String createDescription(String description) throws CreatorException;
+
+    String createText(String text) throws CreatorException;
+
+    int creatId(String id)throws CreatorException;
 }

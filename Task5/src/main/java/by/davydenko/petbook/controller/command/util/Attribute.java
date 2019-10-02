@@ -4,7 +4,6 @@ public final class Attribute {
     public static final String ID = "id";
     public static final String ARTICLES = "articles";
     public static final String ARTICLE = "article";
-    public static final String ARTICLE_TYPE = "articleType";
     public static final String ARTICLE_TITLE = "articleTitle";
     public static final String BREED = "breed";
     public static final String DOG_PERCENT_VALUE = "dogPreferValue";
@@ -41,15 +40,21 @@ public final class Attribute {
     public static final String TITLE = "title";
     public static final String TEXT = "text";
     public static final String DESCRIPTION = "description";
-    public static final String DOGS = "dogs";
-    public static final String CATS = "cats";
-    public static final String BIRDS = "birds";
     public static final String RECEIVER_ID = "receiverId";
-    public static final String USER_NAME = "userName";
     public static final String PET_NAME = "petName";
     public static final String PET_PHOTOS = "petPhotos";
     public static final String PET_PHOTO = "petPhoto";
     public static final String URL = "url";
-    public static final String PAGING_PHOTO_BTN = "pagingPhotoBtn";
-    public static final String PAGING_VALUE ="pagingValue" ;
+    public static final String PAGING_VALUE = "pagingValue";
+    public static final String PASSWORD_CHECK = "passwordCheck";
+    public static final String ERROR = "error";
+    public static final String ADMIN_PETS = "adminPets";
+    public static final String ADMIN_PET = "adminPet";
+    public static final String ADMIN_USERS = "adminUsers";
+    public static final String ADMIN_USER = "adminUser";
+    public static final String USER_ROLE = "userRole";
+    public static final String ADMIN_ARTICLES = "adminArticles";
+    public static final String ADMIN_ARTICLE_TITLE = "adminArticleTitle";
+    public static final String ADMIN_ARTICLE_DESCRIPTION = "adminArticleDescription";
+    public static final String ADMIN_ARTICLE_TEXT = "adminArticleText";
 }

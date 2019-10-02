@@ -13,23 +13,34 @@
     <title><fmt:message key="global.text.myPage" bundle="${cnt}"/></title>
     <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/header.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/css/content.css"/>" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="wrapper">
     <tag:header/>
     <tag:menu/>
 
-    <div class="content">
-        <c:set var="pet" value="${sessionScope.pet}" />
-        <c:if test="${empty pet.avatarUrl}">
-            <img src="<c:url value="/img/no_img_user.png"/>" height="128" width="128" alt="">
-        </c:if>
-        <c:if test="${not empty pet.avatarUrl}">
-            <img src="${pet.avatarUrl}" height="128" width="128" alt="">
-            ${pet.name}
-            ${pet.age}
-            ${pet.breed}
-        </c:if>
+    <div class="pet_content">
+        <div class="pet_content_ava">
+            <c:set var="pet" value="${sessionScope.pet}"/>
+            <c:if test="${empty pet.avatarUrl}">
+                <img src="<c:url value="/img/no_img_user.png"/>" height="128" width="128" alt="">
+            </c:if>
+            <c:if test="${not empty pet.avatarUrl}">
+                <img src="${pet.avatarUrl}" height="128" width="128" alt="">
+            </c:if>
+            <p>${pet.name}</p>
+        </div>
+        <div class="pet_content_credentials">
+            <div class="pet_content_credentials_item">
+                <h3><fmt:message key="global.text.age" bundle="${cnt}"/></h3>
+                <h4>${pet.age}</h4>
+            </div>
+            <div class="pet_content_credentials_item">
+                <h3><fmt:message key="global.text.breed" bundle="${cnt}"/></h3>
+                <h4>${pet.breed}</h4>
+            </div>
+        </div>
     </div>
 </div>
 <tag:footer/>

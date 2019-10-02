@@ -21,7 +21,6 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -52,6 +51,28 @@ public final class PetServiceImpl implements PetService {
         Optional<List<Pet>> optionalPets;
         try {
             optionalPets = petDao.read();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalPets;
+    }
+
+    @Override
+    public Optional<List<Pet>> getAllPetsNoUser(int id) throws ServiceException {
+        Optional<List<Pet>> optionalPets;
+        try {
+            optionalPets = petDao.readAllNoUser(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalPets;
+    }
+
+    @Override
+    public Optional<List<Pet>> getByTypeNoUser(String petType, int id) throws ServiceException {
+        Optional<List<Pet>> optionalPets;
+        try {
+            optionalPets = petDao.readByTypeNoUser(petType, id);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -357,5 +378,21 @@ public final class PetServiceImpl implements PetService {
         }
     }
 
+    @Override
+    public void uploadType(String petType, String userId) throws ServiceException {
+        PetType type;
+        int id;
+        try {
+            type = petCreator.createType(petType);
+            id = userCreator.createId(userId);
+        } catch (CreatorException e) {
+            throw new ServiceException(e);
+        }
 
+        try {
+            petDao.updateType(id, type);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
 }

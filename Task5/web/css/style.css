@@ -39,14 +39,17 @@
 }
 
 .pet_profile {
-    float: left;
-    margin-top: 40px;
-    margin-left: 40px;
-    width: 50%;
     height: 500px;
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    width: 84%;
+    float: right;
+    margin-top: 40px;
+    border: 3px solid #487879;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(72,120,121,1) 0%, rgba(255,255,255,1) 74%);
 }
+.pet_profile form{
 
+}
 .admin_profile {
     float: left;
     margin-top: 40px;
@@ -56,26 +59,48 @@
     border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
-.content {
-    float: left;
-    margin-top: 40px;
-    width: 75%;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    height: 260px;
-    margin-left: 50px;
-}
-
 .edit_avatar {
-    margin-top: 20px;
-    margin-left: 20px;
-    width: 100%;
+    float: left;
+    height: 500px;
+    width: 50%;
 }
 
-.edit_credential {
-    margin-top: 20px;
-    width: 100%;
-    height: 40px;
-    margin-left: 50px;
+.edit_avatar img{
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+    margin-left: 27%;
+    margin-top: 50px;
+    border-radius: 10px;
+    border: 3px solid #487879;
+    background: white;
+}
+
+.edit_avatar form{
+    padding-left: 123px;
+}
+
+.edit_profile_credential {
+    width: 50%;
+    height: 500px;
+    float: right;
+}
+
+.edit_profile_credential_item {
+    margin-top: 50px;
+}
+.edit_profile_credential_item input {
+    width: 150px;
+}
+.edit_profile_credential_item input::placeholder {
+    color: black;
+    text-align: left;
+}
+.edit_profile_credential_item select {
+    width: 150px;
+}
+.edit_profile_credential_item button {
+    width: 100px;
 }
 
 .pagLeft {

@@ -19,20 +19,27 @@ public class GetAllPetsCommand implements by.davydenko.petbook.controller.comman
     private static final String PETS_PAGE_URL = "http://localhost:8080/pb/pets.html";
     PetService petService;
 
-    public GetAllPetsCommand(){
-        ServiceFactory serviceFactory=ServiceFactory.getInstance();
-        petService=serviceFactory.getPetService();
+    public GetAllPetsCommand() {
+        ServiceFactory serviceFactory = ServiceFactory.getInstance();
+        petService = serviceFactory.getPetService();
     }
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<List<Pet>> optionalPets;
-        try{
-            optionalPets=petService.getAllPets();
-            if(optionalPets.isPresent()){
-                List<Pet> pets=optionalPets.get();
-                request.getSession().setAttribute(Attribute.PETS,pets);
+        int id;
+        try {
+            id = (int) request.getSession().getAttribute(Attribute.ID);
+        } catch (NullPointerException e) {
+            id = 0;
+        }
+        try {
+            optionalPets = petService.getAllPetsNoUser(id);
+            if (optionalPets.isPresent()) {
+                List<Pet> pets = optionalPets.get();
+                request.getSession().setAttribute(Attribute.PETS, pets);
             }
-        }catch (ServiceException e){
+        } catch (ServiceException e) {
             logger.error(e);
         }
         redirectToPetsPage(response);

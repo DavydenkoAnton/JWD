@@ -48,6 +48,16 @@ public class SecurityUriFilter implements Filter {
         adminCommands = new ArrayList<>();
         adminCommands.add("admin");
         adminCommands.add("deleteByLogin");
+        adminCommands.add("users");
+        adminCommands.add("changeUserRole");
+        adminCommands.add("adminArticles");
+        adminCommands.add("addArticlePage");
+        adminCommands.add("addArticle");
+        adminCommands.add("addArticleCommand");
+        adminCommands.add("editArticlePage");
+        adminCommands.add("editArticle");
+        adminCommands.add("editArticleCommand");
+        adminCommands.add("deleteArticle");
 
 
         userAuthorizedCommands = new ArrayList<>();
@@ -64,6 +74,7 @@ public class SecurityUriFilter implements Filter {
         userAuthorizedCommands.add("editPetAvatar");
         userAuthorizedCommands.add("editPetAge");
         userAuthorizedCommands.add("editPetBreed");
+        userAuthorizedCommands.add("editPetType");
         userAuthorizedCommands.add("profile");
         userAuthorizedCommands.add("getChatMessages");
         userAuthorizedCommands.add("pagingPetPhotoNext");

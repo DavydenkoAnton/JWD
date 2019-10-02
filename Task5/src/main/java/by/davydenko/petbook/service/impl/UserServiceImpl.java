@@ -1,8 +1,10 @@
 package by.davydenko.petbook.service.impl;
 
+import by.davydenko.petbook.controller.command.util.Error;
 import by.davydenko.petbook.dao.DaoException;
 import by.davydenko.petbook.dao.DaoFactory;
 import by.davydenko.petbook.dao.UserDao;
+import by.davydenko.petbook.entity.Role;
 import by.davydenko.petbook.entity.User;
 import by.davydenko.petbook.service.ServiceException;
 import by.davydenko.petbook.service.UserService;
@@ -46,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void uploadAvatar(Part part,String path, String userId) throws ServiceException {
+    public void uploadAvatar(Part part, String path, String userId) throws ServiceException {
 
 //        Part image;
 //        try {
@@ -108,7 +110,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void uploadName(String name,String id) throws ServiceException {
+    public void uploadName(String name, String id) throws ServiceException {
         try {
             name = userCreator.createName(name);
             int userId = userCreator.createId(id);
@@ -116,6 +118,17 @@ public class UserServiceImpl implements UserService {
         } catch (CreatorException | DaoException e) {
             throw new ServiceException(e);
         }
+    }
+
+    @Override
+    public Optional<List<User>> getAllUsers() throws ServiceException {
+        Optional<List<User>> optionalUsers;
+        try {
+            optionalUsers = userDao.readUsers();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalUsers;
     }
 
     @Override
@@ -168,22 +181,40 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     @Override
-    public void registerUser(String login, String password, String name) throws ServiceException {
-        User user;
+    public void changeRole(String id) throws ServiceException {
         try {
-            user=userCreator.create();
-            user.setLogin(userCreator.createLogin(login));
-            user.setPassword(userCreator.createPassword(password));
-            user.setName(userCreator.createName(name));
-            user.setRole(userCreator.createRole());
-        } catch (CreatorException e) {
+            int idTemp = userCreator.createId(id);
+            Optional<User> optionalUser=userDao.read(idTemp);
+            if(optionalUser.isPresent()){
+                User user=optionalUser.get();
+                if (user.getRole().equals(Role.USER)) {
+                    user.setRole(Role.GUEST);
+                } else if (user.getRole().equals(Role.GUEST)) {
+                    user.setRole(Role.USER);
+                }
+                userDao.updateRole(idTemp, user.getRole());
+            }
+        } catch (CreatorException | DaoException e) {
             throw new ServiceException(e);
         }
+    }
+
+    @Override
+    public void registerUser(String login, String password, String passwordCheck) throws ServiceException {
+        Error error = Error.getInstance();
         try {
-            userDao.create(user);
-        } catch (DaoException e) {
+            String loginTemp = userCreator.createLogin(login);
+            String passwordTemp = userCreator.createPassword(password);
+            String passwordCheckTemp = userCreator.createPassword(passwordCheck);
+            if (passwordTemp.equals(passwordCheckTemp)) {
+                Role role = userCreator.createRole();
+                userDao.create(loginTemp, passwordTemp, role);
+            } else {
+                error.setPasswordCheck("password not equal");
+                throw new ServiceException("password not equal");
+            }
+        } catch (CreatorException | DaoException e) {
             throw new ServiceException(e);
         }
     }
@@ -204,7 +235,6 @@ public class UserServiceImpl implements UserService {
         }
         return id;
     }
-
 
 
 }

@@ -18,7 +18,7 @@
                             <div class="article_title">
                                 <form action="<fmt:message key="command.articlePage" bundle="${cnt}"/>" method="post">
                                     <button type="submit"
-                                            name="<fmt:message key="global.text.articleTitle" bundle="${cnt}"/>"
+                                            name="<fmt:message key="attribute.text.articleTitle" bundle="${cnt}"/>"
                                             value="${article.title}">
                                             ${article.title}
                                     </button>

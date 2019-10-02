@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface MessageDao extends Dao<Message> {
     @Override
-    void create(Message message) throws ConnectionPoolException, DaoException;
+    void create(Message message) throws  DaoException;
 
     @Override
     Optional<Message> read(int id) throws DaoException;

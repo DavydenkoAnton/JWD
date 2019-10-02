@@ -18,33 +18,91 @@ import java.util.Optional;
 
 public class ArticleDaoImpl implements ArticleDao {
 
+    private static final String SELECT_ALL_ARTICLES = "SELECT title,text,type,description,id FROM petbook.articles ";
     private static final String SELECT_ARTICLES_BY_TYPE = "SELECT title,text,type,description,id FROM petbook.articles WHERE type=?";
+    private static final String SELECT_ARTICLE_BY_ID = "SELECT title,text,type,description,id FROM petbook.articles WHERE id=?";
     private static final String SELECT_ARTICLE_BY_TITLE = "SELECT title,text,type,description,id FROM petbook.articles WHERE title=?";
+    private static final String INSERT_ARTICLE = "INSERT INTO petbook.articles (title, description, text,type) VALUES (?,?,?,?)";
+    private static final String UPDATE_ARTICLE_BY_ID = "UPDATE petbook.articles SET title=?,description=?,text=?,type=? WHERE id=?";
+    private static final String DELETE_ARTICLE_BY_ID = "DELETE FROM petbook.articles WHERE id=?";
+    private Connection connection;
+    private PreparedStatement preparedStatement;
+    private ResultSet resultSet;
+    private ConnectionPool connectionPool;
+
+    public ArticleDaoImpl() {
+        connectionPool = ConnectionPool.getInstance();
+    }
+
 
     @Override
-    public void create(Article entity) throws ConnectionPoolException, DaoException {
+    public void create(Article article) throws DaoException {
+        try {
+            connection = connectionPool.takeConnection();
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(INSERT_ARTICLE);
+            preparedStatement.setString(1, article.getTitle());
+            preparedStatement.setString(2, article.getDescription());
+            preparedStatement.setString(3, article.getText());
+            preparedStatement.setString(4, article.getPetType().name());
+            if (preparedStatement.executeUpdate() > 0) {
+                connection.commit();
+            }
+            connectionPool.closeConnection(connection, preparedStatement);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
+    }
 
+    @Override
+    public void update(Article article) throws DaoException {
+        try {
+            connection = connectionPool.takeConnection();
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(UPDATE_ARTICLE_BY_ID);
+            preparedStatement.setString(1, article.getTitle());
+            preparedStatement.setString(2, article.getDescription());
+            preparedStatement.setString(3, article.getText());
+            preparedStatement.setString(4, article.getPetType().name());
+            preparedStatement.setInt(5, article.getId());
+            if (preparedStatement.executeUpdate() > 0) {
+                connection.commit();
+            }
+            connectionPool.closeConnection(connection, preparedStatement);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public Optional<Article> read(int id) throws DaoException {
-        return Optional.empty();
+        Article article = null;
+        try {
+            connection = connectionPool.takeConnection();
+            preparedStatement = connection.prepareStatement(SELECT_ARTICLE_BY_ID);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                resultSet.getRow();
+                article = new Article();
+                article.setTitle(resultSet.getString(Attribute.TITLE));
+                article.setText(resultSet.getString(Attribute.TEXT));
+                article.setDescription(resultSet.getString(Attribute.DESCRIPTION));
+                article.setId(resultSet.getInt(Attribute.ID));
+                article.setPetType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
+            }
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
+        return Optional.ofNullable(article);
     }
 
     @Override
     public Optional<List<Article>> readByType(PetType petType) throws DaoException {
         List<Article> articles = null;
-        Connection connection;
-        ConnectionPool connectionPool = ConnectionPool.getInstance();
-        PreparedStatement preparedStatement;
-        ResultSet resultSet;
-
         try {
             connection = connectionPool.takeConnection();
-        } catch (ConnectionPoolException e) {
-            throw new DaoException(e);
-        }
-        try {
             preparedStatement = connection.prepareStatement(SELECT_ARTICLES_BY_TYPE);
             preparedStatement.setString(1, petType.toString());
             resultSet = preparedStatement.executeQuery();
@@ -59,32 +117,43 @@ public class ArticleDaoImpl implements ArticleDao {
                 article.setPetType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
                 articles.add(article);
             }
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-        try {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (ConnectionPoolException e) {
+        } catch (SQLException | ConnectionPoolException e) {
             throw new DaoException(e);
         }
+        return Optional.ofNullable(articles);
+    }
 
+    @Override
+    public Optional<List<Article>> readAll() throws DaoException {
+        List<Article> articles = null;
+        try {
+            connection = connectionPool.takeConnection();
+            preparedStatement = connection.prepareStatement(SELECT_ALL_ARTICLES);
+            resultSet = preparedStatement.executeQuery();
+            articles = new ArrayList<>();
+            while (resultSet.next()) {
+                resultSet.getRow();
+                Article article = new Article();
+                article.setTitle(resultSet.getString(Attribute.TITLE));
+                article.setText(resultSet.getString(Attribute.TEXT));
+                article.setDescription(resultSet.getString(Attribute.DESCRIPTION));
+                article.setId(resultSet.getInt(Attribute.ID));
+                article.setPetType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
+                articles.add(article);
+            }
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
         return Optional.ofNullable(articles);
     }
 
     @Override
     public Optional<Article> readByTitle(String articleTitle) throws DaoException {
         Article article = null;
-        Connection connection;
-        ConnectionPool connectionPool = ConnectionPool.getInstance();
-        PreparedStatement preparedStatement;
-        ResultSet resultSet;
-
         try {
             connection = connectionPool.takeConnection();
-        } catch (ConnectionPoolException e) {
-            throw new DaoException(e);
-        }
-        try {
             preparedStatement = connection.prepareStatement(SELECT_ARTICLE_BY_TITLE);
             preparedStatement.setString(1, articleTitle);
             resultSet = preparedStatement.executeQuery();
@@ -97,25 +166,27 @@ public class ArticleDaoImpl implements ArticleDao {
                 article.setId(resultSet.getInt(Attribute.ID));
                 article.setPetType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
             }
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-        try {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (ConnectionPoolException e) {
+        } catch (SQLException | ConnectionPoolException e) {
             throw new DaoException(e);
         }
-
         return Optional.ofNullable(article);
     }
 
-    @Override
-    public void update(Article entity) {
-
-    }
 
     @Override
-    public void delete(int id) {
-
+    public void delete(int id)throws DaoException {
+        try {
+            connection = connectionPool.takeConnection();
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(DELETE_ARTICLE_BY_ID);
+            preparedStatement.setInt(1, id);
+            if (preparedStatement.executeUpdate() > 0) {
+                connection.commit();
+            }
+            connectionPool.closeConnection(connection, preparedStatement);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
     }
 }

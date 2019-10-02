@@ -11,22 +11,17 @@ public interface UserCreator extends Creator<User> {
     @Override
     User create();
 
-    String createLogin(String login)throws CreatorException;
+    String createLogin(String login) throws CreatorException;
 
-    String createPassword(String password)throws CreatorException;
+    String createPassword(String password) throws CreatorException;
 
-    String createName(String name)throws CreatorException;
-
-    String createEmail(HttpServletRequest request) throws CreatorException;
+    String createName(String name) throws CreatorException;
 
     int createId(String id) throws CreatorException;
 
-    int createPhoneNumber(HttpServletRequest request) throws CreatorException;
-
-    int createAge(HttpServletRequest request) throws CreatorException;
-
     Role createRole();
 
-    int createUserCount(HttpSession session);
+    Role createRole(String role) throws CreatorException;
+
 
 }

@@ -34,8 +34,8 @@ public class SendMessageCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        String receiverId = String.valueOf(request.getSession().getAttribute(Attribute.ID));
-        String senderId = request.getParameter(Attribute.USER_ID);
+        String senderId = String.valueOf(request.getSession().getAttribute(Attribute.ID));
+        String receiverId = request.getParameter(Attribute.USER_ID);
         String text = request.getParameter(Attribute.MESSAGE_TEXT);
         try {
             messageService.sendMessage(receiverId, senderId, text);

@@ -20,6 +20,15 @@ final class CommandProvider {
         commands.put("articles", new ArticlesPageCommand());
         commands.put("article", new ArticlePageCommand());
         commands.put("addPetPhoto", new AddPetPhotoCommand());
+        commands.put("addArticlePage", new AddArticlePageCommand());
+        commands.put("addArticle", new AddArticle());
+        commands.put("addArticleCommand", new AddArticleCommand());
+        commands.put("editArticlePage", new EditArticlePageCommand());
+        commands.put("editArticle", new EditArticle());
+        commands.put("editArticleCommand", new EditArticleCommand());
+        commands.put("deleteArticle", new DeleteArticleCommand());
+        commands.put("adminArticles", new AdminArticlesPageCommand());
+        commands.put("changeUserRole", new ChangeUserRoleCommand());
         commands.put("locale", new ChangeLocaleCommand());
         commands.put("login", new LoginPageCommand());
         commands.put("photos", new PhotosPageCommand());
@@ -35,6 +44,7 @@ final class CommandProvider {
         commands.put("registration", new RegisterPageCommand());
         commands.put("registerUser", new RegisterUserCommand());
         commands.put("admin", new UserPageCommand());
+        commands.put("users", new AdminUsersPageCommand());
         commands.put("messages", new MessagePageCommand());
         commands.put("sendMessage", new SendMessageCommand());
         commands.put("sendMessagePage", new SendMessagePageCommand());
@@ -44,6 +54,7 @@ final class CommandProvider {
         commands.put("editPetAvatar", new EditPetAvatarCommand());
         commands.put("editPetName", new EditPetNameCommand());
         commands.put("editPetBreed", new EditPetBreedCommand());
+        commands.put("editPetType", new EditPetTypeCommand());
         commands.put("editPetAge", new EditPetAgeCommand());
         commands.put("pagingPetPhotoPrev", new PagingPetPhotoPrev());
         commands.put("pagingPetPhotoNext", new PagingPetPhotoNext());

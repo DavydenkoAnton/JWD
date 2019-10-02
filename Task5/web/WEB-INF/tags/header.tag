@@ -3,10 +3,19 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<c:set var="lang" value="${language}" scope="session"/>
+<c:choose>
+    <c:when test="${not empty lang}">
+        <fmt:setLocale value="${lang}"/>
+    </c:when>
+    <c:otherwise>
+        <fmt:setLocale value="ru"/>
+    </c:otherwise>
+</c:choose>
 <fmt:setBundle basename="global" var="cnt"/>
 
 <div class="header">
-    <c:if test="${empty sessionScope.role }">
+    <c:if test="${empty sessionScope.role || sessionScope.role == 'GUEST'}">
         <a href="<fmt:message key="command.loginPage" bundle="${cnt}"/>">
             <fmt:message key="global.text.login" bundle="${cnt}"/></a>
     </c:if>

@@ -89,13 +89,17 @@ public class PetCreatorImpl implements PetCreator {
     @Override
     public int userId(String userId) throws CreatorException {
         int id;
-        try {
-            id = Integer.valueOf(userId);
-        } catch (NumberFormatException e) {
-            throw new CreatorException("wrong user id format");
-        }
-        if (id <= 0) {
-            throw new CreatorException("user id less or equals zero");
+        if (userId != null) {
+            try {
+                id = Integer.valueOf(userId);
+            } catch (NumberFormatException e) {
+                throw new CreatorException("wrong user id format");
+            }
+            if (id <= 0) {
+                throw new CreatorException("user id less or equals zero");
+            }
+        } else {
+            id = 0;
         }
         return id;
     }

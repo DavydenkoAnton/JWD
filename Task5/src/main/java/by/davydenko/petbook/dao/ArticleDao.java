@@ -10,4 +10,9 @@ public interface ArticleDao extends Dao<Article> {
     Optional<List<Article>> readByType(PetType petType) throws DaoException;
 
     Optional<Article> readByTitle(String articleTitle) throws DaoException;
+
+    Optional<List<Article>> readAll()throws DaoException;
+
+    @Override
+    void update(Article article)throws DaoException;
 }

@@ -2,9 +2,7 @@ package by.davydenko.petbook.service;
 
 import by.davydenko.petbook.entity.Pet;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,4 +45,10 @@ public interface PetService extends Service<Pet> {
     void uploadPhoto(Part part, String path, String userId) throws ServiceException;
 
     List<String> getPagingPhotoCount(List<String> petPhotoUrl, int from);
+
+    void uploadType(String petType, String userId) throws ServiceException;
+
+    Optional<List<Pet>> getAllPetsNoUser(int id)throws ServiceException;
+
+    Optional<List<Pet>> getByTypeNoUser(String petType, int id)throws ServiceException;
 }

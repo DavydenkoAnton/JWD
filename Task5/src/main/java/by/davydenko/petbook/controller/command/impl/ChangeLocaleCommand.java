@@ -18,10 +18,8 @@ public class ChangeLocaleCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
         String lang = request.getParameter("localeValue");
-
         if (lang != null) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute("language", lang);
+            request.getSession().setAttribute("language", lang);
         }
 
 

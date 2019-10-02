@@ -5,6 +5,7 @@ public class Pet extends Animal {
     private int age;
     private String avatarUrl;
     private int userId;
+    private PetType type;
 
     public String getBreed() {
         return breed;
@@ -36,5 +37,13 @@ public class Pet extends Animal {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public PetType getType() {
+        return type;
+    }
+
+    public void setType(PetType type) {
+        this.type = type;
     }
 }

@@ -20,6 +20,151 @@
     background-color: white;
 }
 
+.pet_content {
+    background-color: white;
+    height: 500px;
+    width: 84%;
+    float: right;
+    margin-top: 40px;
+    border: 3px solid #487879;
+    border-radius: 10px;
+}
+
+.pet_content_ava {
+    height: 300px;
+}
+
+.pet_content_ava img {
+    border: 5px solid #487879;
+    float: left;
+    object-fit: cover;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.pet_content_ava p {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 130px;
+    padding-left: 400px;
+    font-family: fantasy;
+    font-size: 46px;
+}
+
+.pet_content_credentials {
+    height: 184px;
+}
+
+.pet_content_credentials_item {
+    margin-top: 20px;
+    height: 60px;
+    background: linear-gradient(90deg, rgba(72, 120, 121, 1) 0%, rgba(255, 255, 255, 1) 74%);
+}
+
+.pet_content_credentials_item h3 {
+    padding-top: 20px;
+    padding-left: 20px;
+    float: left;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-family: arial, sans-serif;
+    font-weight: lighter;
+    color: white;
+}
+
+.pet_content_credentials_item h4 {
+    padding-left: 90px;
+    padding-top: 22px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-family: arial, sans-serif;
+    font-weight: bolder;
+    color: white;
+}
+
+.visit_content {
+    background-color: white;
+    height: 500px;
+    width: 84%;
+    float: right;
+    margin-top: 40px;
+    border: 3px solid #487879;
+    border-radius: 10px;
+}
+
+.visit_content textarea {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 60px;
+    max-height: 60px;
+}
+
+.visit_content button {
+    float: right;
+    margin-right: 50px;
+    width: 100px;
+    height: 28px;
+    margin-top: 5px;
+}
+
+.visit_content_ava {
+    height: 200px;
+}
+
+.visit_content_ava img {
+    border: 5px solid #487879;
+    float: left;
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.visit_content_ava p {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 72px;
+    padding-left: 250px;
+    font-family: fantasy;
+    font-size: 46px;
+}
+
+.visit_content_credentials {
+    height: 170px;
+}
+
+.visit_content_credentials_item {
+    margin-top: 20px;
+    height: 60px;
+    background: linear-gradient(90deg, rgba(72, 120, 121, 1) 0%, rgba(255, 255, 255, 1) 74%);
+}
+
+.visit_content_credentials_item h3 {
+    padding-top: 20px;
+    padding-left: 20px;
+    float: left;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-family: arial, sans-serif;
+    font-weight: lighter;
+    color: white;
+}
+
+.visit_content_credentials_item h4 {
+    padding-left: 90px;
+    padding-top: 22px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-family: arial, sans-serif;
+    font-weight: bolder;
+    color: white;
+}
+
 .main_content p {
     text-indent: 20px;
     word-wrap: break-word;
@@ -56,19 +201,21 @@
     margin-top: 10px;
     margin-left: 10px;
     width: 80px;
+    height: 80px;
+    object-fit: cover;
     border-radius: 50%;
 }
 
 .pets_content_item_credentials {
     float: left;
     width: 200px;
-    margin-top: 10px;
+    margin-top: 40px;
     margin-left: 50px;
 }
 
 .pets_content_item_credentials p {
     margin-top: 40px;
-    font-family: Calibri,sans-serif;
+    font-family: Calibri, sans-serif;
     font-size: 14px;
     font-weight: bold;
     color: black;
@@ -98,10 +245,10 @@
 }
 
 .btn-link:hover {
-color: blue;
+    color: blue;
 }
 
-.photos_content{
+.photos_content {
     width: 82%;
     height: 400px;
     border-radius: 3px;
@@ -109,19 +256,23 @@ color: blue;
     margin-top: 40px;
     background-color: white;
 }
-.photos_content table{
+
+.photos_content table {
     width: 100%;
     border: 6px solid #487879;
     border-radius: 10px;
 }
-.photos_content table{
+
+.photos_content table {
 
 }
-.photos_content tr{
+
+.photos_content tr {
     float: left;
     width: 25%;
 }
-.photos_content img{
+
+.photos_content img {
     object-fit: cover;
     width: 100%;
     height: 200px;
@@ -133,27 +284,80 @@ color: blue;
     border-radius: 3px;
 }
 
-.paging_pet_content img{
+.paging_pet_content img {
     height: 60px;
     width: 60px;
 }
-.paging_pet_content button{
+
+.paging_pet_content button {
     border: none;
     outline: none;
     background: none;
     cursor: pointer;
 }
-.paging_pet_photo_prev{
+
+.paging_pet_photo_prev {
     float: left;
     margin-left: 25%;
 }
 
-.paging_pet_photo_next{
+.paging_pet_photo_next {
     float: right;
     margin-right: 25%;
 }
 
-.add_pet_photo_content{
+.add_pet_photo_content {
     height: 60px;
     margin-top: 40px;
+}
+
+.users_content {
+    width: 80%;
+    height: 500px;
+    border: 2px solid #487879;
+    border-radius: 6px;
+    background: white;
+    float: right;
+    margin-top: 50px;
+}
+
+.users_content_items {
+    margin-top: 10px;
+    height: 480px;
+}
+
+.users_content_items_body {
+    overflow-y: auto;
+}
+
+.users_content_items_body table {
+    width: 100%;
+}
+
+.users_content_item {
+    height: 50px;
+    border-bottom: 1px solid;
+}
+
+
+.users_content_item_credential {
+    width: 90px;
+    float: left;
+}
+
+.users_content_item_credential p {
+    margin: 0;
+    padding-left: 10px;
+}
+
+.users_content_item_credential_action {
+    float: right;
+}
+
+.users_content_item_credential_action form {
+    margin: 0px;
+}
+
+.users_content_item_credential_action button {
+    margin-top: 10px;
 }

@@ -1,0 +1,14 @@
+.locale {
+    height: 50px;
+    width: 100%;
+}
+
+.locale select {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: 2px solid #487879;
+    float: right;
+    margin-top: 10px;
+    margin-right: 10px;
+}

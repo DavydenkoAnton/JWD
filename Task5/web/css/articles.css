@@ -16,13 +16,13 @@
     color: black;
 }
 
-.articles_header form{
+.articles_header form {
     float: left;
     padding-top: 9px;
     margin-left: 30px;
 }
 
-.articles_header button{
+.articles_header button {
     float: left;
     border: none;
     outline: none;
@@ -47,11 +47,11 @@
     width: 100%;
 }
 
-.article_wrapper{
+.article_wrapper {
     float: right;
     width: 80%;
     height: 450px;
-    overflow-y:auto ;
+    overflow-y: auto;
     overflow-x: hidden;
     background-color: white;
 }
@@ -73,24 +73,24 @@
     padding-top: 1%;
 }
 
-.article_title p{
+.article_title p {
     font-size: 16px;
     font-weight: bold;
 }
 
-.article_title button{
+.article_title button {
     border: none;
     outline: none;
     background: none;
     cursor: pointer;
     color: #487879;
-    font-family: arial,serif;
+    font-family: arial, serif;
     font-size: 16px;
     font-weight: 600;
     padding-left: 0;
 }
 
-.article_title button:hover{
+.article_title button:hover {
     color: blue;
 }
 
@@ -104,9 +104,6 @@
 }
 
 
-
-
-
 .article_description {
     word-wrap: break-word;
     padding-left: 2%;
@@ -115,4 +112,145 @@
 .article_text {
     margin-left: 20px;
     word-wrap: break-word;
+}
+
+.admin_articles_wrapper {
+    float: right;
+    margin-top: 50px;
+    width: 80%;
+    height: 500px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    border-radius: 6px;
+    border: 1px solid;
+    background: white;
+}
+
+.admin_articles_wrapper table {
+    width: 100%;
+}
+
+.admin_article_item {
+    height: 80px;
+    border-bottom: 1px solid;
+}
+
+.admin_article_title {
+    width: 100%;
+}
+
+.admin_article_title p {
+    margin: 0;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+.admin_article_action {
+    height: 30px;
+    padding-top: 10px;
+}
+.admin_article_action form{
+    float: left;
+}
+
+.admin_article_action button {
+    float: left;
+    margin-left: 10px;
+}
+
+
+
+
+
+.admin_articles_adder{
+    height: 60px;
+    background-color: #487879;
+    border-radius: 6px;
+}
+
+.admin_articles_adder form{
+    margin: 0;
+    height: 60px;
+}
+.admin_articles_adder button{
+    float: left;
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 120px;
+}
+
+.admin_articles_table{
+    overflow-y: auto;
+    height: 440px;
+}
+
+.admin_add_article_wrapper{
+    float: right;
+    margin-top: 50px;
+    width: 80%;
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 6px;
+    border: 1px solid;
+    background: silver;
+}
+
+.admin_article_add_title {
+}
+
+.admin_article_add_title p {
+    margin: 0;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.admin_article_add_title textarea {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 30px;
+    max-height: 30px;
+    border-bottom: 1px solid;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    resize: none;
+}
+
+.admin_article_add_description {
+}
+
+.admin_article_add_description p {
+    margin: 0;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.admin_article_add_description textarea {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 60px;
+    max-height: 60px;
+    resize: none;
+}
+
+.admin_article_add_text {
+}
+
+.admin_article_add_text p {
+    margin: 0;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.admin_article_add_text textarea {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 230px;
+    max-height: 230px;
+    resize: none;
+}
+
+.admin_article_add_type{
+
 }

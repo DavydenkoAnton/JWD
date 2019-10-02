@@ -1,6 +1,7 @@
 package by.davydenko.petbook.service.util.creator.impl;
 
 import by.davydenko.petbook.controller.command.util.Attribute;
+import by.davydenko.petbook.controller.command.util.Error;
 import by.davydenko.petbook.entity.Role;
 import by.davydenko.petbook.entity.User;
 import by.davydenko.petbook.service.util.creator.CreatorException;
@@ -37,11 +38,14 @@ public final class UserCreatorImpl implements UserCreator {
 
     @Override
     public String createLogin(String login) throws CreatorException {
+        Error error = Error.getInstance();
         if (login == null) {
             throw new CreatorException("login is null");
         } else if (login.isEmpty()) {
+            error.setLogin("login is empty");
             throw new CreatorException("login is empty");
         } else if (login.length() > MAX_LOGIN_LENGTH) {
+            error.setLogin("16 symbol max");
             throw new CreatorException("login length more than 16");
         }
         return login;
@@ -61,11 +65,15 @@ public final class UserCreatorImpl implements UserCreator {
 
     @Override
     public String createPassword(String password) throws CreatorException {
+        Error error = Error.getInstance();
         if (password == null) {
+            error.setLogin("password is null");
             throw new CreatorException("password is null");
         } else if (password.isEmpty()) {
+            error.setLogin("password is empty");
             throw new CreatorException("password is empty");
         } else if (password.length() > MAX_PASSWORD_LENGTH) {
+            error.setPassword("16 symbol max");
             throw new CreatorException("password length more than 16");
         }
         return hash(password);
@@ -85,24 +93,6 @@ public final class UserCreatorImpl implements UserCreator {
 
 
     @Override
-    public String createEmail(HttpServletRequest request) throws CreatorException {
-
-        String email = request.getParameter("email");
-        if (email != null && !email.isEmpty()) {
-            pattern = Pattern.compile(EMAIL_PATTERN);
-            if (!validEmail(email)) {
-                throw new CreatorException("[wrong email format]");
-            }
-        }
-        return email;
-    }
-
-    private boolean validEmail(final String hex) {
-        matcher = pattern.matcher(hex);
-        return matcher.matches();
-    }
-
-    @Override
     public int createId(String id) throws CreatorException {
         int userId;
         try {
@@ -113,35 +103,6 @@ public final class UserCreatorImpl implements UserCreator {
         return userId;
     }
 
-    @Override
-    public int createPhoneNumber(HttpServletRequest request) throws CreatorException {
-        int phoneNumber = 0;
-        String buffer;
-        buffer = request.getParameter("phoneNumber");
-        if (!buffer.isEmpty()) {
-            try {
-                phoneNumber = Integer.valueOf(buffer);
-            } catch (NumberFormatException e) {
-                throw new CreatorException(e);
-            }
-        }
-        return phoneNumber;
-    }
-
-    @Override
-    public int createAge(HttpServletRequest request) throws CreatorException {
-        int age = 0;
-        String buffer;
-        buffer = request.getParameter("age");
-        if (!buffer.isEmpty()) {
-            try {
-                age = Integer.valueOf(buffer);
-            } catch (NumberFormatException e) {
-                throw new CreatorException(e);
-            }
-        }
-        return age;
-    }
 
     @Override
     public Role createRole() {
@@ -149,16 +110,22 @@ public final class UserCreatorImpl implements UserCreator {
     }
 
     @Override
-    public int createUserCount(HttpSession session) {
-
-
-        int count = 0;
-        try {
-            count = (int) session.getAttribute("usersCount");
-        } catch (Exception e) {
-            //TODO
+    public Role createRole(String role) throws CreatorException {
+        Role roleTemp;
+        if (role != null) {
+            if (!role.isEmpty()) {
+                try {
+                    roleTemp = Role.valueOf(role);
+                } catch (IllegalArgumentException e) {
+                    throw new CreatorException(e);
+                }
+            } else {
+                throw new CreatorException("role is empty");
+            }
+        } else {
+            throw new CreatorException("role is null");
         }
-
-        return count;
+        return roleTemp;
     }
+
 }

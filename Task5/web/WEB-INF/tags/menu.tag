@@ -3,13 +3,15 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<c:set var="lang" value="${language}" scope="session"/>
+<fmt:setLocale value="${lang}"/>
 <fmt:setBundle basename="global" var="cnt"/>
+
 <div class="menu">
     <div class="menu_item">
         <img src="<c:url value="/img/home.png"/>" alt="">
         <div class="menu_item_a">
-            <a href="<fmt:message key="command.userPage" bundle="${cnt}"/>"><fmt:message key="global.text.myPage"
-                                                                                         bundle="${cnt}"/></>
+            <a href="<fmt:message key="command.userPage" bundle="${cnt}"/>"><fmt:message key="global.text.myPage" bundle="${cnt}"/></>
         </div>
     </div>
     <div class="menu_item">

@@ -26,36 +26,25 @@ public class MessageDaoImpl implements MessageDao {
     private ResultSet resultSet;
     private ConnectionPool connectionPool;
 
+    public MessageDaoImpl(){
+        connectionPool = ConnectionPool.getInstance();
+    }
 
     @Override
     public void create(Message message) throws DaoException {
-        connection = null;
-        preparedStatement = null;
-        connectionPool = ConnectionPool.getInstance();
-
         try {
             connection = connectionPool.takeConnection();
-        } catch (ConnectionPoolException e) {
-            throw new DaoException(e);
-        }
-        try {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(INSERT_MESSAGE);
-
             preparedStatement.setString(1, message.getMessage());
-            preparedStatement.setInt(2, message.getSenderId());
-            preparedStatement.setInt(3, message.getUserId());
+            preparedStatement.setInt(2, message.getUserId());
+            preparedStatement.setInt(3, message.getSenderId());
             preparedStatement.setString(4, message.getDate());
             if (preparedStatement.executeUpdate() > 0) {
                 connection.commit();
             }
-
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-        try {
             connectionPool.closeConnection(connection, preparedStatement);
-        } catch (ConnectionPoolException e) {
+        } catch (SQLException|ConnectionPoolException e) {
             throw new DaoException(e);
         }
     }
@@ -69,17 +58,8 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public Optional<List<Message>> readChatMessages(int userId, int senderId) throws DaoException {
         List<Message> messages;
-        connection = null;
-        connectionPool = ConnectionPool.getInstance();
-        preparedStatement = null;
-        resultSet = null;
-
         try {
             connection = connectionPool.takeConnection();
-        } catch (ConnectionPoolException e) {
-            throw new DaoException("cannot create connection");
-        }
-        try {
             preparedStatement = connection.prepareStatement(SELECT_CHAT_MESSAGES);
             preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, userId);
@@ -99,14 +79,8 @@ public class MessageDaoImpl implements MessageDao {
             if (messages.size() == 0) {
                 messages = null;
             }
-            resultSet.close();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-        try {
-            connectionPool.closeConnection(connection, preparedStatement);
-        } catch (ConnectionPoolException e) {
+            connectionPool.closeConnection(connection, preparedStatement,resultSet);
+        } catch (SQLException|ConnectionPoolException e) {
             throw new DaoException(e);
         }
         return Optional.ofNullable(messages);

@@ -51,5 +51,4 @@ public class EditUserNameCommand implements Command {
             logger.error("IOException (not redirected)", e);
         }
     }
-
 }

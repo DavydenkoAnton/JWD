@@ -2,6 +2,7 @@ package by.davydenko.petbook.controller.command.impl;
 
 import by.davydenko.petbook.controller.command.Command;
 import by.davydenko.petbook.controller.command.util.Attribute;
+import by.davydenko.petbook.controller.command.util.Error;
 import by.davydenko.petbook.entity.User;
 import by.davydenko.petbook.service.PetService;
 import by.davydenko.petbook.service.ServiceException;
@@ -31,11 +32,13 @@ public class RegisterUserCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+        Error error = Error.getInstance();
+        error.clean();
         final String login = request.getParameter(Attribute.LOGIN);
         final String password = request.getParameter(Attribute.PASSWORD);
-        final String userName = request.getParameter(Attribute.USER_NAME);
+        final String passwordCheck = request.getParameter(Attribute.PASSWORD_CHECK);
         try {
-            userService.registerUser(login, password, userName);
+            userService.registerUser(login, password,passwordCheck);
             Optional<User> optionalUser = userService.getByLoginPassword(login, password);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
@@ -46,8 +49,9 @@ public class RegisterUserCommand implements Command {
             }
             redirectToLoginPage(response);
         } catch (ServiceException e) {
-            redirectToRegistrationPage(response);
             logger.error(e);
+            request.getSession().setAttribute(Attribute.ERROR, error);
+            redirectToRegistrationPage(response);
         }
     }
 

@@ -20,11 +20,10 @@ public class LogoutUserCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
-        HttpSession session = request.getSession(true);
-        boolean authorized = (boolean) session.getAttribute(Attribute.AUTHORIZED);
+        boolean authorized = (boolean) request.getSession().getAttribute(Attribute.AUTHORIZED);
 
         if (authorized) {
-            session.invalidate();
+            request.getSession().invalidate();
             redirectToMainPage(response);
         } else {
             redirectToUserPage(response);

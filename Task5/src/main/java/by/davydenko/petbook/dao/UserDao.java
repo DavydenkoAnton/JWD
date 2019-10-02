@@ -1,5 +1,6 @@
 package by.davydenko.petbook.dao;
 
+import by.davydenko.petbook.entity.Role;
 import by.davydenko.petbook.entity.User;
 
 import java.util.List;
@@ -7,12 +8,12 @@ import java.util.Optional;
 
 public interface UserDao extends Dao<User> {
 
-    List<User> readUsers() throws DaoException;
+    Optional<List<User>> readUsers() throws DaoException;
 
     @Override
     void create(User user) throws DaoException;
 
-    void create(String login, String password) throws DaoException;
+    void create(String login, String password, Role role) throws DaoException;
 
     @Override
     Optional<User> read(int id) throws DaoException;
@@ -39,4 +40,6 @@ public interface UserDao extends Dao<User> {
     int getUsersCapacity() throws DaoException;
 
     void updateAvatarURL(int id, String userAvatarURL) throws DaoException;
+
+    void updateRole(int id, Role role)throws DaoException;
 }

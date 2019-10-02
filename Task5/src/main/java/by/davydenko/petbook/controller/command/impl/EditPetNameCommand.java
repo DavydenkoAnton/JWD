@@ -50,5 +50,4 @@ public class EditPetNameCommand implements Command {
             logger.error("IOException (not redirected)", e);
         }
     }
-
 }

@@ -27,8 +27,14 @@ public class GetPetsByTypeCommand implements by.davydenko.petbook.controller.com
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<List<Pet>> optionalPets;
         String petType=request.getParameter(Attribute.PET_TYPE);
+        int id;
+        try {
+            id = (int) request.getSession().getAttribute(Attribute.ID);
+        } catch (NullPointerException e) {
+            id = 0;
+        }
         try{
-            optionalPets=petService.getByType(petType);
+            optionalPets=petService.getByTypeNoUser(petType,id);
             if(optionalPets.isPresent()){
                 List<Pet> pets=optionalPets.get();
                 request.getSession().setAttribute(Attribute.PETS,pets);

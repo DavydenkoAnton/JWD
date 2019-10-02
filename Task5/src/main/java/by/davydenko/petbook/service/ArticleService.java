@@ -12,4 +12,14 @@ public interface ArticleService extends Service<Article> {
     Optional<List<Article>> getArticles(String petType) throws ServiceException;
 
     Optional<Article> getArticle(String articleTitle) throws ServiceException;
+
+    Optional<List<Article>> getAllArticles()throws ServiceException;
+
+    void addArticle(String title, String description, String text, String type)throws ServiceException;
+
+    Optional<Article> getArticleById(String id)throws ServiceException;
+
+    void updateArticle(String title, String description, String text, String type, String id)throws ServiceException;
+
+    void deleteById(String id)throws ServiceException;
 }
