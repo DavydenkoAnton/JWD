@@ -114,6 +114,10 @@
     word-wrap: break-word;
 }
 
+/*
+/*Admin articles
+*/
+
 .admin_articles_wrapper {
     float: right;
     margin-top: 50px;
@@ -165,7 +169,7 @@
 .admin_articles_adder{
     height: 60px;
     background-color: #487879;
-    border-radius: 6px;
+    border-radius: 6px 6px 0 0;
 }
 
 .admin_articles_adder form{

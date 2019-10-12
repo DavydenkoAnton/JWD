@@ -4,6 +4,7 @@ import by.davydenko.petbook.controller.command.util.Attribute;
 import by.davydenko.petbook.controller.command.util.Error;
 import by.davydenko.petbook.entity.Role;
 import by.davydenko.petbook.entity.User;
+import by.davydenko.petbook.service.util.XSSFilter;
 import by.davydenko.petbook.service.util.creator.CreatorException;
 import by.davydenko.petbook.service.util.creator.UserCreator;
 import com.sun.deploy.net.HttpRequest;
@@ -40,43 +41,116 @@ public final class UserCreatorImpl implements UserCreator {
     public String createLogin(String login) throws CreatorException {
         Error error = Error.getInstance();
         if (login == null) {
+            error.setLogin("empty");
             throw new CreatorException("login is null");
         } else if (login.isEmpty()) {
-            error.setLogin("login is empty");
+            error.setLogin("empty");
             throw new CreatorException("login is empty");
         } else if (login.length() > MAX_LOGIN_LENGTH) {
             error.setLogin("16 symbol max");
             throw new CreatorException("login length more than 16");
+        } else if (XSSFilter.SCRIPT(login)){
+            error.setLogin("wrong login");
+            throw new CreatorException("trying add script as login");
         }
-        return login;
+            return login;
     }
 
     @Override
-    public String createName(String userName) throws CreatorException {
-        if (userName == null) {
-            throw new CreatorException("userName is null");
-        } else if (userName.isEmpty()) {
-            throw new CreatorException("userName is empty");
-        } else if (userName.length() > MAX_USER_NAME_LENGTH) {
-            throw new CreatorException("login length more than 16");
+    public String createNewLogin(String newLogin) throws CreatorException {
+        Error error = Error.getInstance();
+        if (newLogin == null) {
+            error.setNewLogin("empty");
+            throw new CreatorException("new login is null");
+        } else if (newLogin.isEmpty()) {
+            error.setNewLogin("empty");
+            throw new CreatorException("new login is empty");
+        } else if (newLogin.length() > MAX_LOGIN_LENGTH) {
+            error.setNewLogin("16 symbol max");
+            throw new CreatorException("new login length more than 16");
+        } else if (XSSFilter.SCRIPT(newLogin)){
+            error.setNewLogin("wrong login");
+            throw new CreatorException("trying add script as newLogin");
         }
-        return userName;
+        return newLogin;
     }
+
+    @Override
+    public String createNewLoginRepeat(String newLoginRepeat) throws CreatorException {
+        Error error = Error.getInstance();
+        if (newLoginRepeat == null) {
+            error.setNewLoginRepeat("empty");
+            throw new CreatorException("newLoginRepeat is null");
+        } else if (newLoginRepeat.isEmpty()) {
+            error.setNewLoginRepeat("empty");
+            throw new CreatorException("newLoginRepeat is empty");
+        } else if (newLoginRepeat.length() > MAX_LOGIN_LENGTH) {
+            error.setNewLoginRepeat("16 symbol max");
+            throw new CreatorException("newLoginRepeat more than 16");
+        }else if (XSSFilter.SCRIPT(newLoginRepeat)){
+            error.setNewLoginRepeat("wrong login");
+            throw new CreatorException("trying add script as newLoginRepeat");
+        }
+        return newLoginRepeat;
+    }
+
+
 
     @Override
     public String createPassword(String password) throws CreatorException {
         Error error = Error.getInstance();
         if (password == null) {
-            error.setLogin("password is null");
+            error.setPassword("password is null");
             throw new CreatorException("password is null");
         } else if (password.isEmpty()) {
-            error.setLogin("password is empty");
+            error.setPassword("password is empty");
             throw new CreatorException("password is empty");
         } else if (password.length() > MAX_PASSWORD_LENGTH) {
             error.setPassword("16 symbol max");
             throw new CreatorException("password length more than 16");
+        }else if (XSSFilter.SCRIPT(password)){
+            error.setPassword("wrong password");
+            throw new CreatorException("trying add script as password");
         }
         return hash(password);
+    }
+
+    @Override
+    public String createNewPassword(String newPassword) throws CreatorException {
+        Error error = Error.getInstance();
+        if (newPassword == null) {
+            error.setNewPassword("new password is null");
+            throw new CreatorException("is empty");
+        } else if (newPassword.isEmpty()) {
+            error.setNewPassword("is empty");
+            throw new CreatorException("new password is empty");
+        } else if (newPassword.length() > MAX_PASSWORD_LENGTH) {
+            error.setNewPassword("16 symbol max");
+            throw new CreatorException("password length more than 16");
+        }else if (XSSFilter.SCRIPT(newPassword)){
+            error.setNewPassword("wrong password");
+            throw new CreatorException("trying add script as newPassword");
+        }
+        return hash(newPassword);
+    }
+
+    @Override
+    public String createNewPasswordRepeat(String newPasswordRepeat) throws CreatorException {
+        Error error = Error.getInstance();
+        if (newPasswordRepeat == null) {
+            error.setNewPasswordRepeat("is empty");
+            throw new CreatorException("new password repeat is null");
+        } else if (newPasswordRepeat.isEmpty()) {
+            error.setNewPasswordRepeat("is empty");
+            throw new CreatorException("new password repeat is empty");
+        } else if (newPasswordRepeat.length() > MAX_PASSWORD_LENGTH) {
+            error.setNewPasswordRepeat("16 symbol max");
+            throw new CreatorException("new password repeat length more than 16");
+        }else if (XSSFilter.SCRIPT(newPasswordRepeat)){
+            error.setNewLogin("wrong password");
+            throw new CreatorException("trying add script as newPasswordRepeat");
+        }
+        return hash(newPasswordRepeat);
     }
 
     private String hash(String password) {

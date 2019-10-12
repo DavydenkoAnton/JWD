@@ -311,6 +311,10 @@
     margin-top: 40px;
 }
 
+/**/
+/*admin users */
+/**/
+
 .users_content {
     width: 80%;
     height: 500px;
@@ -321,43 +325,168 @@
     margin-top: 50px;
 }
 
-.users_content_items {
-    margin-top: 10px;
-    height: 480px;
+.users_content_header {
+    height: 50px;
+    background-color: #487879;
 }
 
-.users_content_items_body {
+.users_content_header form {
+    margin-bottom: 0;
+}
+
+.users_content_header input {
+    margin-top: 14px;
+    margin-left: 44px;
+}
+
+.users_content_header button {
+    width: 60px;
+    margin-left: 10px;
+}
+
+.users_content_body {
+    height: 400px;
+}
+
+.users_content_body_header {
+    height: 30px;
+    padding-left: 44px;
+    background-color: cadetblue;
+}
+
+.users_content_body_header p {
+    float: left;
+    margin-top: 5px;
+    margin-bottom: 0;
+    width: 100px;
+    color: white;
+}
+
+.users_content_body_item {
+    height: 360px;
+    padding-left: 40px;
     overflow-y: auto;
 }
 
-.users_content_items_body table {
+.users_content_body_item table {
     width: 100%;
 }
 
-.users_content_item {
-    height: 50px;
-    border-bottom: 1px solid;
+.users_content_body_item_cred {
+    height: 30px;
 }
 
-
-.users_content_item_credential {
-    width: 90px;
+.users_content_body_item_cred_atom {
+    height: 30px;
     float: left;
+    width: 100px;
 }
 
-.users_content_item_credential p {
+.users_content_body_item_cred_atom p {
+    float: left;
+    width: 100px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+.users_content_body_item_cred_atom form {
     margin: 0;
-    padding-left: 10px;
 }
 
-.users_content_item_credential_action {
+.users_content_body_item_cred_atom button {
+    margin-top: 5px;
+}
+
+.users_content_paging {
+    height: 50px;
+}
+
+.users_content_paging_prev {
+    height: 50px;
+    width: 50%;
+    float: left;
+    background-color: cadetblue;
+}
+
+.users_content_paging_prev a {
+    text-decoration: none;
+    font-family: arial, serif;
+    color: white;
+    float: left;
+    margin-left: 200px;
+    margin-top: 15px;
+}
+
+
+.users_content_paging_next {
+    height: 50px;
+    width: 50%;
     float: right;
+    background-color: cadetblue;
 }
 
-.users_content_item_credential_action form {
-    margin: 0px;
+.users_content_paging_next a {
+    text-decoration: none;
+    font-family: arial, serif;
+    color: white;
+    float: right;
+    margin-right: 200px;
+    margin-top: 15px;
 }
 
-.users_content_item_credential_action button {
+
+/**/
+/*admin settings*/
+/**/
+
+.admin_settings_wrapper {
+    float: right;
+    margin-top: 50px;
+    margin-right: 50%;
+    width: 30%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    border-radius: 6px;
+    border: 3px solid;
+    border-color: #487879;
+    background: white;
+}
+
+.admin_settings_block {
+    height: 200px;
+}
+
+.admin_settings_block form {
+    width: 60%;
+    margin-left: 20%;
+}
+
+.admin_settings_block_item {
+    margin-top: 13px;
+    height: 37px;
+}
+
+.admin_settings_block button {
     margin-top: 10px;
+    width: 100%;
 }
+
+.admin_settings_block_item p {
+    user-select: none;
+    margin-top: 0;
+    margin-bottom: 3px;
+    height: 14px;
+    font-size: 14px;
+    color: tomato;
+}
+
+.admin_settings_block_item input {
+    height: 20px;
+    width: 100%;
+}
+
+
+
+

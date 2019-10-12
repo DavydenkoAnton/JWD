@@ -37,11 +37,12 @@ public final class MainPageCommand implements Command {
             request.getSession().setAttribute(Attribute.CAT_PERCENT_VALUE, catPercent);
             request.getSession().setAttribute(Attribute.BIRD_PERCENT_VALUE, birdPercent);
             request.getSession().setAttribute(Attribute.OTHER_PERCENT_VALUE, otherPercent);
-            forwardToMainPage(request,response);
         } catch (ServiceException e) {
             logger.error(e);
             redirectToErrorPage(response);
+            return;
         }
+        forwardToMainPage(request,response);
     }
 
     private void forwardToMainPage(HttpServletRequest request, HttpServletResponse response) {

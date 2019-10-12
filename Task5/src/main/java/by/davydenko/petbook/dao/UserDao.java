@@ -30,16 +30,32 @@ public interface UserDao extends Dao<User> {
     @Override
     void update(User user);
 
-    void updateName(int id,String name)throws DaoException;
-
     @Override
     void delete(int id);
 
-    int getIdByLogin(String login) throws DaoException;
-
     int getUsersCapacity() throws DaoException;
 
-    void updateAvatarURL(int id, String userAvatarURL) throws DaoException;
+    Optional<User> readAdmin() throws DaoException;
 
-    void updateRole(int id, Role role)throws DaoException;
+    Optional<List<User>> readNextPaging(int id, String searchUserValue) throws DaoException;
+
+    Optional<List<User>> readNextPaging(int id) throws DaoException;
+
+    Optional<List<User>> readPrevPaging(int id) throws DaoException;
+
+    Optional<List<User>> readPrevPaging(int id, String searchUserValue) throws DaoException;
+
+    Optional<List<User>> readFromTo(int from, int to) throws DaoException;
+
+    Optional<List<User>> readByPetName(String searchUserValue) throws DaoException;
+
+    Optional<User> readById(int id) throws DaoException;
+
+    void updateLogin(int id, String login) throws DaoException;
+
+    void updatePassword(int id, String password) throws DaoException;
+
+    void updateRole(int id, Role role) throws DaoException;
+
+
 }

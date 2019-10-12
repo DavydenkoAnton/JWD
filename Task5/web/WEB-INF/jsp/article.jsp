@@ -3,8 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 
-<c:set var="lang" value="${language}" scope="session"/>
-<fmt:setLocale value="${lang}"/>
+<fmt:setLocale value="${cookie.language.value}"/>
 <fmt:setBundle basename="global" var="cnt"/>
 
 <html>
@@ -13,10 +12,11 @@
     <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/header.css"/> " rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/articles.css"/> " rel="stylesheet" type="text/css">
+    <link href="<c:url value="/css/locale.css"/> " rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="wrapper">
-    <tag:header/>
+    <tag:header pageURL="article.html"/>
     <c:if test="${sessionScope.role=='USER'}">
         <tag:menu/>
     </c:if>

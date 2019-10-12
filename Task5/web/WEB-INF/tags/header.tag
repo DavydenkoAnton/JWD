@@ -2,19 +2,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<%@ attribute name="pageURL" %>
 
-<c:set var="lang" value="${language}" scope="session"/>
-<c:choose>
-    <c:when test="${not empty lang}">
-        <fmt:setLocale value="${lang}"/>
-    </c:when>
-    <c:otherwise>
-        <fmt:setLocale value="ru"/>
-    </c:otherwise>
-</c:choose>
+<fmt:setLocale value="${cookie.language.value}"/>
 <fmt:setBundle basename="global" var="cnt"/>
 
 <div class="header">
+    <tag:locale pageURL="${pageURL}"/>
     <c:if test="${empty sessionScope.role || sessionScope.role == 'GUEST'}">
         <a href="<fmt:message key="command.loginPage" bundle="${cnt}"/>">
             <fmt:message key="global.text.login" bundle="${cnt}"/></a>

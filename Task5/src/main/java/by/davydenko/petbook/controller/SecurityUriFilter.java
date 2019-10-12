@@ -48,20 +48,27 @@ public class SecurityUriFilter implements Filter {
         adminCommands = new ArrayList<>();
         adminCommands.add("admin");
         adminCommands.add("deleteByLogin");
+        adminCommands.add("pagingFirstAdminUsers");
+        adminCommands.add("pagingNextAdminUsers");
+        adminCommands.add("pagingPrevAdminUsers");
         adminCommands.add("users");
         adminCommands.add("changeUserRole");
         adminCommands.add("adminArticles");
+        adminCommands.add("settings");
         adminCommands.add("addArticlePage");
         adminCommands.add("addArticle");
         adminCommands.add("addArticleCommand");
         adminCommands.add("editArticlePage");
         adminCommands.add("editArticle");
         adminCommands.add("editArticleCommand");
+        adminCommands.add("editAdminLogin");
+        adminCommands.add("editAdminPassword");
         adminCommands.add("deleteArticle");
 
 
         userAuthorizedCommands = new ArrayList<>();
         userAuthorizedCommands.add("addPetPhoto");
+        userAuthorizedCommands.add("deletePetPhotos");
         userAuthorizedCommands.add("user");
         userAuthorizedCommands.add("photos");
         userAuthorizedCommands.add("pet");

@@ -3,10 +3,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-
-
 <fmt:setBundle basename="global" var="cnt"/>
 <c:set var="senders" value="${sessionScope.messageSenders}"/>
+
 <div class="sender">
     <table>
         <c:forEach items="${senders}" var="sender">

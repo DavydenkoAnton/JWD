@@ -4,8 +4,7 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <fmt:setBundle basename="global" var="cnt"/>
 
-<c:set var="lang" value="${language}" scope="session"/>
-<fmt:setLocale value="${lang}"/>
+<fmt:setLocale value="${cookie.language.value}"/>
 <fmt:setBundle basename="global" var="cnt"/>
 
 

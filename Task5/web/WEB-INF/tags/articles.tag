@@ -2,9 +2,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 
-<c:set var="lang" value="${language}" scope="session"/>
 <c:set var="articles" value="${sessionScope.articles}"/>
-<fmt:setLocale value="${lang}"/>
+<fmt:setLocale value="${cookie.language.value}"/>
 <fmt:setBundle basename="global" var="cnt"/>
 
 <div class="articles_wrapper">

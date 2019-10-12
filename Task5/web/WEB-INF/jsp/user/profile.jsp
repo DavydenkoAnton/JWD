@@ -3,8 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 
-<c:set var="lang" value="${language}" scope="session"/>
-<fmt:setLocale value="${lang}"/>
+<fmt:setLocale value="${cookie.language.value}"/>
 <fmt:setBundle basename="global" var="cnt"/>
 
 <c:set var="user" value="${sessionScope.user}"/>
@@ -15,10 +14,11 @@
     <title><fmt:message key="global.text.profile" bundle="${cnt}"/></title>
     <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/header.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/css/locale.css"/>" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="wrapper">
-    <tag:header/>
+    <tag:header pageURL="profile.html"/>
     <tag:menu/>
 
     <div class="pet_profile">
@@ -41,39 +41,27 @@
         <div class="edit_profile_credential">
             <div class="edit_profile_credential_item">
                 <form method="post" action="<fmt:message key="command.editPetName" bundle="${cnt}"/>">
-                    <input type="text" name="petName" placeholder="<c:if test="${not empty pet.name}">
-                ${pet.name}
-            </c:if>
-            <c:if test="${empty pet.name}">
-                <fmt:message key="global.text.name" bundle="${cnt}"/>
-            </c:if>">
+                    <p><fmt:message key="global.text.name" bundle="${cnt}"/></p>
+                    <input type="text" name="petName" placeholder="${pet.name}">
                     <button type="submit"><fmt:message key="global.text.edit" bundle="${cnt}"/></button>
                 </form>
             </div>
             <div class="edit_profile_credential_item">
                 <form method="post" action="<fmt:message key="command.editPetBreed" bundle="${cnt}"/>">
-                    <input type="text" name="breed" placeholder="
-            <c:if test="${not empty pet.breed}">
-                ${pet.breed}
-            </c:if>
-            <c:if test="${empty pet.breed}">
-                <fmt:message key="global.text.breed" bundle="${cnt}"/>
-            </c:if>">
+                    <p><fmt:message key="global.text.breed" bundle="${cnt}"/></p>
+                    <input type="text" name="breed" placeholder="${pet.breed}">
                     <button type="submit"><fmt:message key="global.text.edit" bundle="${cnt}"/></button>
                 </form>
             </div>
             <div class="edit_profile_credential_item">
                 <form method="post" action="<fmt:message key="command.editPetAge" bundle="${cnt}"/>">
-                    <input type="number" name="age" placeholder="<c:if test="${not empty pet.age}">
-                ${pet.age}
-            </c:if>
-            <c:if test="${empty pet.age}">
-                <fmt:message key="global.text.age" bundle="${cnt}"/>
-            </c:if>">
+                    <p><fmt:message key="global.text.age" bundle="${cnt}"/></p>
+                    <input type="number" name="age" placeholder="${pet.age}">
                     <button type="submit"><fmt:message key="global.text.edit" bundle="${cnt}"/></button>
                 </form>
             </div>
             <div class="edit_profile_credential_item">
+                <p><fmt:message key="global.text.type" bundle="${cnt}"/></p>
                 <form action="editPetType.html" method="post">
                     <select name="petType">
                         <c:choose>

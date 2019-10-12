@@ -34,12 +34,12 @@ public class RegisterUserCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         Error error = Error.getInstance();
         error.clean();
-        final String login = request.getParameter(Attribute.LOGIN);
-        final String password = request.getParameter(Attribute.PASSWORD);
-        final String passwordCheck = request.getParameter(Attribute.PASSWORD_CHECK);
+        final String newLogin = request.getParameter(Attribute.NEW_LOGIN);
+        final String newPassword = request.getParameter(Attribute.NEW_PASSWORD);
+        final String newPasswordRepeat = request.getParameter(Attribute.NEW_PASSWORD_REPEAT);
         try {
-            userService.registerUser(login, password,passwordCheck);
-            Optional<User> optionalUser = userService.getByLoginPassword(login, password);
+            userService.registerUser(newLogin,newPassword,newPasswordRepeat);
+            Optional<User> optionalUser = userService.getByLoginPassword(newLogin, newPassword);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 request.getSession().setAttribute(Attribute.ROLE, user.getRole());

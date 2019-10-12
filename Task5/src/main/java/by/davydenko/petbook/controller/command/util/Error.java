@@ -3,8 +3,11 @@ package by.davydenko.petbook.controller.command.util;
 public final class Error {
     private static final Error instance = new Error();
     private String login;
+    private String newLogin;
+    private String newLoginRepeat;
     private String password;
-    private String passwordCheck;
+    private String newPassword;
+    private String newPasswordRepeat;
 
     private Error() {
     }
@@ -15,8 +18,11 @@ public final class Error {
 
     public void clean() {
         login = null;
+        newLogin = null;
+        newLoginRepeat = null;
         password = null;
-        passwordCheck = null;
+        newPassword = null;
+        newPasswordRepeat = null;
     }
 
     public String getLogin() {
@@ -35,11 +41,36 @@ public final class Error {
         this.password = password;
     }
 
-    public String getPasswordCheck() {
-        return passwordCheck;
+    public String getNewPasswordRepeat() {
+        return newPasswordRepeat;
     }
 
-    public void setPasswordCheck(String passwordCheck) {
-        this.passwordCheck = passwordCheck;
+    public void setNewPasswordRepeat(String newPasswordRepeat) {
+        this.newPasswordRepeat = newPasswordRepeat;
+    }
+
+    public String getNewLogin() {
+        return newLogin;
+    }
+
+    public void setNewLogin(String newLogin) {
+        this.newLogin = newLogin;
+    }
+
+    public String getNewLoginRepeat() {
+        return newLoginRepeat;
+    }
+
+    public void setNewLoginRepeat(String newLoginRepeat) {
+        this.newLoginRepeat = newLoginRepeat;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 }
+

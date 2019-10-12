@@ -23,6 +23,11 @@ final class CommandProvider {
         commands.put("addArticlePage", new AddArticlePageCommand());
         commands.put("addArticle", new AddArticle());
         commands.put("addArticleCommand", new AddArticleCommand());
+        commands.put("deletePetPhotos", new DeletePetPhotos());
+        commands.put("pagingFirstAdminUsers", new PagingFirstAdminUsers());
+        commands.put("pagingNextAdminUsers", new PagingNextAdminUsers());
+        commands.put("pagingPrevAdminUsers", new PagingPrevAdminUsers());
+        commands.put("settings", new AdminSettingsPage());
         commands.put("editArticlePage", new EditArticlePageCommand());
         commands.put("editArticle", new EditArticle());
         commands.put("editArticleCommand", new EditArticleCommand());
@@ -49,6 +54,8 @@ final class CommandProvider {
         commands.put("sendMessage", new SendMessageCommand());
         commands.put("sendMessagePage", new SendMessagePageCommand());
         commands.put("profile", new ProfilePageCommand());
+        commands.put("editAdminLogin", new EditAdminLogin());
+        commands.put("editAdminPassword", new EditAdminPassword());
         commands.put("editUserAvatar", new EditUserAvatarCommand());
         commands.put("editUserName", new EditUserNameCommand());
         commands.put("editPetAvatar", new EditPetAvatarCommand());

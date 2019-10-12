@@ -35,22 +35,22 @@ public class UserPageCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        String userId= String.valueOf(request.getSession().getAttribute(Attribute.ID));
-        try {
-            Optional<Pet> optionalPet = petService.getByUserId(userId);
-            if (optionalPet.isPresent()) {
-                Pet pet = optionalPet.get();
-                request.getSession().setAttribute(Attribute.PET, pet);
+        String userId = String.valueOf(request.getSession().getAttribute(Attribute.ID));
+        if (request.getSession().getAttribute(Attribute.ROLE).equals(Role.USER)) {
+            try {
+                Optional<Pet> optionalPet = petService.getByUserId(userId);
+                if (optionalPet.isPresent()) {
+                    Pet pet = optionalPet.get();
+                    request.getSession().setAttribute(Attribute.PET, pet);
+                }
+            } catch (ServiceException e) {
+                logger.error(e);
             }
-            if (request.getSession().getAttribute(Attribute.ROLE).equals(Role.USER)) {
-                forwardToUserPage(request, response);
-            } else if (request.getSession().getAttribute(Attribute.ROLE).equals(Role.ADMIN)) {
-                forwardToAdminPage(request, response);
-            } else {
-                forwardToLoginPage(request, response);
-            }
-        } catch (ServiceException e) {
-            logger.error(e);
+            forwardToUserPage(request, response);
+        } else if (request.getSession().getAttribute(Attribute.ROLE).equals(Role.ADMIN)) {
+            forwardToAdminPage(request, response);
+        } else {
+            forwardToLoginPage(request, response);
         }
     }
 

@@ -44,8 +44,6 @@ public class PhotosPageCommand implements Command {
         } catch (ServiceException e) {
             logger.error(e);
         }
-
-
         forwardToMessagePage(request, response);
     }
 
@@ -57,6 +55,5 @@ public class PhotosPageCommand implements Command {
             logger.error(e);
         }
     }
-
 
 }

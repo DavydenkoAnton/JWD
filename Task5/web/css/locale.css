@@ -1,14 +1,16 @@
 .locale {
     height: 50px;
-    width: 100%;
+    margin-right: 10px;
+    float:right;
 }
 
 .locale select {
     height: 40px;
     width: 40px;
-    border-radius: 50%;
-    border: 2px solid #487879;
+    border: 0px;
     float: right;
     margin-top: 10px;
     margin-right: 10px;
+    font-size: 16px;
+    font-family: arial, serif;
 }

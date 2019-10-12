@@ -50,10 +50,9 @@ public class LoginUserCommand implements Command {
                     redirectToUserPage(response);
                 } else if (user.getRole().equals(ADMIN)) {
                     redirectToAdminPage(response);
-                }else {
-                    redirectToLoginPage(response);
                 }
             } else {
+                request.getSession().setAttribute(Attribute.ERROR,error);
                 redirectToLoginPage(response);
             }
         } catch (ServiceException e) {

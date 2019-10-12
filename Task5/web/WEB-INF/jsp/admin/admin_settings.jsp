@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title><fmt:message key="global.text.users" bundle="${cnt}"/></title>
+    <title><fmt:message key="global.text.settings" bundle="${cnt}"/></title>
     <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/header.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/content.css"/>" rel="stylesheet" type="text/css">
@@ -17,9 +17,9 @@
 </head>
 <body>
 <div class="wrapper">
-    <tag:header pageURL="users.html"/>
+    <tag:header pageURL="settings.html"/>
     <tag:admin_menu/>
-    <tag:admin_users/>
+    <tag:admin_settings/>
 </div>
 <tag:footer/>
 </body>

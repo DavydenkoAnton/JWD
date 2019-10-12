@@ -5,5 +5,5 @@
 <fmt:setBundle basename="global" var="cnt"/>
 
 <div class="footer">
-    <fmt:message key="global.header" bundle="${cnt}"/>
+    <fmt:message key="attribute.text.petbook" bundle="${cnt}"/>
 </div>

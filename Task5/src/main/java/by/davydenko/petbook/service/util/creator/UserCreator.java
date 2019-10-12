@@ -13,9 +13,15 @@ public interface UserCreator extends Creator<User> {
 
     String createLogin(String login) throws CreatorException;
 
+    String createNewLogin(String newLogin) throws CreatorException;
+
+    String createNewLoginRepeat(String newLoginRepeat) throws CreatorException;
+
     String createPassword(String password) throws CreatorException;
 
-    String createName(String name) throws CreatorException;
+    String createNewPassword(String newPassword) throws CreatorException;
+
+    String createNewPasswordRepeat(String newPasswordRepeat) throws CreatorException;
 
     int createId(String id) throws CreatorException;
 

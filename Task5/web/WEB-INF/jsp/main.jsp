@@ -3,20 +3,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 
-<c:set var="lang" value="${language}" scope="session"/>
-<c:choose>
-    <c:when test="${not empty lang}">
-        <fmt:setLocale value="${lang}"/>
-    </c:when>
-    <c:otherwise>
-        <fmt:setLocale value="ru"/>
-    </c:otherwise>
-</c:choose>
+<fmt:setLocale value="${cookie.language.value}"/>
 <fmt:setBundle basename="global" var="cnt"/>
 
 <html>
 <head>
-    <title><fmt:message key="global.header" bundle="${cnt}"/></title>
+    <title><fmt:message key="global.text.home" bundle="${cnt}"/></title>
     <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/header.css"/> " rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/statistic.css"/> " rel="stylesheet" type="text/css">
@@ -25,8 +17,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <tag:header/>
-    <tag:locale/>
+    <tag:header pageURL="main.html"/>
     <tag:pet_statistic/>
     <tag:main_content/>
 </div>

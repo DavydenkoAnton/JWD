@@ -45,7 +45,7 @@
     margin-top: 40px;
     border: 3px solid #487879;
     border-radius: 10px;
-    background: linear-gradient(180deg, rgba(72,120,121,1) 0%, rgba(255,255,255,1) 74%);
+    background: linear-gradient(180deg, rgba(72,120,121,1) 0%, rgba(255,255,255,1) 120%);
 }
 .pet_profile form{
 
@@ -82,23 +82,51 @@
 
 .edit_profile_credential {
     width: 50%;
-    height: 500px;
+    height: 480px;
     float: right;
 }
 
 .edit_profile_credential_item {
-    margin-top: 50px;
+    margin-top: 58px;
 }
+.edit_profile_credential_item p{
+    margin: 0;
+    color: white;
+    float: left;
+    width: 70px;
+}
+
 .edit_profile_credential_item input {
     width: 150px;
 }
-.edit_profile_credential_item input::placeholder {
-    color: black;
+
+
+.edit_profile_credential_item ::-webkit-input-placeholder {
+    color: dimgray;
     text-align: left;
 }
+
+.edit_profile_credential_item :-moz-placeholder { /* Firefox 18- */
+    color: dimgray;
+    text-align: left;
+}
+
+.edit_profile_credential_item ::-moz-placeholder {  /* Firefox 19+ */
+    color: dimgray;
+    text-align: left;
+}
+
+.edit_profile_credential_item :-ms-input-placeholder {
+    color: dimgray;
+    text-align: left;
+}
+
+
+
 .edit_profile_credential_item select {
     width: 150px;
 }
+
 .edit_profile_credential_item button {
     width: 100px;
 }

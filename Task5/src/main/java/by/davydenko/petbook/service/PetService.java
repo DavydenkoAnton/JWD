@@ -44,11 +44,19 @@ public interface PetService extends Service<Pet> {
 
     void uploadPhoto(Part part, String path, String userId) throws ServiceException;
 
+    void deletePhotos(int id, List<String> urls)throws ServiceException;
+
     List<String> getPagingPhotoCount(List<String> petPhotoUrl, int from);
 
     void uploadType(String petType, String userId) throws ServiceException;
 
-    Optional<List<Pet>> getAllPetsNoUser(int id)throws ServiceException;
+    Optional<List<Pet>> getAllPetsNoUser(int id) throws ServiceException;
 
-    Optional<List<Pet>> getByTypeNoUser(String petType, int id)throws ServiceException;
+    Optional<List<Pet>> getByTypeNoUser(String petType, int id) throws ServiceException;
+
+    Optional<List<Pet>> getFromTo(int from, int to) throws ServiceException;
+
+    Optional<List<Pet>> getFromTo(int from, int to,String searchValue) throws ServiceException;
+
+
 }

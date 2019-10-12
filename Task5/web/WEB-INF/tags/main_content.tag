@@ -3,8 +3,18 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<c:set var="lang" value="${language}" scope="session"/>
-<fmt:setLocale value="${lang}"/>
+<c:choose>
+    <c:when test="${not empty cookie.language.value}">
+        <fmt:setLocale value="${cookie.language.value}"/>
+
+    </c:when>
+    <c:otherwise>
+        <fmt:setLocale value="en"/>
+    </c:otherwise>
+</c:choose>
+
+<c:set var="pageURL" value="http://localhost:8080/pb/main.html" scope="request"/>
+
 <fmt:setBundle basename="global" var="cnt"/>
 
 <div class="main_content">

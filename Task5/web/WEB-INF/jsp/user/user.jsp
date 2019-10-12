@@ -4,9 +4,10 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <fmt:setBundle basename="global" var="cnt"/>
 
-<c:set var="lang" value="${language}" scope="session"/>
-<fmt:setLocale value="${lang}"/>
+<fmt:setLocale value="${cookie.language.value}"/>
 <fmt:setBundle basename="global" var="cnt"/>
+
+<c:set var="article" value="${sessionScope.article}"/>
 
 <html>
 <head>
@@ -14,10 +15,11 @@
     <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/header.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/content.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/css/locale.css"/>" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="wrapper">
-    <tag:header/>
+    <tag:header pageURL="user.html"/>
     <tag:menu/>
 
     <div class="pet_content">

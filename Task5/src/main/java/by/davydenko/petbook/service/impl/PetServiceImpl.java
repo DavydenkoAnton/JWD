@@ -69,6 +69,28 @@ public final class PetServiceImpl implements PetService {
     }
 
     @Override
+    public Optional<List<Pet>> getFromTo(int from, int to) throws ServiceException {
+        Optional<List<Pet>> optionalPets;
+        try {
+            optionalPets = petDao.readFromTo(from, to);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalPets;
+    }
+
+    @Override
+    public Optional<List<Pet>> getFromTo(int from, int to,String searchValue) throws ServiceException {
+        Optional<List<Pet>> optionalPets;
+        try {
+            optionalPets = petDao.readFromTo(from, to,searchValue);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalPets;
+    }
+
+    @Override
     public Optional<List<Pet>> getByTypeNoUser(String petType, int id) throws ServiceException {
         Optional<List<Pet>> optionalPets;
         try {
@@ -259,6 +281,19 @@ public final class PetServiceImpl implements PetService {
         uploadImage(image, path, userId, PET_PHOTO_FOLDER);
     }
 
+    @Override
+    public void deletePhotos(int id, List<String> urls) throws ServiceException {
+        try {
+            for (String url:urls) {
+                if(url!=null){
+                    petDao.deletePhotos(id,url);
+                }
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
     private void uploadImage(Part image, String path, String userId, String pathFolder) throws ServiceException {
         int id = 0;
         String imageName;
@@ -324,12 +359,15 @@ public final class PetServiceImpl implements PetService {
         }
     }
 
+
+
     @Override
     public void uploadName(String petName, String userId) throws ServiceException {
         String name;
         int id;
         try {
-            name = userCreator.createName(petName);
+
+            name = petCreator.createName(petName);
             id = userCreator.createId(userId);
         } catch (CreatorException e) {
             throw new ServiceException(e);
@@ -395,4 +433,7 @@ public final class PetServiceImpl implements PetService {
             throw new ServiceException(e);
         }
     }
+
+
+
 }

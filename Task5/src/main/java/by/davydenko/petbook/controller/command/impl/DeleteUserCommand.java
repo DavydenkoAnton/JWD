@@ -17,10 +17,9 @@ public class DeleteUserCommand implements Command {
     private static Logger logger = LogManager.getLogger(LoginUserCommand.class);
     private static final String ADMIN_PAGE_URL = "http://localhost:8080/pb/admin.html";
     private UserService userService;
-    private ServiceFactory serviceFactory;
 
     public DeleteUserCommand() {
-        serviceFactory = ServiceFactory.getInstance();
+        ServiceFactory serviceFactory = ServiceFactory.getInstance();
         userService = serviceFactory.getUserService();
     }
 

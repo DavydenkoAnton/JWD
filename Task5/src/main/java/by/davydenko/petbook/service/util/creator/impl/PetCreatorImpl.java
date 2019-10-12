@@ -2,6 +2,7 @@ package by.davydenko.petbook.service.util.creator.impl;
 
 import by.davydenko.petbook.controller.command.util.Attribute;
 import by.davydenko.petbook.entity.PetType;
+import by.davydenko.petbook.service.util.XSSFilter;
 import by.davydenko.petbook.service.util.creator.CreatorException;
 import by.davydenko.petbook.service.util.creator.PetCreator;
 
@@ -52,6 +53,8 @@ public class PetCreatorImpl implements PetCreator {
             throw new CreatorException("name is empty");
         } else if (name.length() > MAX_BREED_LENGTH) {
             throw new CreatorException("name length is more than 16 symbols");
+        }else if (XSSFilter.SCRIPT(name)){
+            throw new CreatorException("trying add script as name");
         }
         return name;
     }

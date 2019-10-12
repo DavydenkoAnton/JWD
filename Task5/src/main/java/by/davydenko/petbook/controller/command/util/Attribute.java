@@ -17,6 +17,8 @@ public final class Attribute {
     public static final String MESSAGE_TEXT = "messageText";
     public static final String PET_TYPE = "petType";
     public static final String LOGIN = "login";
+    public static final String NEW_LOGIN_REPEAT = "newLoginRepeat";
+    public static final String NEW_LOGIN = "newLogin";
     public static final String CHAT_MESSAGES = "chatMessages";
     public static final String ROLE = "role";
     public static final String AUTHORIZED = "authorized";
@@ -33,6 +35,8 @@ public final class Attribute {
     public static final String EMAIL = "email";
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String PASSWORD = "password";
+    public static final String NEW_PASSWORD_REPEAT = "newPasswordRepeat";
+    public static final String NEW_PASSWORD = "newPassword";
     public static final String AGE = "age";
     public static final String MESSAGE = "message";
     public static final String MESSAGE_SENDERS = "messageSenders";
@@ -57,4 +61,12 @@ public final class Attribute {
     public static final String ADMIN_ARTICLE_TITLE = "adminArticleTitle";
     public static final String ADMIN_ARTICLE_DESCRIPTION = "adminArticleDescription";
     public static final String ADMIN_ARTICLE_TEXT = "adminArticleText";
+    public static final String ADMIN = "admin";
+    public static final String ADMIN_PAGING_NEXT_USERS_KEY = "adminPagingNextUsersKey";
+    public static final String ADMIN_PAGING_PREV_USERS_KEY = "adminPagingPrevUsersKey";
+    public static final String SEARCH_USER_VALUE = "searchUserValue";
+    public static final int ADMIN_PAGING_USERS_INTERVAL = 3;
+    public static final String LANGUAGE = "language";
+    public static final String PAGE_URL="pageURL";
+
 }

@@ -13,10 +13,11 @@
     <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/header.css"/> " rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/articles.css"/> " rel="stylesheet" type="text/css">
+    <link href="<c:url value="/css/locale.css"/> " rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="wrapper">
-    <tag:header/>
+    <tag:header pageURL="articles.html"/>
     <c:if test="${sessionScope.role=='USER'}">
         <tag:menu/>
     </c:if>

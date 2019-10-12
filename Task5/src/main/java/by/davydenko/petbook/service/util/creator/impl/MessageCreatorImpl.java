@@ -37,7 +37,7 @@ public class MessageCreatorImpl implements MessageCreator {
             throw new CreatorException("message is empty");
         }else if(text.length()>MAX_TEXT_LENGTH){
             throw new CreatorException("message is too long");
-        }else        if (XSSFilter.isScript(text)) {
+        }else        if (XSSFilter.SCRIPT(text)) {
             throw new CreatorException("message is a script");
         }
         return text;

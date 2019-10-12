@@ -22,6 +22,8 @@ public class PetDaoImpl implements PetDao {
     private static final String SELECT_PHOTO_URL_BY_ID = "SELECT url FROM petbook.photo WHERE userId=?";
     private static final String SELECT_PHOTO_URL_BY_ID_FROM_TO = "SELECT url FROM petbook.photo WHERE userId=? AND id>? AND id<?";
     private static final String SELECT_ALL = "SELECT * FROM petbook.pets";
+    private static final String SELECT_PETS_FROM_TO = "SELECT name,breed,age,avatarUrl,userId,type FROM petbook.pets WHERE userId>=? AND userId<=?";
+    private static final String SELECT_PETS_FROM_TO_BY_NAME = "SELECT name,breed,age,avatarUrl,userId,type FROM petbook.pets WHERE userId>=? AND userId<=? AND name LIKE ? ";
     private static final String SELECT_PETS_BY_TYPE = "SELECT name,breed,age,avatarUrl,userId,type FROM petbook.pets WHERE type=?";
     private static final String SELECT_PETS_BY_TYPE_NO_USER = "SELECT name,breed,age,avatarUrl,userId,type FROM petbook.pets WHERE type=? AND userId!=?";
     private static final String SELECT_PETS_NO_USER = "SELECT name,breed,age,avatarUrl,userId,type FROM petbook.pets WHERE userId!=?";
@@ -35,6 +37,7 @@ public class PetDaoImpl implements PetDao {
     private final static String UPDATE_PET_TYPE = "UPDATE petbook.pets  SET type=? WHERE userId=? ";
     private final static String CREATE_BY_USER_ID = "INSERT INTO petbook.pets (userId) VALUES (?)";
     private final static String CREATE_PHOTO_URL_BY_ID = "INSERT INTO petbook.photo (userId,url) VALUES (?,?) ";
+    private final static String DELETE_PHOTO = "DELETE FROM petbook.photo WHERE userId=? AND url=?";
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
@@ -60,7 +63,7 @@ public class PetDaoImpl implements PetDao {
                 connection.commit();
             }
             connectionPool.closeConnection(connection, preparedStatement);
-        } catch (SQLException|ConnectionPoolException e) {
+        } catch (SQLException | ConnectionPoolException e) {
             throw new DaoException(e);
         }
     }
@@ -102,6 +105,71 @@ public class PetDaoImpl implements PetDao {
     @Override
     public Optional<Pet> read(int id) throws DaoException {
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<Pet>> readFromTo(int from, int to) throws DaoException {
+        List<Pet> pets = null;
+        try {
+            connection = connectionPool.takeConnection();
+            preparedStatement = connection.prepareStatement(SELECT_PETS_FROM_TO);
+            preparedStatement.setInt(1, from);
+            preparedStatement.setInt(2, to);
+            resultSet = preparedStatement.executeQuery();
+            List<Pet> petsBuf = new ArrayList<>();
+            while (resultSet.next()) {
+                resultSet.getRow();
+                Pet pet = new Pet();
+                pet.setName(resultSet.getString(Attribute.NAME));
+                pet.setBreed(resultSet.getString(Attribute.BREED));
+                pet.setAge(resultSet.getInt(Attribute.AGE));
+                pet.setType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
+                pet.setAvatarUrl(resultSet.getString(Attribute.AVATAR_URL));
+                pet.setUserId(resultSet.getInt(Attribute.USER_ID));
+                petsBuf.add(pet);
+            }
+            if (petsBuf.size() != 0) {
+                pets = petsBuf;
+            }
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
+
+        return Optional.ofNullable(pets);
+    }
+
+    @Override
+    public Optional<List<Pet>> readFromTo(int from, int to, String searchValue) throws DaoException {
+        List<Pet> pets = null;
+        try {
+            connection = connectionPool.takeConnection();
+            preparedStatement = connection.prepareStatement(SELECT_PETS_FROM_TO_BY_NAME);
+            preparedStatement.setInt(1, from);
+            preparedStatement.setInt(2, to);
+            preparedStatement.setString(3, searchValue + "%");
+            resultSet = preparedStatement.executeQuery();
+            List<Pet> petsBuf = new ArrayList<>();
+            while (resultSet.next()) {
+                resultSet.getRow();
+                Pet pet = new Pet();
+                pet.setName(resultSet.getString(Attribute.NAME));
+                pet.setBreed(resultSet.getString(Attribute.BREED));
+                pet.setAge(resultSet.getInt(Attribute.AGE));
+                pet.setType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
+                pet.setAvatarUrl(resultSet.getString(Attribute.AVATAR_URL));
+                pet.setUserId(resultSet.getInt(Attribute.USER_ID));
+                petsBuf.add(pet);
+            }
+            if (petsBuf.size() != 0) {
+                pets = petsBuf;
+            }
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
+
+        return Optional.ofNullable(pets);
     }
 
     @Override
@@ -398,5 +466,22 @@ public class PetDaoImpl implements PetDao {
     @Override
     public void delete(int id) {
 
+    }
+
+    @Override
+    public void deletePhotos(int id, String url) throws DaoException {
+        try {
+            connection = connectionPool.takeConnection();
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(DELETE_PHOTO);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, url);
+            if (preparedStatement.executeUpdate() > 0) {
+                connection.commit();
+            }
+            connectionPool.closeConnection(connection, preparedStatement);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException("Cannot update pet avatar", e);
+        }
     }
 }

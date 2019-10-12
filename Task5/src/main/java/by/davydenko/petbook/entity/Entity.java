@@ -19,7 +19,6 @@ public abstract class Entity implements Serializable {
         this.id = id;
     }
 
-    @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;

@@ -8,23 +8,18 @@ import by.davydenko.petbook.entity.Role;
 import by.davydenko.petbook.entity.User;
 import by.davydenko.petbook.service.ServiceException;
 import by.davydenko.petbook.service.UserService;
+import by.davydenko.petbook.service.util.XSSFilter;
 import by.davydenko.petbook.service.util.creator.CreatorException;
 import by.davydenko.petbook.service.util.creator.CreatorFactory;
 import by.davydenko.petbook.service.util.creator.UserCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,66 +31,16 @@ public class UserServiceImpl implements UserService {
     private static final String JPEG = "image/jpeg";
     private static final String PNG = "image/png";
     private UserDao userDao;
-    private DaoFactory daoFactory;
     private UserCreator userCreator;
-    private CreatorFactory creatorFactory;
+    private Error error;
+
 
     public UserServiceImpl() {
-        daoFactory = DaoFactory.getInstance();
-        creatorFactory = CreatorFactory.getInstance();
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        CreatorFactory creatorFactory = CreatorFactory.getInstance();
         userDao = daoFactory.getUserDao();
         userCreator = creatorFactory.getUserCreator();
-    }
-
-    @Override
-    public void uploadAvatar(Part part, String path, String userId) throws ServiceException {
-
-//        Part image;
-//        try {
-//            image = request.getPart(Attribute.USER_AVATAR);
-//        } catch (IOException | ServletException e) {
-//            throw new ServiceException("cannot get image from request", e);
-//        }
-//        if (image == null) {
-//            throw new ServiceException("image is not exist");
-//        }
-
-        int id = 0;
-        try {
-            id = userCreator.createId(userId);
-        } catch (CreatorException e) {
-            throw new ServiceException(e);
-        }
-        String imageName;
-
-        String contentType = part.getContentType();
-        if (contentType.equals(JPEG)) {
-            imageName = id + ".jpg";
-        } else {
-            throw new ServiceException("wrong image format for avatar");
-        }
-
-        //String path = request.getServletContext().getRealPath("/") + USER_AVATAR_FOLDER;
-        final Path outputFile = Paths.get(path, imageName);
-
-        try (final ReadableByteChannel input = Channels.newChannel(part.getInputStream());
-             final WritableByteChannel output = Channels.newChannel(new FileOutputStream(outputFile.toFile()));) {
-            pipe(input, output);
-        } catch (IOException e) {
-            throw new ServiceException("IO error during read/write user avatar", e);
-        }
-        setAvatarURL(id, imageName);
-    }
-
-
-    private void setAvatarURL(int userId, String imageName) throws ServiceException {
-        // final String userAvatarURL = request.getServletContext().getRealPath("/")+USER_AVATAR_URL + "/" + imageName;
-        final String path = USER_AVATAR_FOLDER + "/" + imageName;
-        try {
-            userDao.updateAvatarURL(userId, path);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
+        error = Error.getInstance();
     }
 
 
@@ -109,22 +54,78 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public void uploadName(String name, String id) throws ServiceException {
-        try {
-            name = userCreator.createName(name);
-            int userId = userCreator.createId(id);
-            userDao.updateName(userId, name);
-        } catch (CreatorException | DaoException e) {
-            throw new ServiceException(e);
-        }
-    }
 
     @Override
     public Optional<List<User>> getAllUsers() throws ServiceException {
         Optional<List<User>> optionalUsers;
         try {
             optionalUsers = userDao.readUsers();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalUsers;
+    }
+
+    @Override
+    public Optional<List<User>> getUsersPagingNext(int id, String searchUserValue) throws ServiceException {
+        Optional<List<User>> optionalUsers;
+        try {
+            optionalUsers = userDao.readNextPaging(id, searchUserValue);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalUsers;
+    }
+
+    @Override
+    public Optional<List<User>> getUsersPagingNext(int id) throws ServiceException {
+        Optional<List<User>> optionalUsers;
+        try {
+            optionalUsers = userDao.readNextPaging(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalUsers;
+    }
+
+    @Override
+    public Optional<List<User>> getUsersPagingPrev(int id) throws ServiceException {
+        Optional<List<User>> optionalUsers;
+        try {
+            optionalUsers = userDao.readPrevPaging(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalUsers;
+    }
+
+    @Override
+    public Optional<List<User>> getUsersPagingPrev(int id, String searchValue) throws ServiceException {
+        Optional<List<User>> optionalUsers;
+        try {
+            optionalUsers = userDao.readPrevPaging(id, searchValue);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalUsers;
+    }
+
+    @Override
+    public Optional<List<User>> getUsersFromTo(int from, int to) throws ServiceException {
+        Optional<List<User>> optionalUsers;
+        try {
+            optionalUsers = userDao.readFromTo(from, to);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalUsers;
+    }
+
+    @Override
+    public Optional<List<User>> getUsersByNameFirst(String searchUserValue) throws ServiceException {
+        Optional<List<User>> optionalUsers;
+        try {
+            optionalUsers = userDao.readByPetName(searchUserValue);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -168,6 +169,68 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public void updateLogin(String login, String newLogin, String newLoginRepeat, int id) throws ServiceException {
+        try {
+            String loginBuf = userCreator.createLogin(login);
+            Optional<User> optionalUser = userDao.readById(id);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                if (!loginBuf.equals(user.getLogin())) {
+                    error.setLogin("wrong login");
+                    throw new ServiceException("wrong login " + getClass().getName());
+                }
+                String newLoginBuf = userCreator.createNewLogin(newLogin);
+                String newLoginRepeatBuf = userCreator.createNewLoginRepeat(newLoginRepeat);
+                if (newLoginBuf.equals(newLoginRepeatBuf)) {
+                    userDao.updateLogin(user.getId(), newLoginBuf);
+                } else {
+                    error.setNewLogin("not equals");
+                    error.setNewLoginRepeat("not equals");
+                    throw new ServiceException("new login and new repeat login not equals " + getClass().getName());
+                }
+            }
+        } catch (CreatorException | DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void updatePassword(String password, String newPassword, String newPasswordRepeat, int id) throws ServiceException {
+        try {
+            String passwordBuf = userCreator.createPassword(password);
+            Optional<User> optionalUser = userDao.readById(id);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                if (!passwordBuf.equals(user.getPassword())) {
+                    error.setPassword("wrong password");
+                    throw new ServiceException("wrong password " + getClass().getName());
+                }
+                String newPasswordBuf = userCreator.createNewPassword(newPassword);
+                String newPasswordRepeatBuf = userCreator.createNewPasswordRepeat(newPasswordRepeat);
+                if (newPasswordBuf.equals(newPasswordRepeatBuf)) {
+                    userDao.updatePassword(id, newPasswordBuf);
+                } else {
+                    error.setNewPassword("not equals");
+                    error.setNewPasswordRepeat("not equals");
+                    throw new ServiceException("new password and new repeat password not equals");
+                }
+            }
+        } catch (CreatorException | DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Optional<User> admin() throws ServiceException {
+        Optional<User> user;
+        try {
+            user = userDao.readAdmin();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return user;
+    }
 
     @Override
     public void deleteByLogin(String userLogin) throws ServiceException {
@@ -181,13 +244,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+
     @Override
     public void changeRole(String id) throws ServiceException {
         try {
             int idTemp = userCreator.createId(id);
-            Optional<User> optionalUser=userDao.read(idTemp);
-            if(optionalUser.isPresent()){
-                User user=optionalUser.get();
+            Optional<User> optionalUser = userDao.read(idTemp);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
                 if (user.getRole().equals(Role.USER)) {
                     user.setRole(Role.GUEST);
                 } else if (user.getRole().equals(Role.GUEST)) {
@@ -201,39 +265,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(String login, String password, String passwordCheck) throws ServiceException {
+    public void registerUser(String newLogin, String newPassword, String newPasswordRepeat) throws ServiceException {
         Error error = Error.getInstance();
         try {
-            String loginTemp = userCreator.createLogin(login);
-            String passwordTemp = userCreator.createPassword(password);
-            String passwordCheckTemp = userCreator.createPassword(passwordCheck);
-            if (passwordTemp.equals(passwordCheckTemp)) {
+            String login = userCreator.createNewLogin(newLogin);
+            String password = userCreator.createNewPassword(newPassword);
+            String passwordRepeat = userCreator.createNewPasswordRepeat(newPasswordRepeat);
+            if (password.equals(passwordRepeat)) {
                 Role role = userCreator.createRole();
-                userDao.create(loginTemp, passwordTemp, role);
+                userDao.create(login, password, role);
             } else {
-                error.setPasswordCheck("password not equal");
-                throw new ServiceException("password not equal");
+                error.setNewPassword("not equal");
+                error.setNewPasswordRepeat("not equal");
+                throw new ServiceException("passwords not equals " + getClass().getName());
             }
         } catch (CreatorException | DaoException e) {
             throw new ServiceException(e);
         }
-    }
-
-    @Override
-    public int getIdByLogin(String userLogin) throws ServiceException {
-        String login = null;
-        try {
-            login = userCreator.createLogin(userLogin);
-        } catch (CreatorException e) {
-            throw new ServiceException(e);
-        }
-        int id;
-        try {
-            id = userDao.getIdByLogin(login);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-        return id;
     }
 
 

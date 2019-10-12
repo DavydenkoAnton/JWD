@@ -26,7 +26,7 @@ public final class XSSFilter {
             Pattern.compile("onload(.*?)=", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL)
     };
 
-    public static boolean isScript(String value) {
+    public static boolean SCRIPT(String value) {
         if (value != null) {
             for (Pattern scriptPattern : patterns){
                 boolean isScript = scriptPattern.matcher(value).matches();
