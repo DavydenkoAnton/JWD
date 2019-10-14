@@ -46,7 +46,6 @@ public class GetAllPetsCommand implements by.davydenko.petbook.controller.comman
     }
 
     private void redirectToPetsPage(HttpServletResponse response) {
-        response.setContentType("pets.jsp");
         try {
             response.sendRedirect(PETS_PAGE_URL);
         } catch (IOException e) {

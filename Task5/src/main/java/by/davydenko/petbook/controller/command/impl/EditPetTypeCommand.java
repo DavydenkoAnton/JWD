@@ -41,7 +41,6 @@ public class EditPetTypeCommand implements by.davydenko.petbook.controller.comma
     }
 
     private void redirectToProfilePage(HttpServletResponse response) {
-        response.setContentType("profile.jsp");
         try {
             response.sendRedirect(PROFILE_PAGE_URL);
         } catch (IOException e) {

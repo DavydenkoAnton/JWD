@@ -25,7 +25,6 @@ public class AdminUsersPageCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
         forwardToAdminUsersPage(request, response);
     }
 

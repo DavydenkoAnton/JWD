@@ -63,7 +63,6 @@ public class LoginUserCommand implements Command {
     }
 
     private void redirectToUserPage(HttpServletResponse response) {
-        response.setContentType("user.jsp");
         try {
             response.sendRedirect(USER_PAGE_URL);
         } catch (IOException e) {

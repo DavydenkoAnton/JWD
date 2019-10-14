@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class EditPetBreedCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger(EditUserNameCommand.class);
+    private static final Logger logger = LogManager.getLogger(EditPetBreedCommand.class);
     private static final String REDIRECT_PROFILE_PAGE_URL = "http://localhost:8080/pb/profile.html";
     private PetService petService;
 
@@ -45,7 +45,6 @@ public class EditPetBreedCommand implements Command {
     }
 
     private void redirectToProfilePage(HttpServletResponse response) {
-        response.setContentType("profile.jsp");
         try {
             response.sendRedirect(REDIRECT_PROFILE_PAGE_URL);
         } catch (IOException e) {

@@ -19,6 +19,7 @@ public abstract class Entity implements Serializable {
         this.id = id;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
@@ -32,8 +33,9 @@ public abstract class Entity implements Serializable {
         Entity entity = (Entity) obj;
         if (this.uuid != null) {
             return this.uuid.equals(entity.uuid);
+        } else {
+            return false;
         }
-        return true;
     }
 
     @Override

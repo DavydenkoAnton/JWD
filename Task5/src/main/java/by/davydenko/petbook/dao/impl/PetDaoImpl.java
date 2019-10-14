@@ -37,6 +37,7 @@ public class PetDaoImpl implements PetDao {
     private final static String UPDATE_PET_TYPE = "UPDATE petbook.pets  SET type=? WHERE userId=? ";
     private final static String CREATE_BY_USER_ID = "INSERT INTO petbook.pets (userId) VALUES (?)";
     private final static String CREATE_PHOTO_URL_BY_ID = "INSERT INTO petbook.photo (userId,url) VALUES (?,?) ";
+    private final static String DELETE_PET_BY_USER_ID = "DELETE FROM petbook.pets WHERE userId=?";
     private final static String DELETE_PHOTO = "DELETE FROM petbook.photo WHERE userId=? AND url=?";
     private Connection connection;
     private PreparedStatement preparedStatement;
@@ -180,7 +181,7 @@ public class PetDaoImpl implements PetDao {
             preparedStatement = connection.prepareStatement(SELECT_PETS_NO_USER);
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
-            pets = new ArrayList<>();
+            List<Pet>petsBuf = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 Pet pet = new Pet();
@@ -189,7 +190,10 @@ public class PetDaoImpl implements PetDao {
                 pet.setAge(resultSet.getInt(Attribute.AGE));
                 pet.setAvatarUrl(resultSet.getString(Attribute.AVATAR_URL));
                 pet.setUserId(resultSet.getInt(Attribute.USER_ID));
-                pets.add(pet);
+                petsBuf.add(pet);
+            }
+            if(petsBuf.size()>0){
+                pets=petsBuf;
             }
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         } catch (SQLException | ConnectionPoolException e) {
@@ -205,7 +209,7 @@ public class PetDaoImpl implements PetDao {
             connection = connectionPool.takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ALL);
             resultSet = preparedStatement.executeQuery();
-            pets = new ArrayList<>();
+            List<Pet> petsBuf = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 Pet pet = new Pet();
@@ -215,7 +219,10 @@ public class PetDaoImpl implements PetDao {
                 pet.setAvatarUrl(resultSet.getString(Attribute.AVATAR_URL));
                 pet.setType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
                 pet.setUserId(resultSet.getInt(Attribute.USER_ID));
-                pets.add(pet);
+                petsBuf.add(pet);
+            }
+            if(petsBuf.size()>0){
+                pets=petsBuf;
             }
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         } catch (SQLException | ConnectionPoolException e) {
@@ -257,7 +264,7 @@ public class PetDaoImpl implements PetDao {
             preparedStatement = connection.prepareStatement(SELECT_PETS_BY_TYPE);
             preparedStatement.setString(1, type.toString());
             resultSet = preparedStatement.executeQuery();
-            pets = new ArrayList<>();
+            List<Pet> petsBuf = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 Pet pet = new Pet();
@@ -266,7 +273,10 @@ public class PetDaoImpl implements PetDao {
                 pet.setAge(resultSet.getInt(Attribute.AGE));
                 pet.setAvatarUrl(resultSet.getString(Attribute.AVATAR_URL));
                 pet.setUserId(resultSet.getInt(Attribute.USER_ID));
-                pets.add(pet);
+                petsBuf.add(pet);
+            }
+            if(petsBuf.size()>0){
+                pets=petsBuf;
             }
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         } catch (SQLException | ConnectionPoolException e) {
@@ -284,7 +294,7 @@ public class PetDaoImpl implements PetDao {
             preparedStatement.setString(1, type.toString());
             preparedStatement.setInt(2, id);
             resultSet = preparedStatement.executeQuery();
-            pets = new ArrayList<>();
+            List<Pet> petsBuf = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 Pet pet = new Pet();
@@ -293,7 +303,10 @@ public class PetDaoImpl implements PetDao {
                 pet.setAge(resultSet.getInt(Attribute.AGE));
                 pet.setAvatarUrl(resultSet.getString(Attribute.AVATAR_URL));
                 pet.setUserId(resultSet.getInt(Attribute.USER_ID));
-                pets.add(pet);
+                petsBuf.add(pet);
+            }
+            if(petsBuf.size()>0){
+                pets=petsBuf;
             }
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         } catch (SQLException | ConnectionPoolException e) {
@@ -464,8 +477,19 @@ public class PetDaoImpl implements PetDao {
     }
 
     @Override
-    public void delete(int id) {
-
+    public void delete(int id)throws DaoException {
+        try {
+            connection = connectionPool.takeConnection();
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(DELETE_PET_BY_USER_ID);
+            preparedStatement.setInt(1, id);
+            if (preparedStatement.executeUpdate() > 0) {
+                connection.commit();
+            }
+            connectionPool.closeConnection(connection, preparedStatement);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException("Cannot delete pet by user id", e);
+        }
     }
 
     @Override
@@ -481,7 +505,7 @@ public class PetDaoImpl implements PetDao {
             }
             connectionPool.closeConnection(connection, preparedStatement);
         } catch (SQLException | ConnectionPoolException e) {
-            throw new DaoException("Cannot update pet avatar", e);
+            throw new DaoException("Cannot delete pet photos", e);
         }
     }
 }

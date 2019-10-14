@@ -36,7 +36,6 @@ public class EditArticleCommand implements by.davydenko.petbook.controller.comma
     }
 
     private void redirectToRegistrationPage(HttpServletResponse response) {
-        response.setContentType("articles.jsp");
         try {
             response.sendRedirect(ADMIN_ARTICLES_PAGE);
         } catch (IOException e) {

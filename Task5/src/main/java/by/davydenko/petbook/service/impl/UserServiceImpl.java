@@ -27,9 +27,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
-    private static final String USER_AVATAR_FOLDER = "img/users_avatars";
-    private static final String JPEG = "image/jpeg";
-    private static final String PNG = "image/png";
     private UserDao userDao;
     private UserCreator userCreator;
     private Error error;
@@ -42,18 +39,6 @@ public class UserServiceImpl implements UserService {
         userCreator = creatorFactory.getUserCreator();
         error = Error.getInstance();
     }
-
-
-    private static void pipe(ReadableByteChannel in, WritableByteChannel out)
-            throws IOException {
-        final ByteBuffer buffer = ByteBuffer.allocate(1024);
-        while (in.read(buffer) >= 0 || buffer.position() > 0) {
-            buffer.flip();
-            out.write(buffer);
-            buffer.compact();
-        }
-    }
-
 
     @Override
     public Optional<List<User>> getAllUsers() throws ServiceException {
@@ -143,7 +128,7 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            user = userDao.read(id);
+            user = userDao.readById(id);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -249,7 +234,7 @@ public class UserServiceImpl implements UserService {
     public void changeRole(String id) throws ServiceException {
         try {
             int idTemp = userCreator.createId(id);
-            Optional<User> optionalUser = userDao.read(idTemp);
+            Optional<User> optionalUser = userDao.readById(idTemp);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 if (user.getRole().equals(Role.USER)) {

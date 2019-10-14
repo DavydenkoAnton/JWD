@@ -5,19 +5,13 @@ import by.davydenko.petbook.entity.Role;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static by.davydenko.petbook.entity.Role.ADMIN;
 import static by.davydenko.petbook.entity.Role.USER;
@@ -37,12 +31,10 @@ public class SecurityUriFilter implements Filter {
     private final static String COMMAND = "command";
     private final static String FILTER_CONFIG_INIT = "security";
     private final static String FILTER_CONFIG_PARAMETER = "true";
-    private String commandName;
     private static List<String> adminCommands;
     private static List<String> userAuthorizedCommands;
     private static List<String> userNotAuthorizedCommands;
     private HttpSession httpSession;
-    private HttpServletRequest httpRequest;
 
     static {
         adminCommands = new ArrayList<>();
@@ -64,7 +56,6 @@ public class SecurityUriFilter implements Filter {
         adminCommands.add("editAdminLogin");
         adminCommands.add("editAdminPassword");
         adminCommands.add("deleteArticle");
-
 
         userAuthorizedCommands = new ArrayList<>();
         userAuthorizedCommands.add("addPetPhoto");
@@ -124,8 +115,8 @@ public class SecurityUriFilter implements Filter {
         if (filterConfig.getInitParameter(FILTER_CONFIG_INIT).equals(FILTER_CONFIG_PARAMETER)) {
             if (request instanceof HttpServletRequest) {
 
-                httpRequest = (HttpServletRequest) request;
-                commandName = getCommandNameFromUri(httpRequest);
+                HttpServletRequest httpRequest = (HttpServletRequest) request;
+                String commandName = getCommandNameFromUri(httpRequest);
                 httpSession = httpRequest.getSession();
 
 

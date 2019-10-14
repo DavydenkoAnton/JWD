@@ -11,7 +11,7 @@ public interface ArticleService extends Service<Article> {
 
     Optional<List<Article>> getArticles(String petType) throws ServiceException;
 
-    Optional<Article> getArticle(String articleTitle) throws ServiceException;
+    Optional<Article> getArticleByTitle(String articleTitle) throws ServiceException;
 
     Optional<List<Article>> getAllArticles()throws ServiceException;
 

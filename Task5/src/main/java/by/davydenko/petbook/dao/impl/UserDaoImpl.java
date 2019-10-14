@@ -18,7 +18,8 @@ import java.util.Optional;
 public class UserDaoImpl implements UserDao {
 
     private final static String SELECT_ALL_USERS = "SELECT id,role FROM petbook.users WHERE role='USER' OR role='GUEST' ";
-    private final static String SELECT_BY_LOGIN_PASSWORD = "SELECT id,role FROM petbook.users WHERE login=? AND password=?";
+    private final static String SELECT_BY_LOGIN_PASSWORD = "SELECT id,login,password,role FROM petbook.users WHERE login=? AND password=?";
+    private final static String SELECT_ADMIN_USER = "SELECT id,login,password,role FROM petbook.users WHERE role='ADMIN'";
     private final static String SELECT_USERS_BY_NAME = "SELECT petbook.users.id,petbook.users.role " +
             "FROM (petbook.users INNER JOIN petbook.pets ON users.id = pets.userId)" +
             "WHERE petbook.pets.name LIKE ? GROUP BY petbook.pets.name LIMIT ?";
@@ -78,7 +79,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<List<User>> readUsers() throws DaoException {
         List<User> users = null;
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);
             resultSet = preparedStatement.executeQuery();
             users = new ArrayList<>();
@@ -89,8 +90,12 @@ public class UserDaoImpl implements UserDao {
                 user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
                 users.add(user);
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            if (users.size() == 0) {
+                users = null;
+            }
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException("cannot read user by id");
         }
         return Optional.ofNullable(users);
@@ -103,8 +108,9 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void create(String login, String password, Role role) throws DaoException {
-        takeConnection();
+
         try {
+            takeConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(INSERT_USER_BY_LOGIN_PASSWORD_ROLE);
             preparedStatement.setString(1, login);
@@ -113,15 +119,16 @@ public class UserDaoImpl implements UserDao {
             if (preparedStatement.executeUpdate() > 0) {
                 connection.commit();
             }
+            closeConnection(connectionPool, connection, preparedStatement);
         } catch (SQLIntegrityConstraintViolationException e) {
             Error error = Error.getInstance();
             error.setNewLogin("user exist");
+            closeConnection(connectionPool, connection, preparedStatement);
             throw new DaoException("duplicate login", e);
         } catch (SQLException e) {
             closeConnection(connectionPool, connection, preparedStatement);
             throw new DaoException(e);
         }
-        closeConnection(connectionPool, connection, preparedStatement);
     }
 
 
@@ -129,21 +136,18 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> read(int userId) throws DaoException {
         User user = null;
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID);
             preparedStatement.setInt(1, userId);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 resultSet.getRow();
                 user = new User();
-                user.setName(resultSet.getString(Attribute.NAME));
-                user.setEmail(resultSet.getString(Attribute.EMAIL));
-                user.setPhoneNumber(resultSet.getInt(Attribute.PHONE_NUMBER));
-                user.setAvatarURL(resultSet.getString(Attribute.AVATAR_URL));
                 user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException("cannot read user by id", e);
         }
         return Optional.ofNullable(user);
@@ -154,7 +158,7 @@ public class UserDaoImpl implements UserDao {
         Error error = Error.getInstance();
         User user = null;
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_BY_LOGIN_PASSWORD);
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
@@ -163,13 +167,16 @@ public class UserDaoImpl implements UserDao {
                 resultSet.getRow();
                 user = new User();
                 user.setId(resultSet.getInt(Attribute.ID));
+                user.setLogin(resultSet.getString((Attribute.LOGIN)));
+                user.setPassword(resultSet.getString((Attribute.PASSWORD)));
                 user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
             }
             if (!resultSet.next()) {
                 error.setLogin("wrong login or password");
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException(e);
         }
         return Optional.ofNullable(user);
@@ -179,7 +186,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<List<User>> readNextPaging(int id, String searchUserValue) throws DaoException {
         List<User> users = null;
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ADMIN_NEXT_PAGING_USERS_BY_PET_NAME);
             preparedStatement.setString(1, searchUserValue + "%");
             preparedStatement.setInt(2, id);
@@ -196,8 +203,9 @@ public class UserDaoImpl implements UserDao {
             if (usersBuf.size() != 0) {
                 users = usersBuf;
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException("paging next by id");
         }
         return Optional.ofNullable(users);
@@ -207,7 +215,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<List<User>> readNextPaging(int id) throws DaoException {
         List<User> users = null;
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ADMIN_NEXT_PAGING_USERS);
             preparedStatement.setInt(1, id);
             preparedStatement.setInt(2, Attribute.ADMIN_PAGING_USERS_INTERVAL);
@@ -223,8 +231,9 @@ public class UserDaoImpl implements UserDao {
             if (usersBuf.size() != 0) {
                 users = usersBuf;
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException("paging next by id");
         }
         return Optional.ofNullable(users);
@@ -233,26 +242,28 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<List<User>> readPrevPaging(int id) throws DaoException {
-        List<User> users = null;
+        List<User> users = new ArrayList<>();
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ADMIN_PREV_PAGING_USERS);
             preparedStatement.setInt(1, id);
             preparedStatement.setInt(2, Attribute.ADMIN_PAGING_USERS_INTERVAL);
             resultSet = preparedStatement.executeQuery();
-            List<User> usersBuf = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 User user = new User();
                 user.setId(resultSet.getInt(Attribute.ID));
                 user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
-                usersBuf.add(user);
+                users.add(user);
             }
-            if (usersBuf.size() != 0) {
-                users = reverse(usersBuf);
+            if (users.size() != 0) {
+                users = reverse(users);
+            } else {
+                users = null;
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException("paging prev by id", e);
         }
         return Optional.ofNullable(users);
@@ -260,28 +271,30 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<List<User>> readPrevPaging(int id, String searchValue) throws DaoException {
-        List<User> users = null;
+        List<User> users = new ArrayList<>();
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ADMIN_PREV_PAGING_USERS_BY_PET_NAME);
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, "ADMIN");
             preparedStatement.setString(3, searchValue + "%");
             preparedStatement.setInt(4, Attribute.ADMIN_PAGING_USERS_INTERVAL);
             resultSet = preparedStatement.executeQuery();
-            List<User> usersBuf = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 User user = new User();
                 user.setId(resultSet.getInt(Attribute.ID));
                 user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
-                usersBuf.add(user);
+                users.add(user);
             }
-            if (usersBuf.size() != 0) {
-                users = reverse(usersBuf);
+            if (users.size() != 0) {
+                users = reverse(users);
+            } else {
+                users = null;
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException("paging prev by name", e);
         }
         return Optional.ofNullable(users);
@@ -295,26 +308,26 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<List<User>> readFromTo(int from, int to) throws DaoException {
-        List<User> users = null;
+        List<User> users = new ArrayList<>();
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_USERS_FROM_TO);
             preparedStatement.setInt(1, from);
             preparedStatement.setInt(2, to);
             resultSet = preparedStatement.executeQuery();
-            List<User> usersBuf = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 User user = new User();
                 user.setId(resultSet.getInt(Attribute.ID));
                 user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
-                usersBuf.add(user);
+                users.add(user);
             }
-            if (usersBuf.size() != 0) {
-                users = usersBuf;
+            if (users.size() == 0) {
+                users = null;
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException("get users from id to id");
         }
         return Optional.ofNullable(users);
@@ -324,8 +337,8 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> readAdmin() throws DaoException {
         User user = null;
         try {
-            connection = connectionPool.takeConnection();
-            preparedStatement = connection.prepareStatement(SELECT_BY_LOGIN_PASSWORD);
+            takeConnection();
+            preparedStatement = connection.prepareStatement(SELECT_ADMIN_USER);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 resultSet.getRow();
@@ -335,8 +348,9 @@ public class UserDaoImpl implements UserDao {
                 user.setPassword(resultSet.getString(Attribute.PASSWORD));
                 user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException(e);
         }
         return Optional.ofNullable(user);
@@ -351,17 +365,17 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updateRole(int id, Role role) throws DaoException {
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(UPDATE_USER_ROLE);
             preparedStatement.setString(1, role.name());
             preparedStatement.setInt(2, id);
-            int stateValue = preparedStatement.executeUpdate();
-            if (stateValue > 0) {
+            if (preparedStatement.executeUpdate() > 0) {
                 connection.commit();
             }
-            connectionPool.closeConnection(connection, preparedStatement);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
             throw new DaoException(e);
         }
     }
@@ -374,12 +388,13 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void delete(String login) throws DaoException {
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(DELETE_USER_LOGIN);
             preparedStatement.setString(1, login);
             preparedStatement.executeUpdate();
-            connectionPool.closeConnection(connection, preparedStatement);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
             throw new DaoException(e);
         }
     }
@@ -387,7 +402,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updateLogin(int id, String login) throws DaoException {
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(UPDATE_USER_LOGIN);
             preparedStatement.setString(1, login);
@@ -395,8 +410,9 @@ public class UserDaoImpl implements UserDao {
             if (preparedStatement.executeUpdate() > 0) {
                 connection.commit();
             }
-            connectionPool.closeConnection(connection, preparedStatement);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
             throw new DaoException(e);
         }
     }
@@ -404,7 +420,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updatePassword(int id, String password) throws DaoException {
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(UPDATE_USER_PASSWORD);
             preparedStatement.setString(1, password);
@@ -412,8 +428,9 @@ public class UserDaoImpl implements UserDao {
             if (preparedStatement.executeUpdate() > 0) {
                 connection.commit();
             }
-            connectionPool.closeConnection(connection, preparedStatement);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
             throw new DaoException(e);
         }
     }
@@ -422,7 +439,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> readById(int id) throws DaoException {
         User user = null;
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID);
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
@@ -434,8 +451,9 @@ public class UserDaoImpl implements UserDao {
                 user.setPassword(resultSet.getString(Attribute.PASSWORD));
                 user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement,resultSet);
+        } catch (SQLException  e) {
+            closeConnection(connectionPool, connection, preparedStatement,resultSet);
             throw new DaoException(e);
         }
         return Optional.ofNullable(user);
@@ -443,26 +461,26 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<List<User>> readByPetName(String searchUserValue) throws DaoException {
-        List<User> users = null;
+        List<User> users = new ArrayList<>();
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_USERS_BY_NAME);
             preparedStatement.setString(1, searchUserValue + "%");
             preparedStatement.setInt(2, Attribute.ADMIN_PAGING_USERS_INTERVAL);
             resultSet = preparedStatement.executeQuery();
-            List<User> usersBuf = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 User user = new User();
                 user.setId(resultSet.getInt(Attribute.ID));
                 user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
-                usersBuf.add(user);
+                users.add(user);
             }
-            if (usersBuf.size() != 0) {
-                users = usersBuf;
+            if (users.size() == 0) {
+                users = null;
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement,resultSet);
+        } catch (SQLException  e) {
+            closeConnection(connectionPool, connection, preparedStatement,resultSet);
             throw new DaoException("search user by pet name", e);
         }
         return Optional.ofNullable(users);

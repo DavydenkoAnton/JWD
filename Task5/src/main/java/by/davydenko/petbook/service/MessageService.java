@@ -12,11 +12,10 @@ public interface MessageService extends Service<Message> {
 
     void sendMessage(String receiverId, String senderId, String text) throws ServiceException;
 
-    String getMessage(HttpServletRequest request);
+    Optional<Message> getMessage(String receiverId) throws ServiceException;
 
     Optional<List<Message>> getChatMessages(String receiverId, String senderId) throws ServiceException;
 
-    int getReceiverId(HttpServletRequest request) throws ServiceException;
+    void deleteMessage(String receiverId) throws ServiceException;
 
-    boolean isFriend(HttpServletRequest request);
 }

@@ -36,7 +36,6 @@ public class AddArticleCommand implements by.davydenko.petbook.controller.comman
     }
 
     private void redirectToRegistrationPage(HttpServletResponse response) {
-        response.setContentType("articles.jsp");
         try {
             response.sendRedirect(ADMIN_ARTICLES_PAGE);
         } catch (IOException e) {

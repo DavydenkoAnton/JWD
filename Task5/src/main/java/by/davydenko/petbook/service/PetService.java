@@ -59,4 +59,5 @@ public interface PetService extends Service<Pet> {
     Optional<List<Pet>> getFromTo(int from, int to,String searchValue) throws ServiceException;
 
 
+    void deleteByUserId(int userId) throws ServiceException;
 }

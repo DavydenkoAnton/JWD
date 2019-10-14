@@ -19,16 +19,19 @@ public class MessageDaoImpl implements MessageDao {
 
     private final static String SELECT_CHAT_MESSAGES = "SELECT message,date,userId,senderId FROM petbook.messages " +
             "WHERE (userId=? OR senderId=?) AND (userId=? OR senderId=?) ORDER BY date DESC ";
+    private final static String SELECT_MESSAGE_BY_USER_ID = "SELECT message,date,userId,senderId FROM petbook.messages WHERE userId=?";
     private final static String INSERT_MESSAGE = "INSERT INTO petbook.messages " +
             "(message, userId, senderId,date) VALUES (?, ?, ?,?)";
+    private final static String DELETE_BY_USER_ID = "DELETE FROM petbook.messages WHERE userId=?";
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     private ConnectionPool connectionPool;
 
-    public MessageDaoImpl(){
+    public MessageDaoImpl() {
         connectionPool = ConnectionPool.getInstance();
     }
+
 
     @Override
     public void create(Message message) throws DaoException {
@@ -44,20 +47,37 @@ public class MessageDaoImpl implements MessageDao {
                 connection.commit();
             }
             connectionPool.closeConnection(connection, preparedStatement);
-        } catch (SQLException|ConnectionPoolException e) {
+        } catch (SQLException | ConnectionPoolException e) {
             throw new DaoException(e);
         }
     }
 
     @Override
-    public Optional<Message> read(int id) {
+    public Optional<Message> read(int userId) throws DaoException {
         Message message = null;
+        try {
+            connection = connectionPool.takeConnection();
+            preparedStatement = connection.prepareStatement(SELECT_MESSAGE_BY_USER_ID);
+            preparedStatement.setInt(1, userId);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                resultSet.getRow();
+                message = new Message();
+                message.setMessage(resultSet.getString(Attribute.MESSAGE));
+                message.setDate(resultSet.getString(Attribute.MESSAGE_DATE));
+                message.setSenderId(resultSet.getInt(Attribute.SENDER_ID));
+                message.setUserId(resultSet.getInt(Attribute.USER_ID));
+            }
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
         return Optional.ofNullable(message);
     }
 
     @Override
     public Optional<List<Message>> readChatMessages(int userId, int senderId) throws DaoException {
-        List<Message> messages;
+        List<Message> messages = new ArrayList<>();
         try {
             connection = connectionPool.takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_CHAT_MESSAGES);
@@ -66,7 +86,6 @@ public class MessageDaoImpl implements MessageDao {
             preparedStatement.setInt(3, senderId);
             preparedStatement.setInt(4, senderId);
             resultSet = preparedStatement.executeQuery();
-            messages = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 Message message = new Message();
@@ -79,8 +98,8 @@ public class MessageDaoImpl implements MessageDao {
             if (messages.size() == 0) {
                 messages = null;
             }
-            connectionPool.closeConnection(connection, preparedStatement,resultSet);
-        } catch (SQLException|ConnectionPoolException e) {
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        } catch (SQLException | ConnectionPoolException e) {
             throw new DaoException(e);
         }
         return Optional.ofNullable(messages);
@@ -92,7 +111,18 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public void delete(int id) {
-
+    public void delete(int userId) throws DaoException {
+        try {
+            connection = connectionPool.takeConnection();
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(DELETE_BY_USER_ID);
+            preparedStatement.setInt(1, userId);
+            if (preparedStatement.executeUpdate() > 0) {
+                connection.commit();
+            }
+            connectionPool.closeConnection(connection, preparedStatement);
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DaoException(e);
+        }
     }
 }

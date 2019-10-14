@@ -80,10 +80,10 @@ public final class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Optional<List<Pet>> getFromTo(int from, int to,String searchValue) throws ServiceException {
+    public Optional<List<Pet>> getFromTo(int from, int to, String searchValue) throws ServiceException {
         Optional<List<Pet>> optionalPets;
         try {
-            optionalPets = petDao.readFromTo(from, to,searchValue);
+            optionalPets = petDao.readFromTo(from, to, searchValue);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -284,9 +284,9 @@ public final class PetServiceImpl implements PetService {
     @Override
     public void deletePhotos(int id, List<String> urls) throws ServiceException {
         try {
-            for (String url:urls) {
-                if(url!=null){
-                    petDao.deletePhotos(id,url);
+            for (String url : urls) {
+                if (url != null) {
+                    petDao.deletePhotos(id, url);
                 }
             }
         } catch (DaoException e) {
@@ -349,8 +349,7 @@ public final class PetServiceImpl implements PetService {
         }
     }
 
-    private void pipe(ReadableByteChannel in, WritableByteChannel out)
-            throws IOException {
+    private void pipe(ReadableByteChannel in, WritableByteChannel out) throws IOException {
         final ByteBuffer buffer = ByteBuffer.allocate(1024);
         while (in.read(buffer) >= 0 || buffer.position() > 0) {
             buffer.flip();
@@ -358,8 +357,6 @@ public final class PetServiceImpl implements PetService {
             buffer.compact();
         }
     }
-
-
 
     @Override
     public void uploadName(String petName, String userId) throws ServiceException {
@@ -434,6 +431,13 @@ public final class PetServiceImpl implements PetService {
         }
     }
 
-
+    @Override
+    public void deleteByUserId(int userId) throws ServiceException{
+        try{
+            petDao.delete(userId);
+        }catch (DaoException e){
+            throw new ServiceException(e);
+        }
+    }
 
 }

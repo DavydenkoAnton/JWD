@@ -32,12 +32,9 @@ public class VisitPageCommand implements by.davydenko.petbook.controller.command
         String userId = request.getParameter(Attribute.USER_ID);
         try {
             Optional<Pet> optionalPet = petService.getByUserId(userId);
-            //boolean friend=messageService.isFriend(request);
-            boolean friend=true;
             if (optionalPet.isPresent()) {
                 Pet pet = optionalPet.get();
                 request.getSession().setAttribute(Attribute.PET, pet);
-                request.getSession().setAttribute(Attribute.FRIEND, friend);
             }
         } catch (ServiceException e) {
             logger.error(e);

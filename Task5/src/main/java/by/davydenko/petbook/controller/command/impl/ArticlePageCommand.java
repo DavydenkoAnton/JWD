@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 public class ArticlePageCommand implements Command {
@@ -34,7 +33,7 @@ public class ArticlePageCommand implements Command {
         Optional<Article> optionalArticle;
         String articleTitle = request.getParameter(Attribute.ARTICLE_TITLE);
         try {
-            optionalArticle = articleService.getArticle(articleTitle);
+            optionalArticle = articleService.getArticleByTitle(articleTitle);
             if (optionalArticle.isPresent()) {
                 Article article = optionalArticle.get();
                 request.getSession().setAttribute(Attribute.ARTICLE, article);

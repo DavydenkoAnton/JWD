@@ -68,8 +68,8 @@
     padding-top: 20px;
     padding-left: 20px;
     float: left;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
     font-family: arial, sans-serif;
     font-weight: lighter;
     color: white;
@@ -78,8 +78,8 @@
 .pet_content_credentials_item h4 {
     padding-left: 90px;
     padding-top: 22px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
     font-family: arial, sans-serif;
     font-weight: bolder;
     color: white;
@@ -148,8 +148,8 @@
     padding-top: 20px;
     padding-left: 20px;
     float: left;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
     font-family: arial, sans-serif;
     font-weight: lighter;
     color: white;
@@ -158,8 +158,8 @@
 .visit_content_credentials_item h4 {
     padding-left: 90px;
     padding-top: 22px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
     font-family: arial, sans-serif;
     font-weight: bolder;
     color: white;
@@ -251,20 +251,21 @@
 .photos_content {
     width: 82%;
     height: 400px;
-    border-radius: 3px;
+    border-radius: 6px;
     margin-left: 18%;
     margin-top: 40px;
     background-color: white;
 }
 
-.photos_content table {
-    width: 100%;
-    border: 6px solid #487879;
-    border-radius: 10px;
+.photos_content form{
+    margin: 0;
 }
 
 .photos_content table {
-
+    width: 100%;
+    border: 3px solid #487879;
+    border-radius: 6px;
+    height: 248px;
 }
 
 .photos_content tr {
@@ -278,15 +279,31 @@
     height: 200px;
 }
 
-.paging_pet_content {
-    margin-top: 40px;
+.photos_content_btn_del_photo {
     height: 60px;
-    border-radius: 3px;
+    margin-top: 20px;
+}
+.photos_content_btn_del_photo button {
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+    margin-left: 46%;
+    display: none;
+}
+.photos_content_btn_del_photo img {
+    width: 30px;
+    height: 30px;
+}
+
+.paging_pet_content {
+    margin-top: -60px;
+    height: 60px;
 }
 
 .paging_pet_content img {
-    height: 60px;
-    width: 60px;
+    height: 30px;
+    width: 30px;
 }
 
 .paging_pet_content button {
@@ -308,7 +325,9 @@
 
 .add_pet_photo_content {
     height: 60px;
-    margin-top: 40px;
+    margin-top: 20px;
+    margin-left: 11px;
+    float: left;
 }
 
 /**/
@@ -449,8 +468,7 @@
     overflow-y: hidden;
     overflow-x: hidden;
     border-radius: 6px;
-    border: 3px solid;
-    border-color: #487879;
+    border: 3px solid #487879;
     background: white;
 }
 
@@ -485,6 +503,10 @@
 .admin_settings_block_item input {
     height: 20px;
     width: 100%;
+    border-bottom: 1px solid dimgrey;
+    border-top: none;
+    border-left: none;
+    border-right: none;
 }
 
 

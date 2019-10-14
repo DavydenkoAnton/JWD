@@ -21,7 +21,7 @@ public interface PetDao extends Dao<Pet> {
     void update(Pet pet);
 
     @Override
-    void delete(int id);
+    void delete(int id) throws DaoException;
 
     void updateName(int id, String name) throws DaoException;
 

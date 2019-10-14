@@ -21,12 +21,11 @@ public class GetChatMessages implements Command {
 
     private static Logger logger = LogManager.getLogger(GetChatMessages.class);
     private static final String REDIRECT_MESSAGES_PAGE_URL = "http://localhost:8080/pb/messages.html";
-    private ServiceFactory serviceFactory;
     private MessageService messageService;
     private PetService petService;
 
     public GetChatMessages() {
-        serviceFactory = ServiceFactory.getInstance();
+        ServiceFactory serviceFactory = ServiceFactory.getInstance();
         messageService = serviceFactory.getMessageService();
         petService = serviceFactory.getPetService();
     }
@@ -35,19 +34,18 @@ public class GetChatMessages implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         try {
             String senderId = request.getParameter(Attribute.USER_ID);
-
             Optional<Pet> optionalSender = petService.getByUserId(senderId);
             if (optionalSender.isPresent()) {
                 Pet sender = optionalSender.get();
                 request.getSession().setAttribute(Attribute.MESSAGE_SENDER, sender);
             }
             String receiverId = String.valueOf(request.getSession().getAttribute(Attribute.ID));
-            Optional<Pet> optionalReceiver=petService.getByUserId(receiverId);
+            Optional<Pet> optionalReceiver = petService.getByUserId(receiverId);
             if (optionalReceiver.isPresent()) {
                 Pet receiver = optionalReceiver.get();
                 request.getSession().setAttribute(Attribute.MESSAGE_RECEIVER, receiver);
             }
-            Optional<List<Message>> optionalMessages = messageService.getChatMessages(receiverId,senderId);
+            Optional<List<Message>> optionalMessages = messageService.getChatMessages(receiverId, senderId);
             if (optionalMessages.isPresent()) {
                 List<Message> chatMessages = optionalMessages.get();
                 request.getSession().setAttribute(Attribute.CHAT_MESSAGES, chatMessages);
@@ -59,7 +57,6 @@ public class GetChatMessages implements Command {
     }
 
     private void redirectToMessagesPage(HttpServletResponse response) {
-        response.setContentType("message.jsp");
         try {
             response.sendRedirect(REDIRECT_MESSAGES_PAGE_URL);
         } catch (IOException e) {

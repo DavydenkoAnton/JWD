@@ -14,6 +14,7 @@
     <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/header.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/css/content.css"/>" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/css/locale.css"/>" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="wrapper">
@@ -48,14 +49,16 @@
                 <h4>${pet.breed}</h4>
             </div>
         </div>
-        <form action="<fmt:message key="command.sendMessage" bundle="${cnt}"/>" method="post" id="form_sender">
+        <c:if test="${sessionScope.role=='USER'}">
+            <form action="<fmt:message key="command.sendMessage" bundle="${cnt}"/>" method="post" id="form_sender">
             <textarea name="messageText" form="form_sender" placeholder="
             <fmt:message key="global.text.message" bundle="${cnt}"/>"></textarea>/
-            <br/>
-            <button type="submit" name="userId" value="${pet.userId}">
-                <fmt:message key="global.text.send" bundle="${cnt}"/>
-            </button>
-        </form>
+                <br/>
+                <button type="submit" name="userId" value="${pet.userId}">
+                    <fmt:message key="global.text.send" bundle="${cnt}"/>
+                </button>
+            </form>
+        </c:if>
     </div>
 </div>
 <tag:footer/>

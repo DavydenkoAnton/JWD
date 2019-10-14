@@ -75,7 +75,6 @@ public class PagingNextAdminUsers implements Command {
     }
 
     private void redirectToAdminUsersPage(HttpServletResponse response) {
-        response.setContentType("users.jsp");
         try {
             response.sendRedirect(ADMIN_USERS_PAGE);
         } catch (IOException e) {

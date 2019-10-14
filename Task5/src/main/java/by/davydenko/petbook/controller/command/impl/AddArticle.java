@@ -15,9 +15,7 @@ public class AddArticle implements by.davydenko.petbook.controller.command.Comma
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
             forwardToAddArticlePage(request, response);
-
     }
 
     private void forwardToAddArticlePage(HttpServletRequest request, HttpServletResponse response)  {

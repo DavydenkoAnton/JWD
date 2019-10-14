@@ -56,7 +56,6 @@ public class RegisterUserCommand implements Command {
     }
 
     private void redirectToRegistrationPage(HttpServletResponse response) {
-        response.setContentType("registration.jsp");
         try {
             response.sendRedirect(REGISTRATION_PAGE_URL);
         } catch (IOException e) {
@@ -65,7 +64,6 @@ public class RegisterUserCommand implements Command {
     }
 
     private void redirectToLoginPage(HttpServletResponse response) {
-        response.setContentType("login.jsp");
         try {
             response.sendRedirect(LOGIN_PAGE_URL);
         } catch (IOException e) {

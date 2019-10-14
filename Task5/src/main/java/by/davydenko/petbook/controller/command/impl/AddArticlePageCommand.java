@@ -20,7 +20,6 @@ public class AddArticlePageCommand implements Command {
     }
 
     private void redirectToAddArticlesPage( HttpServletResponse response) {
-        response.setContentType("add_article.jsp");
         try {
             response.sendRedirect(ADMIN_ADD_ARTICLE_PAGE);
         } catch (IOException e) {

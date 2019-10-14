@@ -55,7 +55,6 @@ public final class MainPageCommand implements Command {
     }
 
     private void redirectToErrorPage(HttpServletResponse response) {
-        response.setContentType("error.jsp");
         try {
             response.sendRedirect(ERROR_PAGE_URL);
         } catch (IOException e) {

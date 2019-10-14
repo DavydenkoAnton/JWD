@@ -87,9 +87,7 @@
                                     <div class="users_content_body_item_cred_atom">
                                         <form action="<fmt:message key="command.changeUserRole" bundle="${cnt}"/>"
                                               method="post">
-                                            <button type="submit"
-                                                    name="<fmt:message key="attribute.text.userId" bundle="${cnt}"/>"
-                                                    value="${user.id}">
+                                            <button type="submit" name="userId" value="${user.id}">
                                                 <c:choose>
                                                     <c:when test="${user.role=='USER'}">
                                                         <fmt:message key="global.text.block" bundle="${cnt}"/>

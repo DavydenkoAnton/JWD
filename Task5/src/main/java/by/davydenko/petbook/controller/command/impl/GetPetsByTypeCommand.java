@@ -46,7 +46,6 @@ public class GetPetsByTypeCommand implements by.davydenko.petbook.controller.com
     }
 
     private void redirectToPetsPage(HttpServletResponse response) {
-        response.setContentType("pets.jsp");
         try {
             response.sendRedirect(PETS_PAGE_URL);
         } catch (IOException e) {

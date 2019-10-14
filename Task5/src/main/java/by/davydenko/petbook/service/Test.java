@@ -40,10 +40,7 @@ public class Test {
                 UserServiceImpl service = new UserServiceImpl();
                 user.setLogin(String.valueOf(temp));
                 user.setPassword(String.valueOf(temp));
-                user.setName(String.valueOf(temp));
-                user.setEmail(String.valueOf(temp));
-                user.setPhoneNumber(temp);
-                user.setAge(temp);
+
              ///   service.addUser(user);
             }));
         }

@@ -50,7 +50,6 @@ public class AddPetPhotoCommand implements by.davydenko.petbook.controller.comma
     }
 
     private void redirectToProfilePage(HttpServletResponse response) {
-        response.setContentType("photos.jsp");
         try {
             response.sendRedirect(PHOTOS_PAGE_URL);
         } catch (IOException e) {

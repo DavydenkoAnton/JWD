@@ -31,10 +31,8 @@ import java.util.Optional;
 
 public class EditPetAvatarCommand implements Command {
 
-    private static final Logger logger = LogManager.getLogger(EditUserNameCommand.class);
+    private static final Logger logger = LogManager.getLogger(EditPetAvatarCommand.class);
     private static final String REDIRECT_PROFILE_PAGE_URL = "http://localhost:8080/pb/profile.html";
-    private static final String USERS_AVATARS_PATH = "img/users_avatars";
-    private static final String PET_AVATAR_FOLDER = "img/pets_avatars";
     private PetService petService;
 
     public EditPetAvatarCommand() {
@@ -68,7 +66,6 @@ public class EditPetAvatarCommand implements Command {
     }
 
     private void redirectToProfilePage(HttpServletResponse response) {
-        response.setContentType("profile.jsp");
         try {
             response.sendRedirect(REDIRECT_PROFILE_PAGE_URL);
         } catch (IOException e) {

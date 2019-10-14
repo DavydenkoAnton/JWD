@@ -40,17 +40,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Optional<Article> getArticle(String articleTitle) throws ServiceException {
+    public Optional<Article> getArticleByTitle(String articleTitle) throws ServiceException {
         Optional<Article> optionalArticle;
-
         try {
             articleTitle = articleCreator.createTitle(articleTitle);
-        } catch (CreatorException e) {
-            throw new ServiceException(e);
-        }
-        try {
             optionalArticle = articleDao.readByTitle(articleTitle);
-        } catch (DaoException e) {
+        } catch (DaoException|CreatorException e) {
             throw new ServiceException(e);
         }
         return optionalArticle;

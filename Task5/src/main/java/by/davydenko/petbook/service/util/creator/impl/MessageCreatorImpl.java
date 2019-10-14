@@ -31,13 +31,13 @@ public class MessageCreatorImpl implements MessageCreator {
 
     @Override
     public String createMessage(String text) throws CreatorException {
-        if (text == null){
+        if (text == null) {
             throw new CreatorException("message is null");
-        }else if( text.isEmpty()) {
+        } else if (text.isEmpty()) {
             throw new CreatorException("message is empty");
-        }else if(text.length()>MAX_TEXT_LENGTH){
+        } else if (text.length() > MAX_TEXT_LENGTH) {
             throw new CreatorException("message is too long");
-        }else        if (XSSFilter.SCRIPT(text)) {
+        } else if (XSSFilter.SCRIPT(text)) {
             throw new CreatorException("message is a script");
         }
         return text;

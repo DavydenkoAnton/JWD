@@ -52,12 +52,9 @@ final class CommandProvider {
         commands.put("users", new AdminUsersPageCommand());
         commands.put("messages", new MessagePageCommand());
         commands.put("sendMessage", new SendMessageCommand());
-        commands.put("sendMessagePage", new SendMessagePageCommand());
         commands.put("profile", new ProfilePageCommand());
         commands.put("editAdminLogin", new EditAdminLogin());
         commands.put("editAdminPassword", new EditAdminPassword());
-        commands.put("editUserAvatar", new EditUserAvatarCommand());
-        commands.put("editUserName", new EditUserNameCommand());
         commands.put("editPetAvatar", new EditPetAvatarCommand());
         commands.put("editPetName", new EditPetNameCommand());
         commands.put("editPetBreed", new EditPetBreedCommand());
@@ -73,7 +70,7 @@ final class CommandProvider {
     }
 
 
-    public Command getCommand(String commandName) {
+    Command getCommand(String commandName) {
 
         Command command = null;
 

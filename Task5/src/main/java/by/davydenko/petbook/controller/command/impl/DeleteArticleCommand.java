@@ -36,7 +36,6 @@ public class DeleteArticleCommand implements by.davydenko.petbook.controller.com
     }
 
     private void redirectToMessagesPage(HttpServletResponse response) {
-        response.setContentType("articles.jsp");
         try {
             response.sendRedirect(REDIRECT_MESSAGES_PAGE_URL);
         } catch (IOException e) {

@@ -17,7 +17,7 @@ public interface MessageDao extends Dao<Message> {
     void update(Message message);
 
     @Override
-    void delete(int message);
+    void delete(int message) throws DaoException;
 
     Optional<List<Message>> readChatMessages(int userId,int senderId) throws DaoException;
 }

@@ -43,7 +43,6 @@ public class ChangeUserRoleCommand implements by.davydenko.petbook.controller.co
     }
 
     private void redirectToAdminUsersPage(HttpServletResponse response) {
-        //response.setContentType("users.jsp");
         try {
             response.sendRedirect(USERS_PAGE_URL);
         } catch (IOException e) {

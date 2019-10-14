@@ -35,7 +35,6 @@ public class DeleteUserCommand implements Command {
     }
 
     private void redirectToAdminPage(HttpServletResponse response) {
-        response.setContentType("admin.jsp");
         try {
             response.sendRedirect(ADMIN_PAGE_URL);
         } catch (IOException e) {

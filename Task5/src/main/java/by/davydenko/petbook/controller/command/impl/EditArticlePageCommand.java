@@ -22,7 +22,6 @@ public class EditArticlePageCommand implements Command {
     }
 
     private void redirectToAddArticlesPage(HttpServletResponse response) {
-        response.setContentType("edit_article.jsp");
         try {
             response.sendRedirect(ADMIN_ADD_ARTICLE_PAGE);
         } catch (IOException e) {

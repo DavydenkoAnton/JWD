@@ -28,32 +28,6 @@ public class MessageServiceImpl implements MessageService {
         messageDao = daoFactory.getMessageDao();
     }
 
-    @Override
-    public int getReceiverId(HttpServletRequest request) throws ServiceException {
-        int receiverId;
-        try {
-            receiverId = messageCreator.createReceiverId(request);
-        } catch (CreatorException e) {
-            throw new ServiceException(e);
-        }
-        return receiverId;
-    }
-
-    @Override
-    public boolean isFriend(HttpServletRequest request) {
-
-        int userId = messageCreator.createByUserId(request);
-
-
-        return true;
-    }
-
-    @Override
-    public String getMessage(HttpServletRequest request) {
-        creatorFactory = CreatorFactory.getInstance();
-        messageCreator = creatorFactory.getMessageCreator();
-        return "messageServiceImpl getMessage()";
-    }
 
     @Override
     public void sendMessage(String receiverId, String senderId, String text) throws ServiceException {
@@ -68,14 +42,22 @@ public class MessageServiceImpl implements MessageService {
             message.setSenderId(sender_id);
             message.setDate(date);
             message.setMessage(messageTemp);
-        } catch (CreatorException e) {
-            throw new ServiceException(e);
-        }
-        try {
             messageDao.create(message);
-        } catch ( DaoException e) {
+        } catch (CreatorException | DaoException e) {
             throw new ServiceException(e);
         }
+    }
+
+    @Override
+    public Optional<Message> getMessage(String receiverId) throws ServiceException {
+        Optional<Message> optionalMessage;
+        try {
+            int receiver_id = messageCreator.createId(receiverId);
+            optionalMessage = messageDao.read(receiver_id);
+        } catch (CreatorException | DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalMessage;
     }
 
     @Override
@@ -89,5 +71,15 @@ public class MessageServiceImpl implements MessageService {
             throw new ServiceException(e);
         }
         return optionalMessages;
+    }
+
+    @Override
+    public void deleteMessage(String receiverId) throws ServiceException {
+        try {
+            int receiver_id = messageCreator.createId(receiverId);
+           messageDao.delete(receiver_id);
+        } catch (CreatorException | DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 }

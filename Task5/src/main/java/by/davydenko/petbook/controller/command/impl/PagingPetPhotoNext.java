@@ -44,7 +44,6 @@ public class PagingPetPhotoNext implements Command {
     }
 
     private void redirectToPhotosPage(HttpServletResponse response) {
-        response.setContentType("photos.jsp");
         try {
             response.sendRedirect(REDIRECT_PAGE_URL);
         } catch (IOException e) {

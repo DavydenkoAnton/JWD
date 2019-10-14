@@ -20,16 +20,12 @@ import java.util.Optional;
 public class SendMessageCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger(SendMessageCommand.class);
-
     private static final String REDIRECT_MESSAGE_PAGE_URL = "http://localhost:8080/pb/messages.html";
     private MessageService messageService;
-    private ServiceFactory serviceFactory;
-    private UserService userService;
 
     public SendMessageCommand() {
-        serviceFactory = ServiceFactory.getInstance();
+        ServiceFactory serviceFactory = ServiceFactory.getInstance();
         messageService = serviceFactory.getMessageService();
-        userService = serviceFactory.getUserService();
     }
 
     @Override
@@ -51,7 +47,6 @@ public class SendMessageCommand implements Command {
     }
 
     private void redirectToMessagePage(HttpServletResponse response) {
-        response.setContentType("message.jsp");
         try {
             response.sendRedirect(REDIRECT_MESSAGE_PAGE_URL);
         } catch (IOException e) {

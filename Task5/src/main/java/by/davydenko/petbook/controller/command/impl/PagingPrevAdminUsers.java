@@ -86,7 +86,6 @@ public class PagingPrevAdminUsers implements Command {
         }
     }
     private void redirectToPagingFirstAdminUsers(HttpServletResponse response) {
-        //response.setContentType("users.jsp");
         try {
             response.sendRedirect(ADMIN_PAGING_FIRST_USERS);
         } catch (IOException e) {

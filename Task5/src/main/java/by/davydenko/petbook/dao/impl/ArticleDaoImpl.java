@@ -126,7 +126,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public Optional<List<Article>> readAll() throws DaoException {
-        List<Article> articles = null;
+        List<Article> articles;
         try {
             connection = connectionPool.takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ALL_ARTICLES);
@@ -141,6 +141,9 @@ public class ArticleDaoImpl implements ArticleDao {
                 article.setId(resultSet.getInt(Attribute.ID));
                 article.setPetType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
                 articles.add(article);
+            }
+            if(articles.size()==0){
+                articles = null;
             }
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         } catch (SQLException | ConnectionPoolException e) {
