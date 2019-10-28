@@ -32,7 +32,6 @@ public final class PetServiceImpl implements PetService {
 
     private static final String PET_AVATAR_FOLDER = "img/pets_avatars";
     private static final String PET_PHOTO_FOLDER = "img/pets_photo";
-    private static final String JPEG_FORMAT = "image/jpeg";
     private static final int PHOTOS_MAX_SIZE = 5;
     private UserCreator userCreator;
     private PetCreator petCreator;
@@ -46,16 +45,6 @@ public final class PetServiceImpl implements PetService {
         petDao = daoFactory.getPetDao();
     }
 
-    @Override
-    public Optional<List<Pet>> getAllPets() throws ServiceException {
-        Optional<List<Pet>> optionalPets;
-        try {
-            optionalPets = petDao.read();
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-        return optionalPets;
-    }
 
     @Override
     public Optional<List<Pet>> getAllPetsNoUser(int id) throws ServiceException {
@@ -69,21 +58,14 @@ public final class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Optional<List<Pet>> getFromTo(int from, int to) throws ServiceException {
-        Optional<List<Pet>> optionalPets;
-        try {
-            optionalPets = petDao.readFromTo(from, to);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-        return optionalPets;
-    }
-
-    @Override
     public Optional<List<Pet>> getFromTo(int from, int to, String searchValue) throws ServiceException {
         Optional<List<Pet>> optionalPets;
         try {
-            optionalPets = petDao.readFromTo(from, to, searchValue);
+            if (searchValue == null || searchValue.isEmpty()) {
+                optionalPets = petDao.readFromTo(from, to, searchValue);
+            } else {
+                optionalPets = petDao.readFromTo(from, to);
+            }
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -101,30 +83,6 @@ public final class PetServiceImpl implements PetService {
         return optionalPets;
     }
 
-    @Override
-    public Optional<List<Pet>> getByType(String type) throws ServiceException {
-        Optional<List<Pet>> optionalPets;
-        PetType petType;
-        try {
-            petType = petCreator.createType(type);
-        } catch (CreatorException e) {
-            throw new ServiceException(e);
-        }
-        if (petType != null) {
-            try {
-                optionalPets = petDao.readByType(petType);
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            }
-        } else {
-            try {
-                optionalPets = petDao.read();
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            }
-        }
-        return optionalPets;
-    }
 
     @Override
     public int getDogPercent() throws ServiceException {
@@ -210,42 +168,6 @@ public final class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Optional<Pet> getSender(String userId) throws ServiceException {
-        Optional<Pet> correspondent = null;
-//        try {
-//            int correspondentId = petCreator.createCorrespondentId(request);
-//            correspondent = petDao.readByUserId(correspondentId);
-//        } catch (CreatorException | DaoException e) {
-//            throw new ServiceException(e);
-//        }
-        return correspondent;
-    }
-
-    @Override
-    public Optional<Pet> getReceiver(String userId) throws ServiceException {
-        Optional<Pet> reciever = null;
-//        try {
-//            int recieverId = petCreator.createReceiverId(request);
-//            reciever = petDao.readByUserId(recieverId);
-//        } catch (CreatorException | DaoException e) {
-//            throw new ServiceException(e);
-//        }
-        return reciever;
-    }
-
-    @Override
-    public List<String> getPetPhotosById(int id, int from) throws ServiceException {
-        List<String> photoUrls;
-        int to = from + PHOTOS_MAX_SIZE;
-        try {
-            photoUrls = petDao.readPhotosUrl(id, from, to);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-        return photoUrls;
-    }
-
-    @Override
     public List<String> getPetPhotosById(int id) throws ServiceException {
         List<String> photoUrls;
         try {
@@ -295,7 +217,7 @@ public final class PetServiceImpl implements PetService {
     }
 
     private void uploadImage(Part image, String path, String userId, String pathFolder) throws ServiceException {
-        int id = 0;
+        int id;
         String imageName;
         Path outputFile;
         try {
@@ -316,7 +238,7 @@ public final class PetServiceImpl implements PetService {
             }
         }
         try (final ReadableByteChannel input = Channels.newChannel(image.getInputStream());
-             final WritableByteChannel output = Channels.newChannel(new FileOutputStream(outputFile.toFile()));) {
+             final WritableByteChannel output = Channels.newChannel(new FileOutputStream(outputFile.toFile()))) {
             pipe(input, output);
         } catch (IOException e) {
             throw new ServiceException("IO error during read/write user avatar", e);
@@ -431,13 +353,5 @@ public final class PetServiceImpl implements PetService {
         }
     }
 
-    @Override
-    public void deleteByUserId(int userId) throws ServiceException{
-        try{
-            petDao.delete(userId);
-        }catch (DaoException e){
-            throw new ServiceException(e);
-        }
-    }
 
 }

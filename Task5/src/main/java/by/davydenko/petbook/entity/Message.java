@@ -37,4 +37,5 @@ public class Message extends Entity {
     public void setDate(String date) {
         this.date = date;
     }
+
 }

@@ -47,6 +47,7 @@ public class RegisterUserCommand implements Command {
                 request.getSession().setAttribute(Attribute.ID, user.getId());
                 petService.registerByUserId(user.getId());
             }
+            error.clean();
             redirectToLoginPage(response);
         } catch (ServiceException e) {
             logger.error(e);

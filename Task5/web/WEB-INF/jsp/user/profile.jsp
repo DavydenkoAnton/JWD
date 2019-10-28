@@ -27,7 +27,7 @@
                 <img src="${pet.avatarUrl}" height="150" width="150" alt="">
             </c:if>
             <c:if test="${empty pet.avatarUrl}">
-                <img src="<c:url value="/img/no_img_user.png"/>" height="150" width="150" alt="">
+                <img src="<c:url value="/img/utils/no_img_user.png"/>" height="150" width="150" alt="">
             </c:if>
 
             <br>
@@ -42,21 +42,21 @@
             <div class="edit_profile_credential_item">
                 <form method="post" action="<fmt:message key="command.editPetName" bundle="${cnt}"/>">
                     <p><fmt:message key="global.text.name" bundle="${cnt}"/></p>
-                    <input type="text" name="petName" placeholder="${pet.name}">
+                    <input  maxlength="16" type="text" name="petName" placeholder="${pet.name}">
                     <button type="submit"><fmt:message key="global.text.edit" bundle="${cnt}"/></button>
                 </form>
             </div>
             <div class="edit_profile_credential_item">
                 <form method="post" action="<fmt:message key="command.editPetBreed" bundle="${cnt}"/>">
                     <p><fmt:message key="global.text.breed" bundle="${cnt}"/></p>
-                    <input type="text" name="breed" placeholder="${pet.breed}">
+                    <input maxlength="16" type="text" name="breed" placeholder="${pet.breed}">
                     <button type="submit"><fmt:message key="global.text.edit" bundle="${cnt}"/></button>
                 </form>
             </div>
             <div class="edit_profile_credential_item">
                 <form method="post" action="<fmt:message key="command.editPetAge" bundle="${cnt}"/>">
                     <p><fmt:message key="global.text.age" bundle="${cnt}"/></p>
-                    <input type="number" name="age" placeholder="${pet.age}">
+                    <input type="number" min="0" max="25" name="age" placeholder="${pet.age}">
                     <button type="submit"><fmt:message key="global.text.edit" bundle="${cnt}"/></button>
                 </form>
             </div>

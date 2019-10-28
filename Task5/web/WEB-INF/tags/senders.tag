@@ -15,7 +15,7 @@
                         <img src="${sender.avatarUrl}" alt=""/>
                     </c:if>
                     <c:if test="${empty sender.avatarUrl}">
-                        <img src="<c:url value="/img/no_img_user.png"/>"alt="">
+                        <img src="<c:url value="/img/utils/no_img_user.png"/>" alt="">
                     </c:if>
                     <form action="<fmt:message key="command.getChatMessages" bundle="${cnt}"/>" method="post">
                         <button class="sender_btn" type="submit"

@@ -10,7 +10,7 @@
         <form action="<fmt:message key="command.pagingPetPhotoPrev" bundle="${cnt}"/>" method="post">
             <button type="submit" name="<fmt:message key="attribute.text.pagingPhotoBtn" bundle="${cnt}"/>"
                     value="<fmt:message key="global.text.prev" bundle="${cnt}"/>">
-                <img src="<c:url value="/img/back-arrow.png"/>" alt="">
+                <img src="<c:url value="/img/utils/back-arrow.png"/>" alt="">
             </button>
         </form>
     </div>
@@ -18,7 +18,7 @@
         <form action="<fmt:message key="command.pagingPetPhotoNext" bundle="${cnt}"/>" method="post">
             <button type="submit" name="<fmt:message key="attribute.text.pagingPhotoBtn" bundle="${cnt}"/>"
                     value="<fmt:message key="attribute.text.next" bundle="${cnt}"/>">
-                <img src="<c:url value="/img/forward-arrow.png"/>" alt="">
+                <img src="<c:url value="/img/utils/forward-arrow.png"/>" alt="">
             </button>
         </form>
     </div>

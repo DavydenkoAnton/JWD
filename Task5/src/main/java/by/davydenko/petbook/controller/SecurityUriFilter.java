@@ -119,7 +119,6 @@ public class SecurityUriFilter implements Filter {
                 String commandName = getCommandNameFromUri(httpRequest);
                 httpSession = httpRequest.getSession();
 
-
                 if (adminCommands.contains(commandName) && isAdmin()) {
                     httpRequest.setAttribute(COMMAND, commandName);
                 } else if (userAuthorizedCommands.contains(commandName) && (isUser() || isAdmin())) {
@@ -129,7 +128,6 @@ public class SecurityUriFilter implements Filter {
                 } else {
                     httpRequest.setAttribute(COMMAND, LOGIN_PAGE_COMMAND);
                 }
-
 
                 try {
                     filterChain.doFilter(request, response);

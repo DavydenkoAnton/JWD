@@ -41,43 +41,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<List<User>> getAllUsers() throws ServiceException {
+    public int getUsersCount() throws ServiceException {
         Optional<List<User>> optionalUsers;
+        int usersCount=0;
         try {
             optionalUsers = userDao.readUsers();
+            usersCount= optionalUsers.map(List::size).orElse(0);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
-        return optionalUsers;
+        return usersCount;
     }
 
     @Override
     public Optional<List<User>> getUsersPagingNext(int id, String searchUserValue) throws ServiceException {
         Optional<List<User>> optionalUsers;
         try {
-            optionalUsers = userDao.readNextPaging(id, searchUserValue);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-        return optionalUsers;
-    }
-
-    @Override
-    public Optional<List<User>> getUsersPagingNext(int id) throws ServiceException {
-        Optional<List<User>> optionalUsers;
-        try {
-            optionalUsers = userDao.readNextPaging(id);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-        return optionalUsers;
-    }
-
-    @Override
-    public Optional<List<User>> getUsersPagingPrev(int id) throws ServiceException {
-        Optional<List<User>> optionalUsers;
-        try {
-            optionalUsers = userDao.readPrevPaging(id);
+            if (searchUserValue == null || searchUserValue.isEmpty()) {
+                optionalUsers = userDao.readNextPaging(id);
+            } else {
+                optionalUsers = userDao.readNextPaging(id, searchUserValue);
+            }
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -96,26 +80,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<List<User>> getUsersFromTo(int from, int to) throws ServiceException {
+    public Optional<List<User>> getUsersFromTo(int from, int to,String searchValue) throws ServiceException {
         Optional<List<User>> optionalUsers;
         try {
-            optionalUsers = userDao.readFromTo(from, to);
+            if(searchValue==null||searchValue.isEmpty()) {
+                optionalUsers = userDao.readFromTo(from, to);
+            }else {
+                optionalUsers = userDao.readFromTo(from, to,searchValue);
+            }
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
         return optionalUsers;
     }
 
-    @Override
-    public Optional<List<User>> getUsersByNameFirst(String searchUserValue) throws ServiceException {
-        Optional<List<User>> optionalUsers;
-        try {
-            optionalUsers = userDao.readByPetName(searchUserValue);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-        return optionalUsers;
-    }
+
 
     @Override
     public Optional<User> getById(String userId) throws ServiceException {

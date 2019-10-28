@@ -34,11 +34,34 @@ public class ArticleDaoImpl implements ArticleDao {
         connectionPool = ConnectionPool.getInstance();
     }
 
+    private void closeConnection(ConnectionPool cp, Connection c, PreparedStatement p) throws DaoException {
+        try {
+            cp.closeConnection(c, p);
+        } catch (ConnectionPoolException e) {
+            throw new DaoException("cannot close connection", e);
+        }
+    }
+
+    private void closeConnection(ConnectionPool cp, Connection c, PreparedStatement p, ResultSet r) throws DaoException {
+        try {
+            cp.closeConnection(c, p, r);
+        } catch (ConnectionPoolException e) {
+            throw new DaoException("cannot close connection", e);
+        }
+    }
+
+    private void takeConnection() throws DaoException {
+        try {
+            connection = connectionPool.takeConnection();
+        } catch (ConnectionPoolException e) {
+            throw new DaoException("cannot close connection", e);
+        }
+    }
 
     @Override
     public void create(Article article) throws DaoException {
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(INSERT_ARTICLE);
             preparedStatement.setString(1, article.getTitle());
@@ -48,8 +71,9 @@ public class ArticleDaoImpl implements ArticleDao {
             if (preparedStatement.executeUpdate() > 0) {
                 connection.commit();
             }
-            connectionPool.closeConnection(connection, preparedStatement);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
             throw new DaoException(e);
         }
     }
@@ -57,7 +81,7 @@ public class ArticleDaoImpl implements ArticleDao {
     @Override
     public void update(Article article) throws DaoException {
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(UPDATE_ARTICLE_BY_ID);
             preparedStatement.setString(1, article.getTitle());
@@ -68,8 +92,9 @@ public class ArticleDaoImpl implements ArticleDao {
             if (preparedStatement.executeUpdate() > 0) {
                 connection.commit();
             }
-            connectionPool.closeConnection(connection, preparedStatement);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
             throw new DaoException(e);
         }
     }
@@ -78,7 +103,7 @@ public class ArticleDaoImpl implements ArticleDao {
     public Optional<Article> read(int id) throws DaoException {
         Article article = null;
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ARTICLE_BY_ID);
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
@@ -91,8 +116,9 @@ public class ArticleDaoImpl implements ArticleDao {
                 article.setId(resultSet.getInt(Attribute.ID));
                 article.setPetType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException(e);
         }
         return Optional.ofNullable(article);
@@ -100,13 +126,12 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public Optional<List<Article>> readByType(PetType petType) throws DaoException {
-        List<Article> articles = null;
+        List<Article> articles = new ArrayList<>();
         try {
             connection = connectionPool.takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ARTICLES_BY_TYPE);
             preparedStatement.setString(1, petType.toString());
             resultSet = preparedStatement.executeQuery();
-            articles = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 Article article = new Article();
@@ -117,8 +142,12 @@ public class ArticleDaoImpl implements ArticleDao {
                 article.setPetType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
                 articles.add(article);
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+            if (articles.size() == 0) {
+                articles = null;
+            }
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
         } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException(e);
         }
         return Optional.ofNullable(articles);
@@ -126,12 +155,11 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public Optional<List<Article>> readAll() throws DaoException {
-        List<Article> articles;
+        List<Article> articles = new ArrayList<>();
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ALL_ARTICLES);
             resultSet = preparedStatement.executeQuery();
-            articles = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 Article article = new Article();
@@ -142,11 +170,12 @@ public class ArticleDaoImpl implements ArticleDao {
                 article.setPetType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
                 articles.add(article);
             }
-            if(articles.size()==0){
+            if (articles.size() == 0) {
                 articles = null;
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException(e);
         }
         return Optional.ofNullable(articles);
@@ -156,7 +185,7 @@ public class ArticleDaoImpl implements ArticleDao {
     public Optional<Article> readByTitle(String articleTitle) throws DaoException {
         Article article = null;
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ARTICLE_BY_TITLE);
             preparedStatement.setString(1, articleTitle);
             resultSet = preparedStatement.executeQuery();
@@ -169,8 +198,9 @@ public class ArticleDaoImpl implements ArticleDao {
                 article.setId(resultSet.getInt(Attribute.ID));
                 article.setPetType(PetType.valueOf(resultSet.getString(Attribute.TYPE)));
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
             throw new DaoException(e);
         }
         return Optional.ofNullable(article);
@@ -178,17 +208,18 @@ public class ArticleDaoImpl implements ArticleDao {
 
 
     @Override
-    public void delete(int id)throws DaoException {
+    public void delete(int id) throws DaoException {
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(DELETE_ARTICLE_BY_ID);
             preparedStatement.setInt(1, id);
             if (preparedStatement.executeUpdate() > 0) {
                 connection.commit();
             }
-            connectionPool.closeConnection(connection, preparedStatement);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement);
             throw new DaoException(e);
         }
     }

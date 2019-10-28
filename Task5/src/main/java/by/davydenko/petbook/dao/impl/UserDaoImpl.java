@@ -17,27 +17,43 @@ import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
 
-    private final static String SELECT_ALL_USERS = "SELECT id,role FROM petbook.users WHERE role='USER' OR role='GUEST' ";
-    private final static String SELECT_BY_LOGIN_PASSWORD = "SELECT id,login,password,role FROM petbook.users WHERE login=? AND password=?";
-    private final static String SELECT_ADMIN_USER = "SELECT id,login,password,role FROM petbook.users WHERE role='ADMIN'";
-    private final static String SELECT_USERS_BY_NAME = "SELECT petbook.users.id,petbook.users.role " +
+    private final static String SELECT_ALL_USERS =
+            "SELECT id,role FROM petbook.users WHERE role='USER' OR role='GUEST' ";
+    private final static String SELECT_BY_LOGIN_PASSWORD =
+            "SELECT id,login,password,role FROM petbook.users WHERE login=? AND password=?";
+    private final static String SELECT_ADMIN_USER =
+            "SELECT id,login,password,role FROM petbook.users WHERE role='ADMIN'";
+    private final static String SELECT_USERS_BY_NAME =
+            "SELECT petbook.users.id,petbook.users.role " +
             "FROM (petbook.users INNER JOIN petbook.pets ON users.id = pets.userId)" +
             "WHERE petbook.pets.name LIKE ? GROUP BY petbook.pets.name LIMIT ?";
-    private final static String SELECT_ADMIN_NEXT_PAGING_USERS_BY_PET_NAME = "SELECT petbook.users.id,petbook.users.role " +
+    private final static String SELECT_ADMIN_NEXT_PAGING_USERS_BY_PET_NAME =
+            "SELECT petbook.users.id,petbook.users.role " +
             "FROM (petbook.users INNER JOIN petbook.pets ON users.id = pets.userId)" +
             "WHERE petbook.pets.name LIKE ? AND petbook.users.id>? AND petbook.users.role!='ADMIN' GROUP BY petbook.pets.name LIMIT ?";
-    private final static String SELECT_ADMIN_NEXT_PAGING_USERS = "SELECT petbook.users.id,petbook.users.role " +
+    private final static String SELECT_ADMIN_NEXT_PAGING_USERS =
+            "SELECT petbook.users.id,petbook.users.role " +
             "FROM (petbook.users INNER JOIN petbook.pets ON users.id = pets.userId)" +
-            "WHERE petbook.users.id>? AND petbook.users.role!='ADMIN' GROUP BY petbook.users.id LIMIT ?";
-    private final static String SELECT_ADMIN_PREV_PAGING_USERS_BY_PET_NAME = "SELECT petbook.users.id,petbook.users.role " +
+            "WHERE petbook.users.id>? AND petbook.users.role!='ADMIN' " +
+                    "GROUP BY petbook.users.id LIMIT ?";
+    private final static String SELECT_ADMIN_PREV_PAGING_USERS_BY_PET_NAME =
+            "SELECT petbook.users.id,petbook.users.role " +
             "FROM (petbook.users INNER JOIN petbook.pets ON users.id = pets.userId)" +
-            "WHERE  petbook.users.id<? AND petbook.users.role!=? AND petbook.pets.name LIKE ? ORDER BY petbook.users.id DESC LIMIT ?";
-    private final static String SELECT_ADMIN_PREV_PAGING_USERS = "SELECT  id,role FROM petbook.users WHERE id<? AND role!='ADMIN' ORDER BY id DESC LIMIT ?";
-    private final static String SELECT_USERS_FROM_TO = "SELECT  id,role FROM petbook.users WHERE id>=? AND id<=? AND role!='ADMIN'";
-    private final static String INSERT_USER_BY_LOGIN_PASSWORD_ROLE = "INSERT INTO petbook.users " +
-            "(`login`, `password`, `role`)" +
-            " VALUES (?, ?, ?)";
-    private final static String SELECT_USER_BY_ID = "SELECT id,login,password,role FROM petbook.users WHERE id=? ";
+            "WHERE  petbook.users.id<? AND petbook.users.role!=? AND petbook.pets.name LIKE ? " +
+                    "ORDER BY petbook.users.id DESC LIMIT ?";
+    private final static String SELECT_ADMIN_PREV_PAGING_USERS =
+            "SELECT  id,role FROM petbook.users WHERE id<? AND role!='ADMIN' ORDER BY id DESC LIMIT ?";
+    private final static String SELECT_USERS_FROM_TO =
+            "SELECT  id,role FROM petbook.users WHERE id>=? AND id<=? AND role!='ADMIN'";
+    private final static String SELECT_USERS_FROM_TO_BY_PET_NAME =
+            "SELECT petbook.users.id,petbook.users.role " +
+                    "FROM (petbook.users INNER JOIN petbook.pets ON users.id = pets.userId)" +
+                    "WHERE  petbook.users.id>=? AND petbook.users.id<=? AND petbook.users.role!=? AND petbook.pets.name LIKE ? " +
+                    "ORDER BY petbook.users.id DESC LIMIT ?";
+    private final static String INSERT_USER_BY_LOGIN_PASSWORD_ROLE =
+            "INSERT INTO petbook.users (`login`, `password`, `role`) VALUES (?, ?, ?)";
+    private final static String SELECT_USER_BY_ID =
+            "SELECT id,login,password,role FROM petbook.users WHERE id=? ";
     private final static String DELETE_USER_LOGIN = "DELETE  FROM petbook.users WHERE login=? ";
     private final static String UPDATE_USER_ROLE = "UPDATE petbook.users  SET role=? WHERE id=? ";
     private final static String UPDATE_USER_LOGIN = "UPDATE petbook.users  SET login=? WHERE id=? ";
@@ -55,7 +71,7 @@ public class UserDaoImpl implements UserDao {
         try {
             cp.closeConnection(c, p);
         } catch (ConnectionPoolException e) {
-            throw new DaoException("cannot close connection");
+            throw new DaoException("cannot close connection",e);
         }
     }
 
@@ -63,7 +79,7 @@ public class UserDaoImpl implements UserDao {
         try {
             cp.closeConnection(c, p, r);
         } catch (ConnectionPoolException e) {
-            throw new DaoException("cannot close connection");
+            throw new DaoException("cannot close connection",e);
         }
     }
 
@@ -71,7 +87,7 @@ public class UserDaoImpl implements UserDao {
         try {
             connection = connectionPool.takeConnection();
         } catch (ConnectionPoolException e) {
-            throw new DaoException("cannot close connection");
+            throw new DaoException("cannot close connection",e);
         }
     }
 
@@ -184,24 +200,23 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<List<User>> readNextPaging(int id, String searchUserValue) throws DaoException {
-        List<User> users = null;
+        List<User> users = new ArrayList<>();
         try {
             takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ADMIN_NEXT_PAGING_USERS_BY_PET_NAME);
             preparedStatement.setString(1, searchUserValue + "%");
             preparedStatement.setInt(2, id);
-            preparedStatement.setInt(3, Attribute.ADMIN_PAGING_USERS_INTERVAL);
+            preparedStatement.setInt(3, Attribute.PAGING_ADMIN_USERS_INTERVAL);
             resultSet = preparedStatement.executeQuery();
-            List<User> usersBuf = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 User user = new User();
                 user.setId(resultSet.getInt(Attribute.ID));
                 user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
-                usersBuf.add(user);
+                users.add(user);
             }
-            if (usersBuf.size() != 0) {
-                users = usersBuf;
+            if (users.size() == 0) {
+                users = null;
             }
             closeConnection(connectionPool, connection, preparedStatement, resultSet);
         } catch (SQLException e) {
@@ -213,23 +228,22 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<List<User>> readNextPaging(int id) throws DaoException {
-        List<User> users = null;
+        List<User> users = new ArrayList<>();
         try {
             takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ADMIN_NEXT_PAGING_USERS);
             preparedStatement.setInt(1, id);
-            preparedStatement.setInt(2, Attribute.ADMIN_PAGING_USERS_INTERVAL);
+            preparedStatement.setInt(2, Attribute.PAGING_ADMIN_USERS_INTERVAL);
             resultSet = preparedStatement.executeQuery();
-            List<User> usersBuf = new ArrayList<>();
             while (resultSet.next()) {
                 resultSet.getRow();
                 User user = new User();
                 user.setId(resultSet.getInt(Attribute.ID));
                 user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
-                usersBuf.add(user);
+                users.add(user);
             }
-            if (usersBuf.size() != 0) {
-                users = usersBuf;
+            if (users.size() == 0) {
+                users = null;
             }
             closeConnection(connectionPool, connection, preparedStatement, resultSet);
         } catch (SQLException e) {
@@ -247,7 +261,7 @@ public class UserDaoImpl implements UserDao {
             takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_ADMIN_PREV_PAGING_USERS);
             preparedStatement.setInt(1, id);
-            preparedStatement.setInt(2, Attribute.ADMIN_PAGING_USERS_INTERVAL);
+            preparedStatement.setInt(2, Attribute.PAGING_ADMIN_USERS_INTERVAL);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 resultSet.getRow();
@@ -278,7 +292,7 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, "ADMIN");
             preparedStatement.setString(3, searchValue + "%");
-            preparedStatement.setInt(4, Attribute.ADMIN_PAGING_USERS_INTERVAL);
+            preparedStatement.setInt(4, Attribute.PAGING_ADMIN_USERS_INTERVAL);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 resultSet.getRow();
@@ -314,6 +328,35 @@ public class UserDaoImpl implements UserDao {
             preparedStatement = connection.prepareStatement(SELECT_USERS_FROM_TO);
             preparedStatement.setInt(1, from);
             preparedStatement.setInt(2, to);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                resultSet.getRow();
+                User user = new User();
+                user.setId(resultSet.getInt(Attribute.ID));
+                user.setRole(Role.valueOf(resultSet.getString(Attribute.ROLE)));
+                users.add(user);
+            }
+            if (users.size() == 0) {
+                users = null;
+            }
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+        } catch (SQLException e) {
+            closeConnection(connectionPool, connection, preparedStatement, resultSet);
+            throw new DaoException("get users from id to id");
+        }
+        return Optional.ofNullable(users);
+    }
+
+    @Override
+    public Optional<List<User>> readFromTo(int from, int to, String searchValue) throws DaoException {
+        List<User> users = new ArrayList<>();
+        try {
+            takeConnection();
+            preparedStatement = connection.prepareStatement(SELECT_USERS_FROM_TO_BY_PET_NAME);
+            preparedStatement.setInt(1, from);
+            preparedStatement.setInt(2, to);
+            preparedStatement.setString(3, Role.ADMIN.name());
+            preparedStatement.setString(4, searchValue+"%");
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 resultSet.getRow();
@@ -466,7 +509,7 @@ public class UserDaoImpl implements UserDao {
             takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_USERS_BY_NAME);
             preparedStatement.setString(1, searchUserValue + "%");
-            preparedStatement.setInt(2, Attribute.ADMIN_PAGING_USERS_INTERVAL);
+            preparedStatement.setInt(2, Attribute.PAGING_ADMIN_USERS_INTERVAL);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 resultSet.getRow();

@@ -14,12 +14,12 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class PetServiceImplTest {
+ class PetServiceImplTest {
 
-    private static PetDao petDao;
+    private static   PetDao petDao;
 
     @BeforeAll
-    public static void init() throws ConnectionPoolException {
+     static void init() throws ConnectionPoolException {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         connectionPool.init();
         DaoFactory daoFactory = DaoFactory.getInstance();
@@ -29,7 +29,7 @@ public class PetServiceImplTest {
     @Test
     @Order(1)
     @DisplayName("create pet by user id")
-    public void registerByUserId() throws DaoException {
+     void registerByUserId() throws DaoException {
         int id = 47;
         petDao.createByUserId(id);
         Optional<Pet> optionalPet = petDao.readByUserId(id);

@@ -18,7 +18,7 @@
 <fmt:setBundle basename="global" var="cnt"/>
 
 <div class="main_content">
-    <img src="<c:url value="/img/main-banner.png"/>" alt=""/>
+    <img src="<c:url value="/img/utils/main-banner.png"/>" alt=""/>
     <h3>Welcome!</h3>
     <p>
         Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla

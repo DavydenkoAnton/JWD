@@ -19,7 +19,7 @@
 <div class="wrapper">
     <tag:header pageURL="registration.html"/>
     <div class="form-wrapper">
-        <img src="<c:url value="/img/no_img_user.png"/>" alt=""/>
+        <img src="<c:url value="/img/utils/no_img_user.png"/>" alt=""/>
         <h5><fmt:message key="global.text.register" bundle="${cnt}"/></h5>
         <form method="post" action="<fmt:message key="command.registerUser" bundle="${cnt}"/>">
             <div class="form-wrapper_item">

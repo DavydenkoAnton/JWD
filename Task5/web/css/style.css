@@ -23,19 +23,22 @@
 .menu_item_a {
     width: 80%;
     margin-left: 24%;
-    padding-top: 13px
+    padding-top: 13px;
+    user-select: none;
 }
 
 .menu_item_a a {
     text-decoration: none;
     font-family: arial, serif;
     color: #487879;
+    user-select: none;
 }
 
 .menu_item img {
     width: 20px;
     float: left;
     padding-top: 10px;
+    user-select: none;
 }
 
 .pet_profile {
@@ -46,6 +49,7 @@
     border: 3px solid #487879;
     border-radius: 10px;
     background: linear-gradient(180deg, rgba(72,120,121,1) 0%, rgba(255,255,255,1) 120%);
+    user-select: none;
 }
 .pet_profile form{
 
@@ -94,6 +98,7 @@
     color: white;
     float: left;
     width: 70px;
+    user-select: none;
 }
 
 .edit_profile_credential_item input {

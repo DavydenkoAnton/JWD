@@ -18,13 +18,12 @@ public class ConnectionPool {
     private BlockingQueue<Connection> connectionQueue;
     private BlockingQueue<Connection> givenAwayConQueue;
     private final static String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
-    private final static String URL = "jdbc:mysql://localhost:3306/petbook?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private  static String URL = "jdbc:mysql://localhost:3306/petbook?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private final static String LOGIN = "root";
     private final static String PASSWORD = "admin";
     private final static int POOL_SIZE_MAX = 10;
 
     private static final ConnectionPool instance = new ConnectionPool();
-    //private ReentrantLock locker = new ReentrantLock();
 
     private ConnectionPool() {
     }
@@ -47,6 +46,7 @@ public class ConnectionPool {
             throw new ConnectionPoolException(e);
         }
     }
+
 
     public void dispose() throws ConnectionPoolException {
         clearConnectionQueue();

@@ -47,6 +47,8 @@ public interface UserDao extends Dao<User> {
 
     Optional<List<User>> readFromTo(int from, int to) throws DaoException;
 
+    Optional<List<User>> readFromTo(int from, int to, String searchValue)throws DaoException;
+
     Optional<List<User>> readByPetName(String searchUserValue) throws DaoException;
 
     Optional<User> readById(int id) throws DaoException;
@@ -56,6 +58,7 @@ public interface UserDao extends Dao<User> {
     void updatePassword(int id, String password) throws DaoException;
 
     void updateRole(int id, Role role) throws DaoException;
+
 
 
 }

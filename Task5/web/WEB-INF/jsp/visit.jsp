@@ -32,7 +32,7 @@
         <div class="visit_content_ava">
             <c:set var="pet" value="${sessionScope.pet}"/>
             <c:if test="${empty pet.avatarUrl}">
-                <img src="<c:url value="/img/no_img_user.png"/>" height="128" width="128" alt="">
+                <img src="<c:url value="/img/utils/no_img_user.png"/>" height="128" width="128" alt="">
             </c:if>
             <c:if test="${not empty pet.avatarUrl}">
                 <img src="${pet.avatarUrl}" height="128" width="128" alt="">

@@ -15,8 +15,8 @@
     <div class="users_content_header">
         <form action="<fmt:message key="command.pagingFirstAdminUsers" bundle="${cnt}"/>"
               method="post">
-            <input type="text" required placeholder="<fmt:message key="global.text.search" bundle="${cnt}"/>"
-                   name="<fmt:message key="attribute.text.searchUserValue" bundle="${cnt}"/>"
+            <input type="text" placeholder="<fmt:message key="global.text.search" bundle="${cnt}"/>"
+                  maxlength="16" name="<fmt:message key="attribute.text.searchUserValue" bundle="${cnt}"/>"
             <c:if test="${not empty searchUserValue}">
                    value="${searchUserValue}"
             </c:if>

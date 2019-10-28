@@ -8,14 +8,6 @@
 
 </head>
 <body>
-<c:choose>
-    <c:when test="${not empty cookie.language.value}">
-        <fmt:setLocale value="${cookie.language.value}"/>
-    </c:when>
-    <c:otherwise>
-        <fmt:setLocale value="en"/>
-    </c:otherwise>
-</c:choose>
-<c:redirect url="main.html"/>
+<c:redirect url="http://localhost:8080/pb/main.html"/>
 </body>
 </html>

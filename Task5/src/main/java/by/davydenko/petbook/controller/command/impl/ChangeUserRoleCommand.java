@@ -27,11 +27,12 @@ public class ChangeUserRoleCommand implements by.davydenko.petbook.controller.co
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter(Attribute.USER_ID);
+        String searchUserValue = getSearchValue(request);
         try {
             userService.changeRole(id);
-            int from = (int) request.getSession().getAttribute(Attribute.ADMIN_PAGING_PREV_USERS_KEY);
-            int to = (int) request.getSession().getAttribute(Attribute.ADMIN_PAGING_NEXT_USERS_KEY);
-            Optional<List<User>> optionalUsers = userService.getUsersFromTo(from, to);
+            int from = (int) request.getSession().getAttribute(Attribute.PAGING_PREV);
+            int to = (int) request.getSession().getAttribute(Attribute.PAGING_NEXT);
+            Optional<List<User>> optionalUsers = userService.getUsersFromTo(from, to,searchUserValue);
             if (optionalUsers.isPresent()) {
                 List<User> users = optionalUsers.get();
                 request.getSession().setAttribute(Attribute.ADMIN_USERS, users);
@@ -48,5 +49,10 @@ public class ChangeUserRoleCommand implements by.davydenko.petbook.controller.co
         } catch (IOException e) {
             logger.error("IOException (not redirected)", e);
         }
+    }
+
+    private String getSearchValue(HttpServletRequest request){
+        Object searchValue=request.getSession().getAttribute(Attribute.SEARCH_USER_VALUE);
+        return searchValue==null?"":(String)searchValue;
     }
 }

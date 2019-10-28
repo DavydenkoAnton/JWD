@@ -21,7 +21,7 @@
             <img src="${pet.avatarURL}" height="150" width="150" alt="">
         </c:if>
         <c:if test="${empty pet.avatarURL}">
-            <img src="../../../img/no_img_user.png" height="150" width="150" alt="">
+            <img src="../../../img/utils/no_img_user.png" height="150" width="150" alt="">
         </c:if>
 
         <br>

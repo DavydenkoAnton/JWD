@@ -185,6 +185,11 @@
     height: 500px;
 }
 
+.pets_content td{
+    padding: 0;
+    margin: 0;
+}
+
 .pets_content table {
     width: 100%;
 }
@@ -436,6 +441,7 @@
     float: left;
     margin-left: 200px;
     margin-top: 15px;
+    user-select:none;
 }
 
 
@@ -453,6 +459,7 @@
     float: right;
     margin-right: 200px;
     margin-top: 15px;
+    user-select: none;
 }
 
 

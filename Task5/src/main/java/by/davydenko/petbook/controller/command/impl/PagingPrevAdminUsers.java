@@ -33,32 +33,22 @@ public class PagingPrevAdminUsers implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        int pagingPrevValue = (int) request.getSession().getAttribute(Attribute.ADMIN_PAGING_PREV_USERS_KEY);
-        String searchUserValue = (String) request.getSession().getAttribute(Attribute.SEARCH_USER_VALUE);
+        int pagingPrevValue = getPagingPrevValue(request);
+        String searchUserValue = getSearchValue(request);
         try {
-            Optional<List<User>> optionalUsers;
-            if(searchUserValue.isEmpty()){
-                optionalUsers=userService.getUsersPagingPrev(pagingPrevValue);
-            }else {
-                optionalUsers=userService.getUsersPagingPrev(pagingPrevValue,searchUserValue);
-            }
+            Optional<List<User>> optionalUsers = userService.getUsersPagingPrev(pagingPrevValue, searchUserValue);
             if (optionalUsers.isPresent()) {
                 List<User> users = optionalUsers.get();
-                if(users.size()!=Attribute.ADMIN_PAGING_USERS_INTERVAL){
+                if (users.size() != Attribute.PAGING_ADMIN_USERS_INTERVAL) {
                     redirectToPagingFirstAdminUsers(response);
                     return;
                 }
                 request.getSession().setAttribute(Attribute.ADMIN_USERS, users);
                 int firstUserId = getFirstUserId(users);
                 int lastUserId = getLastUserId(users);
-                request.getSession().setAttribute(Attribute.ADMIN_PAGING_NEXT_USERS_KEY, lastUserId);
-                request.getSession().setAttribute(Attribute.ADMIN_PAGING_PREV_USERS_KEY, firstUserId);
-                Optional<List<Pet>> optionalPets ;
-                if(searchUserValue.isEmpty()){
-                    optionalPets = petService.getFromTo(firstUserId, lastUserId);
-                }else{
-                    optionalPets = petService.getFromTo(firstUserId, lastUserId,searchUserValue);
-                }
+                request.getSession().setAttribute(Attribute.PAGING_NEXT, lastUserId);
+                request.getSession().setAttribute(Attribute.PAGING_PREV, firstUserId);
+                Optional<List<Pet>> optionalPets = petService.getFromTo(firstUserId, lastUserId, searchUserValue);
                 if (optionalPets.isPresent()) {
                     List<Pet> pets = optionalPets.get();
                     request.getSession().setAttribute(Attribute.ADMIN_PETS, pets);
@@ -68,6 +58,16 @@ public class PagingPrevAdminUsers implements Command {
             logger.error(e);
         }
         redirectToAdminUsersPage(response);
+    }
+
+    private int getPagingPrevValue(HttpServletRequest request) {
+        Object pagingPrevValue = request.getSession().getAttribute(Attribute.PAGING_PREV);
+        return pagingPrevValue == null ? 0 : (int) pagingPrevValue;
+    }
+
+    private String getSearchValue(HttpServletRequest request) {
+        Object searchValue = request.getSession().getAttribute(Attribute.SEARCH_USER_VALUE);
+        return searchValue == null ? "" : (String) searchValue;
     }
 
     private int getFirstUserId(@NotNull List<User> users) {
@@ -85,6 +85,7 @@ public class PagingPrevAdminUsers implements Command {
             logger.error(e);
         }
     }
+
     private void redirectToPagingFirstAdminUsers(HttpServletResponse response) {
         try {
             response.sendRedirect(ADMIN_PAGING_FIRST_USERS);

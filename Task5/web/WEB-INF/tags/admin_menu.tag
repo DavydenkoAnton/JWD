@@ -8,7 +8,7 @@
 
 <div class="menu">
     <div class="menu_item">
-        <img src="<c:url value="/img/home.png"/>" alt="">
+        <img src="<c:url value="/img/utils/home.png"/>" alt="">
         <div class="menu_item_a">
             <a href="<fmt:message key="command.userPage" bundle="${cnt}"/>">
                 <fmt:message key="global.text.myPage" bundle="${cnt}"/>
@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="menu_item">
-        <img src="<c:url value="/img/settings-gears.png"/>" alt="">
+        <img src="<c:url value="/img/utils/settings-gears.png"/>" alt="">
         <div class="menu_item_a">
             <a href="<fmt:message key="command.adminArticles" bundle="${cnt}"/>">
                 <fmt:message key="global.text.articles" bundle="${cnt}"/>
@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="menu_item">
-        <img src="<c:url value="/img/settings-gears.png"/>" alt="">
+        <img src="<c:url value="/img/utils/settings-gears.png"/>" alt="">
         <div class="menu_item_a">
             <a href="<fmt:message key="command.pagingFirstAdminUsers" bundle="${cnt}"/>">
                 <fmt:message key="global.text.users" bundle="${cnt}"/>
@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="menu_item">
-        <img src="<c:url value="/img/settings-gears.png"/>" alt="">
+        <img src="<c:url value="/img/utils/settings-gears.png"/>" alt="">
         <div class="menu_item_a">
             <a href="<fmt:message key="command.adminSettingsPage" bundle="${cnt}"/>">
                 <fmt:message key="global.text.settings" bundle="${cnt}"/>
@@ -40,7 +40,7 @@
         </div>
     </div>
     <div class="menu_item">
-        <img src="<c:url value="/img/runner.png"/>" alt="">
+        <img src="<c:url value="/img/utils/runner.png"/>" alt="">
         <div class="menu_item_a">
             <a href="<fmt:message key="command.logoutUser" bundle="${cnt}"/>">
                 <fmt:message key="global.text.logout" bundle="${cnt}"/>

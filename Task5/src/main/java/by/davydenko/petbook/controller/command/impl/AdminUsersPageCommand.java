@@ -22,9 +22,11 @@ import java.util.Optional;
 public class AdminUsersPageCommand implements Command {
     private static Logger logger = LogManager.getLogger(AdminUsersPageCommand.class);
     private static final String USER_PROFILE_PAGE = "/WEB-INF/jsp/admin/users.jsp";
+    private static final int PAGING_START = 0;
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+
         forwardToAdminUsersPage(request, response);
     }
 

@@ -32,11 +32,34 @@ public class MessageDaoImpl implements MessageDao {
         connectionPool = ConnectionPool.getInstance();
     }
 
+    private void closeConnection(ConnectionPool cp, Connection c, PreparedStatement p) throws DaoException {
+        try {
+            cp.closeConnection(c, p);
+        } catch (ConnectionPoolException e) {
+            throw new DaoException("cannot close connection", e);
+        }
+    }
+
+    private void closeConnection(ConnectionPool cp, Connection c, PreparedStatement p, ResultSet r) throws DaoException {
+        try {
+            cp.closeConnection(c, p, r);
+        } catch (ConnectionPoolException e) {
+            throw new DaoException("cannot close connection", e);
+        }
+    }
+
+    private void takeConnection() throws DaoException {
+        try {
+            connection = connectionPool.takeConnection();
+        } catch (ConnectionPoolException e) {
+            throw new DaoException("cannot close connection", e);
+        }
+    }
 
     @Override
     public void create(Message message) throws DaoException {
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(INSERT_MESSAGE);
             preparedStatement.setString(1, message.getMessage());
@@ -46,8 +69,9 @@ public class MessageDaoImpl implements MessageDao {
             if (preparedStatement.executeUpdate() > 0) {
                 connection.commit();
             }
-            connectionPool.closeConnection(connection, preparedStatement);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool,connection, preparedStatement);
+        } catch (SQLException  e) {
+            closeConnection(connectionPool,connection, preparedStatement);
             throw new DaoException(e);
         }
     }
@@ -56,7 +80,7 @@ public class MessageDaoImpl implements MessageDao {
     public Optional<Message> read(int userId) throws DaoException {
         Message message = null;
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_MESSAGE_BY_USER_ID);
             preparedStatement.setInt(1, userId);
             resultSet = preparedStatement.executeQuery();
@@ -68,8 +92,9 @@ public class MessageDaoImpl implements MessageDao {
                 message.setSenderId(resultSet.getInt(Attribute.SENDER_ID));
                 message.setUserId(resultSet.getInt(Attribute.USER_ID));
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool,connection, preparedStatement,resultSet);
+        } catch (SQLException  e) {
+            closeConnection(connectionPool,connection, preparedStatement,resultSet);
             throw new DaoException(e);
         }
         return Optional.ofNullable(message);
@@ -79,7 +104,7 @@ public class MessageDaoImpl implements MessageDao {
     public Optional<List<Message>> readChatMessages(int userId, int senderId) throws DaoException {
         List<Message> messages = new ArrayList<>();
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             preparedStatement = connection.prepareStatement(SELECT_CHAT_MESSAGES);
             preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, userId);
@@ -98,8 +123,9 @@ public class MessageDaoImpl implements MessageDao {
             if (messages.size() == 0) {
                 messages = null;
             }
-            connectionPool.closeConnection(connection, preparedStatement, resultSet);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool,connection, preparedStatement,resultSet);
+        } catch (SQLException  e) {
+            closeConnection(connectionPool,connection, preparedStatement,resultSet);
             throw new DaoException(e);
         }
         return Optional.ofNullable(messages);
@@ -113,15 +139,15 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public void delete(int userId) throws DaoException {
         try {
-            connection = connectionPool.takeConnection();
+            takeConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(DELETE_BY_USER_ID);
             preparedStatement.setInt(1, userId);
             if (preparedStatement.executeUpdate() > 0) {
                 connection.commit();
             }
-            connectionPool.closeConnection(connection, preparedStatement);
-        } catch (SQLException | ConnectionPoolException e) {
+            closeConnection(connectionPool,connection, preparedStatement);
+        } catch (SQLException  e) {
             throw new DaoException(e);
         }
     }

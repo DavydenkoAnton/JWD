@@ -17,7 +17,7 @@
                                     <img src="${pet.avatarUrl}" alt=""/>
                                 </c:when>
                                 <c:otherwise>
-                                    <img src="<c:url value="/img/no_img_user.png"/>" alt=""/>
+                                    <img src="<c:url value="/img/utils/no_img_user.png"/>" alt=""/>
                                 </c:otherwise>
                             </c:choose>
                             <div class="pets_content_item_credentials">

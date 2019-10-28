@@ -22,6 +22,7 @@ public class ArticleServiceImplTest {
     static void init() throws ConnectionPoolException {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         connectionPool.init();
+        connectionPool.takeConnection();
         DaoFactory daoFactory = DaoFactory.getInstance();
         articleDao = daoFactory.getArticleDao();
     }

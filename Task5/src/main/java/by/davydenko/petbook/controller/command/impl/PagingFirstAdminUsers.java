@@ -1,6 +1,7 @@
 package by.davydenko.petbook.controller.command.impl;
 
 import by.davydenko.petbook.controller.command.util.Attribute;
+import by.davydenko.petbook.service.util.XSSFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,11 +16,10 @@ public class PagingFirstAdminUsers implements by.davydenko.petbook.controller.co
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        request.getSession().setAttribute(Attribute.ADMIN_PAGING_NEXT_USERS_KEY,PAGING_START);
-        request.getSession().setAttribute(Attribute.ADMIN_PAGING_PREV_USERS_KEY,PAGING_START);
-        Object searchUserValue = request.getParameter(Attribute.SEARCH_USER_VALUE);
-        String searchUserValueStr=searchUserValue==null?"":searchUserValue.toString();
-        request.getSession().setAttribute(Attribute.SEARCH_USER_VALUE,searchUserValueStr);
+        request.getSession().setAttribute(Attribute.PAGING_NEXT, PAGING_START);
+        request.getSession().setAttribute(Attribute.PAGING_PREV, PAGING_START);
+        String searchValue = getSearchValue(request);
+        request.getSession().setAttribute(Attribute.SEARCH_USER_VALUE, searchValue);
         redirectPagingNextAdminCommand(response);
     }
 
@@ -29,5 +29,10 @@ public class PagingFirstAdminUsers implements by.davydenko.petbook.controller.co
         } catch (IOException e) {
             logger.error(e);
         }
+    }
+
+    private String getSearchValue(HttpServletRequest request) {
+        Object searchValue = request.getParameter(Attribute.SEARCH_USER_VALUE);
+        return searchValue == null ? "" : XSSFilter.SCRIPT(searchValue.toString()) ? "" : searchValue.toString();
     }
 }

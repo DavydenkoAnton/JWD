@@ -25,7 +25,7 @@
         <fmt:message key="global.text.articles" bundle="${cnt}"/></a>
     <a href="<fmt:message key="command.mainPage" bundle="${cnt}"/>">
         <fmt:message key="global.text.home" bundle="${cnt}"/></a>
-    <img src="<c:url  value = "/img/header_logo.jpg"/>" alt="">
+    <img src="<c:url  value = "/img/utils/header_logo.jpg"/>" alt="">
 </div>
 
 
